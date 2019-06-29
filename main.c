@@ -1,9 +1,26 @@
-#include <math.h>
+#ifdef __cplusplus
+#include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <cstdint>
+#include <cstdlib>
+#include "LiquidCrystal.h"
 
-#include <errno.h>
+using namespace std;
+#else
+#include <stdio.h>
+#include <string.h>
+#include <stdint.h>
+#include <stdlib.h>
+#endif
 
-#include <xmc4700.h>
+#include <XMC4700.h>
 #include <xmc_scu.h>
+#include <xmc_rtc.h>
+#include <xmc_uart.h>
+#include <xmc_gpio.h>
+#include <xmc_flash.h>
+#include <xmc_vadc.h>
 
 #include <arm_math.h>
 
@@ -18,52 +35,36 @@
 #include "timers.h"
 
 #include "custom_def.h"
-#include "Board_LED.h"
-#include "Driver_USART.h"
+#include "led.h"
 
 static uint32_t tmpDts;
 static float tmpCel;
 static float tmpV13;
 static float tmpV33;
 
-/* USART Driver */
-extern ARM_DRIVER_USART Driver_USART0;
-static ARM_DRIVER_USART *UARTdrv = &Driver_USART0; 
 uint8_t g_tmp_uart_rx_buf;
-
-void myUART_callback(uint32_t event) {
-    switch (event)
-    {
-    case ARM_USART_EVENT_RECEIVE_COMPLETE:  
-//		 if (cmd == 0x0D)        /* Send back the message if Enter is recived*/
-//		 {
-//			 UARTdrv->Send("\nHello World!\r\n", 15);
-//			 cmd = 0;   
-//   		 UARTdrv->Receive(&cmd, 1);
-//		 }
-		   		 
-		UARTdrv->Receive(&g_tmp_uart_rx_buf, 1);
-		 break;
-		 
-    case ARM_USART_EVENT_TRANSFER_COMPLETE:
-    case ARM_USART_EVENT_SEND_COMPLETE:
-    case ARM_USART_EVENT_TX_COMPLETE:
-     
-        break;
- 
-    case ARM_USART_EVENT_RX_TIMEOUT:
-         __breakpoint(0);  /* Error: Call debugger or replace with custom error handling */
-        break;
- 
-    case ARM_USART_EVENT_RX_OVERFLOW:
-    case ARM_USART_EVENT_TX_UNDERFLOW:
-        __breakpoint(0);  /* Error: Call debugger or replace with custom error handling */
-        break;
-    }
-}
   
+#ifndef configTICK_RATE_HZ
+#define	configTICK_RATE_HZ	1000
+#endif
+
+#define UART_RX P1_4
+#define UART_TX P1_5
+
+XMC_GPIO_CONFIG_t uart_tx;
+XMC_GPIO_CONFIG_t uart_rx;
+
+/* UART configuration */
+const XMC_UART_CH_CONFIG_t uart_config = {	
+	.baudrate = 921600,
+	.data_bits = 8U,
+	.frame_length = 8U,
+	.stop_bits = 1U,
+	.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
+};
+
 int stdout_putchar (int ch) {
-	UARTdrv->Send((uint8_t*)&ch, 1);
+	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
 	return ch;
 }
 
@@ -102,18 +103,18 @@ q15_t noise;
 q15_t disturbed;
 q15_t filtered;
 
-void sine_gen(void) {
-  while(1) { 
-		xTaskNotifyWait( 0x00,      /* Don't clear any notification bits on entry. */
-                         UINT32_MAX, /* Reset the notification value to 0 on exit. */
-                         NULL,
-                         portMAX_DELAY );  /* Block indefinitely. */
+//void sine_gen(void) {
+//  while(1) { 
+//		xTaskNotifyWait( 0x00,      /* Don't clear any notification bits on entry. */
+//                         UINT32_MAX, /* Reset the notification value to 0 on exit. */
+//                         NULL,
+//                         portMAX_DELAY );  /* Block indefinitely. */
 
-//    sine = sine_calc_sample_q15(&Signal_set) / 2;
+////    sine = sine_calc_sample_q15(&Signal_set) / 2;
 
-//		xTaskNotify( g_noise_gen_task_handle, 0, eNoAction );
-  }
-}
+////		xTaskNotify( g_noise_gen_task_handle, 0, eNoAction );
+//  }
+//}
 
 extern volatile uint32_t test_val32[3];
 void sync_tsk(void) {
@@ -135,9 +136,14 @@ void sync_tsk(void) {
 		tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
 		tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
 		printf("%.1f %.1f\n", tmpV13, tmpV33);	
-				
-//    vTaskDelay(500 / portTICK_PERIOD_MS);	
-    vTaskDelay(100);	
+		
+		#ifdef tskKERNEL_VERSION_NUMBER
+		printf("OS Ver:%s\n", tskKERNEL_VERSION_NUMBER);
+		#else
+		printf("CC Ver:%u\n", __ARMCC_VERSION);		
+		#endif
+		
+    vTaskDelay(500 / portTICK_PERIOD_MS);	
 						
 		LED_Toggle(0);
 		LED_Toggle(1);
@@ -153,26 +159,40 @@ int main(void) {
 	XMC_SCU_StartTemperatureMeasurement();
 
 	LED_Initialize();
-	/*Initialize the UART driver */
-	UARTdrv->Initialize(myUART_callback);
-	/*Power up the UART peripheral */
-	UARTdrv->PowerControl(ARM_POWER_FULL);
-
-	UARTdrv->Control(ARM_USART_MODE_ASYNCHRONOUS |
-									 ARM_USART_DATA_BITS_8 |
-									 ARM_USART_PARITY_NONE |
-									 ARM_USART_STOP_BITS_1 , TEST_BAUDRATE);
-	 
-	/* Enable the Transmitter line */
-	UARTdrv->Control (ARM_USART_CONTROL_TX, 1);
 	
-	printf("XMC4500 ARMCC Test @ %u Hz\n", SystemCoreClock);
+	/*Initialize the UART driver */
+	uart_tx.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT2;
+	uart_rx.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
+ /* Configure UART channel */
+  XMC_UART_CH_Init(XMC_UART0_CH0, &uart_config);
+  XMC_UART_CH_SetInputSource(XMC_UART0_CH0, XMC_UART_CH_INPUT_RXD,USIC0_C0_DX0_P1_4);
+  
+	/* Start UART channel */
+  XMC_UART_CH_Start(XMC_UART0_CH0);
+
+  /* Configure pins */
+	XMC_GPIO_Init(UART_TX, &uart_tx);
+  XMC_GPIO_Init(UART_RX, &uart_rx);
+	
+	printf("XMC4700 ARMCC Test @ %u Hz\n", SystemCoreClock);
 
 	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
 			SystemCoreClock, SCB->CPUID,
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
 	printf("Boot Mode:%u\n", XMC_SCU_GetBootMode());
+	
+  #ifdef RTE_Compiler_IO_STDOUT_User
+	printf("RTE_Compiler_IO_STDOUT_User\n");
+	#endif
+	
+  #ifdef RTE_Compiler_IO_STDOUT_EVR
+	printf("RTE_Compiler_IO_STDOUT_EVR\n");
+	#endif
+
+  #ifdef RTE_Compiler_IO_STDOUT_ITM
+	printf("RTE_Compiler_IO_STDOUT_ITM\n");
+	#endif
 	
 //	  // compute coefficients for IIR sine generators
 //  sine_generator_init_q15(&Signal_set, SIGNAL_FREQ, SAMPLING_FREQ);
@@ -208,13 +228,13 @@ int main(void) {
 //							&g_noise_gen_task_handle);
 //  printf ("noise_gen Task Initialised\n\r");
 																			
-	xTaskCreate((TaskFunction_t)sine_gen,
-							(const portCHAR *)"sine_gen",
-							256,
-							NULL,
-							tskIDLE_PRIORITY+2,
-							&g_sine_gen_task_handle);							
-  printf ("sine_gen Task Initialised\n\r");
+//	xTaskCreate((TaskFunction_t)sine_gen,
+//							(const portCHAR *)"sine_gen",
+//							256,
+//							NULL,
+//							tskIDLE_PRIORITY+2,
+//							&g_sine_gen_task_handle);							
+//  printf ("sine_gen Task Initialised\n\r");
 							
 							xTaskCreate((TaskFunction_t)sync_tsk,
 							(const portCHAR *)"sync_tsk",
@@ -222,60 +242,15 @@ int main(void) {
 							NULL,
 							tskIDLE_PRIORITY+3,
 							&g_sync_task_handle);							
-  printf ("sync_tsk Task Initialised\n\r");
-  printf ("Application Running\n\r");
-	
+//  printf ("sync_tsk Task Initialised\n\r");
+//  printf ("Application Running\n\r");
+								
   /* Start scheduler */  
 	vTaskStartScheduler();
 	
 //Should never come here
 							
   while (1) {
-		//T_DTS = (RESULT - 605) / 2.05 [°C]
-		tmpDts = XMC_SCU_GetTemperatureMeasurement();
-		tmpCel = (tmpDts-605)/2.05;
-		printf("%f\n", tmpCel);
-
-		tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
-		tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%f %f\n", tmpV13, tmpV33);
-		
-		printf("%u MHz\n", SystemCoreClock/1000000);
-
-//		tmp_cyccnt = DWT->CYCCNT;
-//		tmp_cpicnt = DWT->CPICNT;
-//		tmp_exccnt = DWT->EXCCNT;
-//		tmp_sleepcnt = DWT->SLEEPCNT;
-//		tmp_lsucnt = DWT->LSUCNT;
-//		tmp_foldcnt = DWT->FOLDCNT;
-		
-		//CYCCNT - CPICNT - EXCCNT - SLEEPCNT - LSUCNT + FOLDCNT
-//		printf("DWT CYCCNT:%u\n", tmp_cyccnt);
-//		printf("DWT CPICNT:%u\n", tmp_cpicnt);
-//		printf("DWT EXCCNT:%u\n", tmp_exccnt);
-//		printf("DWT SLEEPCNT:%u\n", tmp_sleepcnt);
-//		printf("DWT LSUCNT:%u\n", tmp_lsucnt);
-//		printf("DWT FOLDCNT:%u\n", tmp_foldcnt);
-//		printf("CYCCNT - CPICNT - EXCCNT - SLEEPCNT - LSUCNT + FOLDCNT = %u\n",
-//		tmp_cyccnt - tmp_cpicnt -tmp_exccnt - tmp_sleepcnt - tmp_lsucnt + tmp_foldcnt);
-		
-//		test_div_flash();
-//		
-//		test_div_sram();
-//		test_alloca();
-
-  #ifdef RTE_Compiler_IO_STDOUT_User
-	printf("RTE_Compiler_IO_STDOUT_User\n");
-	#endif
-	
-  #ifdef RTE_Compiler_IO_STDOUT_EVR
-	printf("RTE_Compiler_IO_STDOUT_EVR\n");
-	#endif
-
-  #ifdef RTE_Compiler_IO_STDOUT_ITM
-	printf("RTE_Compiler_IO_STDOUT_ITM\n");
-	#endif
-		
-		XMC_SCU_StartTemperatureMeasurement();		
+		__BKPT(0x99);
 	}
 }

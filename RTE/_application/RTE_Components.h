@@ -22,8 +22,6 @@
 #define RTE_RTOS_FreeRTOS_CORE          /* RTOS FreeRTOS Core */
 /*  ARM.FreeRTOS::RTOS:Heap:Heap_4:10.2.0 */
 #define RTE_RTOS_FreeRTOS_HEAP_4        /* RTOS FreeRTOS Heap 4 */
-/*  Infineon::CMSIS Driver:USART:2.11 */
-#define RTE_Drivers_USART
 /*  Infineon::Device:RTE_Device:1.1.0 */
 #define RTE_DEVICE
 /*  Infineon::Device:Startup:2.2.4 */
