@@ -77,7 +77,7 @@ extern uint32_t SystemCoreClock;
 #define configUSE_QUEUE_SETS                  1
 #define configUSE_TASK_NOTIFICATIONS          1
 #define configUSE_TRACE_FACILITY              1
-#define configUSE_TICKLESS_IDLE               1
+#define configUSE_TICKLESS_IDLE               0
 #define configUSE_APPLICATION_TASK_TAG        0
 #define configUSE_NEWLIB_REENTRANT            0
 #define configUSE_CO_ROUTINES                 0
