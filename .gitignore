@@ -12,4 +12,10 @@
 *.bin
 *.uvguix.*
 *.txt
-Objects/*
+*Objects*
+
+*DebugConfig*
+*Listings*
+
+
+

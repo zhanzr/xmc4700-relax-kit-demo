@@ -22,28 +22,23 @@ using namespace std;
 #include <xmc_flash.h>
 #include <xmc_vadc.h>
 
-#include <arm_math.h>
-
-#include "EventRecorder.h"
-
 #include "RTE_Components.h"
-
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
-#include "semphr.h"
-#include "timers.h"
 
 #include "custom_def.h"
 #include "led.h"
 
-static uint32_t tmpDts;
-static float tmpCel;
-static float tmpV13;
-static float tmpV33;
+#include "dhry.h"
+
+#define RUN_NUMBER	2000000
+
+//static uint32_t tmpDts;
+//static float tmpCel;
+//static float tmpV13;
+//static float tmpV33;
 
 uint8_t g_tmp_uart_rx_buf;
-  
+__IO uint32_t g_Ticks;
+
 #ifndef configTICK_RATE_HZ
 #define	configTICK_RATE_HZ	1000
 #endif
@@ -68,93 +63,146 @@ int stdout_putchar (int ch) {
 	return ch;
 }
 
-TaskHandle_t g_filter_task_handle;
-TaskHandle_t g_disturb_gen_task_handle;
-TaskHandle_t g_noise_gen_task_handle;
-TaskHandle_t g_sine_gen_task_handle;
-TaskHandle_t g_sync_task_handle;
 
-#define ENABLE_CONFIG 1
-// =============================
-//   <o>Oscillator Sampling Frequency [Hz] <1000-10000>
-//   <i> Set the oscillator sampling frequency.
-//   <i> Default: 5000  (5 KHz)
-#define SAMPLING_FREQ 1000  // generating task (5 KHz)
+/* Global Variables: */
 
-//   <o>Noise Frequency [Hz] <50-10000>
-//   <i> Set the noise signal frequency.
-//   <i> Default: 1500 Hz
-#define NOISE_FREQ    50  // noise (2 KHz)
+Rec_Pointer     Ptr_Glob,
+                Next_Ptr_Glob;
+int             Int_Glob;
+Boolean         Bool_Glob;
+char            Ch_1_Glob,
+                Ch_2_Glob;
+int             Arr_1_Glob [50];
+int             Arr_2_Glob [50] [50];
 
-//   <o>Signal Frequency [Hz] <10-1000>
-//   <i> Set the signal frequency.
-//   <i> Default: 330 Hz
-#define SIGNAL_FREQ    10  // disturbed signal (250 Hz)
+#define REG	register
+	
+#ifndef REG
+        Boolean Reg = false;
+#define REG
+        /* REG becomes defined as empty */
+        /* i.e. no register variables   */
+#else
+        Boolean Reg = true;
+#endif
 
-// </e>
-//------------- <<< end of configuration section >>> -----------------------
+/* variables for time measurement: */
+
+#ifdef TIMES
+struct tms      time_info;
+extern  int     times (void);
+                /* see library function "times" */
+#define Too_Small_Time (2*HZ)
+                /* Measurements should last at least about 2 seconds */
+#endif
+#ifdef TIME
+extern long     time(long *);
+                /* see library function "time"  */
+#define Too_Small_Time 2
+                /* Measurements should last at least 2 seconds */
+#endif
+#ifdef MSC_CLOCK
+//extern clock_t clock(void);
+#define Too_Small_Time (2*HZ)
+#endif
+
+long            Begin_Time,
+                End_Time,
+                User_Time;
+float           Microseconds,
+                Dhrystones_Per_Second;
+
+/* end of variables for time measurement */
 
 
-//sine_generator_q15_t Signal_set;
-//sine_generator_q15_t Noise_set;
+void Proc_1 (Rec_Pointer Ptr_Val_Par)
+/******************/
+    /* executed once */
+{
+  REG Rec_Pointer Next_Record = Ptr_Val_Par->Ptr_Comp;
+                                        /* == Ptr_Glob_Next */
+  /* Local variable, initialized with Ptr_Val_Par->Ptr_Comp,    */
+  /* corresponds to "rename" in Ada, "with" in Pascal           */
 
-q15_t sine;
-q15_t noise;
-q15_t disturbed;
-q15_t filtered;
-
-//void sine_gen(void) {
-//  while(1) { 
-//		xTaskNotifyWait( 0x00,      /* Don't clear any notification bits on entry. */
-//                         UINT32_MAX, /* Reset the notification value to 0 on exit. */
-//                         NULL,
-//                         portMAX_DELAY );  /* Block indefinitely. */
-
-////    sine = sine_calc_sample_q15(&Signal_set) / 2;
-
-////		xTaskNotify( g_noise_gen_task_handle, 0, eNoAction );
-//  }
-//}
-
-extern volatile uint32_t test_val32[3];
-void sync_tsk(void) {
-	TickType_t xLastWakeTime;
-  while(1) {			
-		
-//		xLastWakeTime = xTaskGetTickCount ();    
-//		xTaskNotify( g_sine_gen_task_handle, 0, eNoAction );
-//    vTaskDelayUntil( &xLastWakeTime, 10 / portTICK_PERIOD_MS );
-		
-		XMC_SCU_StartTemperatureMeasurement();		
-				
-		printf("t:%u\n", xTaskGetTickCount());
-		//T_DTS = (RESULT - 605) / 2.05 [°C]
-		tmpDts = XMC_SCU_GetTemperatureMeasurement();
-		tmpCel = (tmpDts-605)/2.05;
-		printf("%.1f\n", tmpCel);
-
-		tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
-		tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%.1f %.1f\n", tmpV13, tmpV33);	
-		
-		#ifdef tskKERNEL_VERSION_NUMBER
-		printf("OS Ver:%s\n", tskKERNEL_VERSION_NUMBER);
-		#else
-		printf("CC Ver:%u\n", __ARMCC_VERSION);		
-		#endif
-		
-    vTaskDelay(500 / portTICK_PERIOD_MS);	
-						
-		LED_Toggle(0);
-		LED_Toggle(1);
-//		xTaskNotify( g_sine_gen_task_handle, 0, eNoAction );
+  structassign (*Ptr_Val_Par->Ptr_Comp, *Ptr_Glob);
+  Ptr_Val_Par->variant.var_1.Int_Comp = 5;
+  Next_Record->variant.var_1.Int_Comp = Ptr_Val_Par->variant.var_1.Int_Comp;
+  Next_Record->Ptr_Comp = Ptr_Val_Par->Ptr_Comp;
+  Proc_3 (&Next_Record->Ptr_Comp);
+    /* Ptr_Val_Par->Ptr_Comp->Ptr_Comp == Ptr_Glob->Ptr_Comp */
+  if (Next_Record->Discr == Ident_1)
+    /* then, executed */
+  {
+    Next_Record->variant.var_1.Int_Comp = 6;
+    Proc_6 (Ptr_Val_Par->variant.var_1.Enum_Comp,
+           &Next_Record->variant.var_1.Enum_Comp);
+    Next_Record->Ptr_Comp = Ptr_Glob->Ptr_Comp;
+    Proc_7 (Next_Record->variant.var_1.Int_Comp, 10,
+           &Next_Record->variant.var_1.Int_Comp);
   }
-}
+  else /* not executed */
+    structassign (*Ptr_Val_Par, *Ptr_Val_Par->Ptr_Comp);
+} /* Proc_1 */
+
+
+void Proc_2 (One_Fifty *Int_Par_Ref)
+/******************/
+    /* executed once */
+    /* *Int_Par_Ref == 1, becomes 4 */
+{
+  One_Fifty  Int_Loc;
+  Enumeration   Enum_Loc;
+
+  Int_Loc = *Int_Par_Ref + 10;
+  do /* executed once */
+    if (Ch_1_Glob == 'A')
+      /* then, executed */
+    {
+      Int_Loc -= 1;
+      *Int_Par_Ref = Int_Loc - Int_Glob;
+      Enum_Loc = Ident_1;
+    } /* if */
+    while (Enum_Loc != Ident_1); /* true */
+} /* Proc_2 */
+
+
+void Proc_3 (Rec_Pointer *Ptr_Ref_Par)
+/******************/
+    /* executed once */
+    /* Ptr_Ref_Par becomes Ptr_Glob */
+{
+  if (Ptr_Glob != Null)
+    /* then, executed */
+    *Ptr_Ref_Par = Ptr_Glob->Ptr_Comp;
+  Proc_7 (10, Int_Glob, &Ptr_Glob->variant.var_1.Int_Comp);
+} /* Proc_3 */
+
+
+void Proc_4 (void) /* without parameters */
+/*******/
+    /* executed once */
+{
+  Boolean Bool_Loc;
+
+  Bool_Loc = Ch_1_Glob == 'A';
+  Bool_Glob = Bool_Loc | Bool_Glob;
+  Ch_2_Glob = 'B';
+} /* Proc_4 */
+
+
+void Proc_5 (void) /* without parameters */
+/*******/
+    /* executed once */
+{
+  Ch_1_Glob = 'A';
+  Bool_Glob = false;
+} /* Proc_5 */
 
 #define TEST_BAUDRATE	(921600)
 int main(void) {
-  EventRecorderInitialize(EventRecordAll, 1);
-
+  /* System timer configuration */
+  SysTick_Config(SystemCoreClock / configTICK_RATE_HZ);
+	
 	XMC_SCU_EnableTemperatureSensor();
 	XMC_SCU_StartTemperatureMeasurement();
 
@@ -193,64 +241,212 @@ int main(void) {
   #ifdef RTE_Compiler_IO_STDOUT_ITM
 	printf("RTE_Compiler_IO_STDOUT_ITM\n");
 	#endif
+		
+  One_Fifty       Int_1_Loc;
+  REG One_Fifty   Int_2_Loc;
+  One_Fifty       Int_3_Loc;
+  REG char        Ch_Index;
+  Enumeration     Enum_Loc;
+  Str_30          Str_1_Loc;
+  Str_30          Str_2_Loc;
+  REG int         Run_Index;
+  REG int         Number_Of_Runs;
 	
-//	  // compute coefficients for IIR sine generators
-//  sine_generator_init_q15(&Signal_set, SIGNAL_FREQ, SAMPLING_FREQ);
-//  sine_generator_init_q15(&Noise_set, NOISE_FREQ, SAMPLING_FREQ);
-//  printf ("Sine Generator Initialised\n\r");
+  /* Initializations */
+  Next_Ptr_Glob = (Rec_Pointer) malloc (sizeof (Rec_Type));
+  Ptr_Glob = (Rec_Pointer) malloc (sizeof (Rec_Type));
 
-  // initialize low pass filter
-//  low_pass_filter_init();
-//  printf ("Low Pass Filter Initialised\n\r");
+  Ptr_Glob->Ptr_Comp                    = Next_Ptr_Glob;
+  Ptr_Glob->Discr                       = Ident_1;
+  Ptr_Glob->variant.var_1.Enum_Comp     = Ident_3;
+  Ptr_Glob->variant.var_1.Int_Comp      = 40;
+  strcpy (Ptr_Glob->variant.var_1.Str_Comp,
+          "DHRYSTONE PROGRAM, SOME STRING");
+  strcpy (Str_1_Loc, "DHRYSTONE PROGRAM, 1'ST STRING");
 
-  // initialize the timing system to activate the four tasks 
-  // of the application program
-//		xTaskCreate((TaskFunction_t)filter_tsk,
-//							(const portCHAR *)"filter_tsk",
-//							384,
-//							NULL,
-//							2,
-//							&g_filter_task_handle);							
-//	printf ("filter_tsk Task Initialised\n\r");
+  Arr_2_Glob [8][7] = 10;
+        /* Was missing in published program. Without this statement,    */
+        /* Arr_2_Glob [8][7] would have an undefined value.             */
+        /* Warning: With 16-Bit processors and Number_Of_Runs > 32000,  */
+        /* overflow may occur for this array element.                   */
 
-//		xTaskCreate((TaskFunction_t)disturb_gen,
-//							(const portCHAR *)"disturb_gen",
-//							384,
-//							NULL,
-//							2,
-//							&g_disturb_gen_task_handle);
-//	printf ("disturb_gen Task Initialised\n\r");
-//								xTaskCreate((TaskFunction_t)noise_gen,
-//							(const portCHAR *)"noise_gen",
-//							384,
-//							NULL,
-//							2,
-//							&g_noise_gen_task_handle);
-//  printf ("noise_gen Task Initialised\n\r");
-																			
-//	xTaskCreate((TaskFunction_t)sine_gen,
-//							(const portCHAR *)"sine_gen",
-//							256,
-//							NULL,
-//							tskIDLE_PRIORITY+2,
-//							&g_sine_gen_task_handle);							
-//  printf ("sine_gen Task Initialised\n\r");
-							
-							xTaskCreate((TaskFunction_t)sync_tsk,
-							(const portCHAR *)"sync_tsk",
-							256,
-							NULL,
-							tskIDLE_PRIORITY+3,
-							&g_sync_task_handle);							
-//  printf ("sync_tsk Task Initialised\n\r");
-//  printf ("Application Running\n\r");
-								
-  /* Start scheduler */  
-	vTaskStartScheduler();
+  printf ("\n");
+  printf ("Dhrystone Benchmark, Version 2.1 (Language: C)\n");
+  printf ("\n");
+  if (Reg)
+  {
+    printf ("Program compiled with 'register' attribute\n");
+    printf ("\n");
+  }
+  else
+  {
+    printf ("Program compiled without 'register' attribute\n");
+    printf ("\n");
+  }
+  printf ("Please give the number of runs through the benchmark: ");
+  {
+//    int n = 100000;
+//    scanf ("%d", &n);
+    Number_Of_Runs = RUN_NUMBER;
+  }
+  printf ("\n");
+
+  printf("Execution starts, %d runs through Dhrystone\n", Number_Of_Runs);
+  /***************/
+  /* Start timer */
+  /***************/
+
+#ifdef TIMES
+  times (&time_info);
+  Begin_Time = (long) time_info.tms_utime;
+#endif
+#ifdef TIME
+  Begin_Time = time ( (long *) 0);
+#endif
+#ifdef MSC_CLOCK
+  Begin_Time = g_Ticks;
+#endif
+
+  for (Run_Index = 1; Run_Index <= Number_Of_Runs; ++Run_Index)
+  {
+
+    Proc_5();
+    Proc_4();
+      /* Ch_1_Glob == 'A', Ch_2_Glob == 'B', Bool_Glob == true */
+    Int_1_Loc = 2;
+    Int_2_Loc = 3;
+    strcpy (Str_2_Loc, "DHRYSTONE PROGRAM, 2'ND STRING");
+    Enum_Loc = Ident_2;
+    Bool_Glob = ! Func_2 (Str_1_Loc, Str_2_Loc);
+      /* Bool_Glob == 1 */
+    while (Int_1_Loc < Int_2_Loc)  /* loop body executed once */
+    {
+      Int_3_Loc = 5 * Int_1_Loc - Int_2_Loc;
+        /* Int_3_Loc == 7 */
+      Proc_7 (Int_1_Loc, Int_2_Loc, &Int_3_Loc);
+        /* Int_3_Loc == 7 */
+      Int_1_Loc += 1;
+    } /* while */
+      /* Int_1_Loc == 3, Int_2_Loc == 3, Int_3_Loc == 7 */
+    Proc_8 (Arr_1_Glob, Arr_2_Glob, Int_1_Loc, Int_3_Loc);
+      /* Int_Glob == 5 */
+    Proc_1 (Ptr_Glob);
+    for (Ch_Index = 'A'; Ch_Index <= Ch_2_Glob; ++Ch_Index)
+                             /* loop body executed twice */
+    {
+      if (Enum_Loc == Func_1 (Ch_Index, 'C'))
+         /* then, not executed */
+      {
+        Proc_6 (Ident_1, &Enum_Loc);
+        strcpy (Str_2_Loc, "DHRYSTONE PROGRAM, 3'RD STRING");
+        Int_2_Loc = Run_Index;
+        Int_Glob = Run_Index;
+      }
+    }
+      /* Int_1_Loc == 3, Int_2_Loc == 3, Int_3_Loc == 7 */
+    Int_2_Loc = Int_2_Loc * Int_1_Loc;
+    Int_1_Loc = Int_2_Loc / Int_3_Loc;
+    Int_2_Loc = 7 * (Int_2_Loc - Int_3_Loc) - Int_1_Loc;
+      /* Int_1_Loc == 1, Int_2_Loc == 13, Int_3_Loc == 7 */
+    Proc_2 (&Int_1_Loc);
+      /* Int_1_Loc == 5 */
+
+  } /* loop "for Run_Index" */
+
+  /**************/
+  /* Stop timer */
+  /**************/
+
+#ifdef TIMES
+  times (&time_info);
+  End_Time = (long) time_info.tms_utime;
+#endif
+#ifdef TIME
+  End_Time = time ( (long *) 0);
+#endif
+#ifdef MSC_CLOCK
+  End_Time = g_Ticks;
+#endif
+
+  printf ("Execution ends\n");
+  printf ("\n");
+  printf ("Final values of the variables used in the benchmark:\n");
+  printf ("\n");
+  printf( "Int_Glob:            %d\n", Int_Glob);
+	printf("        should be:   %d\n", 5);
+	printf( "Bool_Glob:           %d\n", Bool_Glob);
+	printf( "        should be:   %d\n", 1);
+	printf("Ch_1_Glob:           %c\n", Ch_1_Glob);
+	printf("        should be:   %c\n", 'A');	
+  printf("Ch_2_Glob:           %c\n", Ch_2_Glob);	
+  printf("        should be:   %c\n", 'B');	
+  printf("Arr_1_Glob[8]:       %d\n", Arr_1_Glob[8]);	
+  printf("        should be:   %d\n", 7);	
+  printf("Arr_2_Glob[8][7]:    %d\n", Arr_2_Glob[8][7]);	
+  printf ("        should be:   Number_Of_Runs + 10\n");
+  printf ("Ptr_Glob->\n");
+  printf("  Ptr_Comp:          %d\n", (int) Ptr_Glob->Ptr_Comp);	
+  printf ("        should be:   (implementation-dependent)\n");
+  printf("  Discr:             %d\n", Ptr_Glob->Discr);	
+	printf("        should be:   %d\n", 0);	
+  printf("  Enum_Comp:         %d\n", Ptr_Glob->variant.var_1.Enum_Comp);	
+	printf("        should be:   %d\n", 2);	
+  printf("  Int_Comp:          %d\n", Ptr_Glob->variant.var_1.Int_Comp);	
+  printf("        should be:   %d\n", 17);	
+  printf("  Str_Comp:          %s\n", Ptr_Glob->variant.var_1.Str_Comp);	
+  printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
+  printf ("Next_Ptr_Glob->\n");
+  printf("  Ptr_Comp:          %d\n", (int) Next_Ptr_Glob->Ptr_Comp);	
+  printf ("        should be:   (implementation-dependent), same as above\n");
+	printf("  Discr:             %d\n", Next_Ptr_Glob->Discr);	
+  printf("        should be:   %d\n", 0);	
+  printf("  Enum_Comp:         %d\n", Next_Ptr_Glob->variant.var_1.Enum_Comp);	
+  printf("        should be:   %d\n", 1);	
+  printf("  Int_Comp:          %d\n", Next_Ptr_Glob->variant.var_1.Int_Comp);	
+  printf("        should be:   %d\n", 18);
+  printf("  Str_Comp:          %s\n",
+                                Next_Ptr_Glob->variant.var_1.Str_Comp);	
+  printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
+  printf("Int_1_Loc:           %d\n", Int_1_Loc);	
+  printf("        should be:   %d\n", 5);	
+  printf("Int_2_Loc:           %d\n", Int_2_Loc);	
+  printf("        should be:   %d\n", 13);	
+  printf("Int_3_Loc:           %d\n", Int_3_Loc);	
+  printf("        should be:   %d\n", 7);	
+  printf("Enum_Loc:            %d\n", Enum_Loc);	
+  printf("        should be:   %d\n", 1);	
+  printf("Str_1_Loc:           %s\n", Str_1_Loc);	
+  printf ("        should be:   DHRYSTONE PROGRAM, 1'ST STRING\n");
+  printf("Str_2_Loc:           %s\n", Str_2_Loc);	
+  printf ("        should be:   DHRYSTONE PROGRAM, 2'ND STRING\n");
+  printf ("\n");
+
+  User_Time = End_Time - Begin_Time;
+
+  if (User_Time < Too_Small_Time) {
+		printf( "Measured time too small to obtain meaningful results %ld-%ld\n",
+		Begin_Time, End_Time);
+    printf ("Please increase number of runs\n");
+  } else {
+#ifdef TIME
+    Microseconds = (float) User_Time * Mic_secs_Per_Second
+                        / (float) Number_Of_Runs;
+    Dhrystones_Per_Second = (float) Number_Of_Runs / (float) User_Time;
+#else
+    Microseconds = (float) User_Time * (float)Mic_secs_Per_Second
+                        / ((float) HZ * ((float) Number_Of_Runs));
+    Dhrystones_Per_Second = ((float) HZ * (float) Number_Of_Runs)
+                        / (float) User_Time;
+#endif
+		printf("MicroSecond for one run through Dhrystone[%ld-%ld]:\t %4.3f \n",
+		Begin_Time, End_Time, Microseconds);
 	
-//Should never come here
-							
+    printf ("Dhrystones per Second:\t%4.3f \n", Dhrystones_Per_Second);
+		//DMIPS/MHz = 10^6 / (1757 * Number of processor clock cycles per Dhrystone loop)
+		printf("DMIPS/MHz:\t%4.3f\n", Dhrystones_Per_Second /(1757 * (SystemCoreClock/1000000)));
+  }
+	
   while (1) {
-		__BKPT(0x99);
+		;
 	}
 }
