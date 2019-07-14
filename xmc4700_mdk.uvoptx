@@ -120,7 +120,6 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
-          <Name>鳴??瓀鳴??瓀鳴?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -159,7 +158,7 @@
           <Type>0</Type>
           <LineNumber>449</LineNumber>
           <EnabledFlag>1</EnabledFlag>
-          <Address>536785722</Address>
+          <Address>536781546</Address>
           <ByteObject>0</ByteObject>
           <HtxType>0</HtxType>
           <ManyObjects>0</ManyObjects>
