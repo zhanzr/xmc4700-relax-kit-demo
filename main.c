@@ -37,7 +37,7 @@ using namespace std;
 //static float tmpV33;
 
 uint8_t g_tmp_uart_rx_buf;
-__IO uint32_t g_Ticks;
+uint32_t g_Ticks;
 
 #ifndef configTICK_RATE_HZ
 #define	configTICK_RATE_HZ	1000
@@ -273,16 +273,14 @@ int main(void) {
   printf ("\n");
   printf ("Dhrystone Benchmark, Version 2.1 (Language: C)\n");
   printf ("\n");
-  if (Reg)
-  {
+  if (Reg) {
     printf ("Program compiled with 'register' attribute\n");
     printf ("\n");
-  }
-  else
-  {
+  } else {
     printf ("Program compiled without 'register' attribute\n");
     printf ("\n");
   }
+	
   printf ("Please give the number of runs through the benchmark: ");
   {
 //    int n = 100000;
@@ -307,9 +305,7 @@ int main(void) {
   Begin_Time = g_Ticks;
 #endif
 
-  for (Run_Index = 1; Run_Index <= Number_Of_Runs; ++Run_Index)
-  {
-
+  for (Run_Index = 1; Run_Index <= Number_Of_Runs; ++Run_Index) {
     Proc_5();
     Proc_4();
       /* Ch_1_Glob == 'A', Ch_2_Glob == 'B', Bool_Glob == true */
