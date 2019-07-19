@@ -36,15 +36,26 @@ DMIPS/MHz:      0.427
 using flash address from 0x1FFE8000
 144 MHz, Standard LibC
 -O3 -Otime
-MicroSecond for one run through Dhrystone[3-5088]:       2.543 
-Dhrystones per Second:  393313.656 
-DMIPS/MHz:      1.555
+MicroSecond for one run through Dhrystone[4-5074]:       2.535 
+Dhrystones per Second:  394477.312 
+DMIPS/MHz:      1.559 TickHz:1000
 ====================================================
 using flash address from 0x1FFE8000
 144 MHz, Micro LibC
 -O3 -Otime
-MicroSecond for one run through Dhrystone[4-7172]:       3.584 
-Dhrystones per Second:  279017.844 
-DMIPS/MHz:      1.103
+MicroSecond for one run through Dhrystone[4-7158]:       3.577 
+Dhrystones per Second:  279563.875 
+DMIPS/MHz:      1.105 TickHz:1000
+====================================================
+TickHz: 100
+144 MHz, Standard LibC
+MicroSecond for one run through Dhrystone[0-510]:        2.550 
+Dhrystones per Second:  392156.875 
+DMIPS/MHz:      1.550 TickHz:100
+====================================================
+144 MHz, Micro LibC
+MicroSecond for one run through Dhrystone[0-718]:        3.590 
+Dhrystones per Second:  278551.531 
+DMIPS/MHz:      1.101 TickHz:100
 ====================================================
 

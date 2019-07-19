@@ -39,10 +39,6 @@ using namespace std;
 uint8_t g_tmp_uart_rx_buf;
 __IO uint32_t g_Ticks;
 
-#ifndef configTICK_RATE_HZ
-#define	configTICK_RATE_HZ	1000
-#endif
-
 #define UART_RX P1_4
 #define UART_TX P1_5
 
@@ -51,7 +47,7 @@ XMC_GPIO_CONFIG_t uart_rx;
 
 /* UART configuration */
 const XMC_UART_CH_CONFIG_t uart_config = {	
-	.baudrate = 921600,
+	.baudrate = 921600U,
 	.data_bits = 8U,
 	.frame_length = 8U,
 	.stop_bits = 1U,
@@ -198,10 +194,12 @@ void Proc_5 (void) /* without parameters */
   Bool_Glob = false;
 } /* Proc_5 */
 
+extern uint32_t __Vectors;
+
 #define TEST_BAUDRATE	(921600)
 int main(void) {
   /* System timer configuration */
-  SysTick_Config(SystemCoreClock / configTICK_RATE_HZ);
+  SysTick_Config(SystemCoreClock / HZ);
 	
 	XMC_SCU_EnableTemperatureSensor();
 	XMC_SCU_StartTemperatureMeasurement();
@@ -228,7 +226,9 @@ int main(void) {
 			SystemCoreClock, SCB->CPUID,
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
-	printf("Boot Mode:%u\n", XMC_SCU_GetBootMode());
+					
+	printf("Boot Mode:%u, Vector:%08X\n",
+	XMC_SCU_GetBootMode(), (uint32_t)(&__Vectors));
 	
   #ifdef RTE_Compiler_IO_STDOUT_User
 	printf("RTE_Compiler_IO_STDOUT_User\n");
@@ -443,7 +443,9 @@ int main(void) {
 	
     printf ("Dhrystones per Second:\t%4.3f \n", Dhrystones_Per_Second);
 		//DMIPS/MHz = 10^6 / (1757 * Number of processor clock cycles per Dhrystone loop)
-		printf("DMIPS/MHz:\t%4.3f\n", Dhrystones_Per_Second /(1757 * (SystemCoreClock/1000000)));
+		printf("DMIPS/MHz:\t%4.3f TickHz:%u\n",
+		Dhrystones_Per_Second /(1757 * (SystemCoreClock/1000000)),
+		HZ);
   }
 	
   while (1) {
