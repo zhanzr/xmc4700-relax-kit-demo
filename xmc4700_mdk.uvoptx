@@ -120,6 +120,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGUARM</Key>
+          <Name>?&amp;w衅??&amp;w衅?</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -152,24 +153,7 @@
           <Name>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN2 -FF0XMC4800_2048 -FS0C000000 -FL0100000 -FF1XMC4800c_2048 -FS18000000 -FL1100000 -FP0($$Device:XMC4700-F144x2048$Flash\XMC4800_2048.FLM) -FP1($$Device:XMC4700-F144x2048$Flash\XMC4800c_2048.FLM))</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint>
-        <Bp>
-          <Number>0</Number>
-          <Type>0</Type>
-          <LineNumber>275</LineNumber>
-          <EnabledFlag>1</EnabledFlag>
-          <Address>536806040</Address>
-          <ByteObject>0</ByteObject>
-          <HtxType>0</HtxType>
-          <ManyObjects>0</ManyObjects>
-          <SizeOfObject>0</SizeOfObject>
-          <BreakByAccess>0</BreakByAccess>
-          <BreakIfRCount>1</BreakIfRCount>
-          <Filename>RTE\CMSIS\XMC4700-F144x2048\RTX_Conf_CM.c</Filename>
-          <ExecCommand></ExecCommand>
-          <Expression>\\xmc4700_mdk\RTE/CMSIS/XMC4700-F144x2048/RTX_Conf_CM.c\275</Expression>
-        </Bp>
-      </Breakpoint>
+      <Breakpoint/>
       <WatchWindow1>
         <Ww>
           <count>0</count>
