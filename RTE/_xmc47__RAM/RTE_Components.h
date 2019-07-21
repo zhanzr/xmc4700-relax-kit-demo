@@ -30,8 +30,6 @@
 #define RTE_DEVICE_STARTUP
 /*  Infineon::Device:XMClib:ETH_MAC:2.1.22 */
 #define RTE_DEVICE_XMCLIB_ETH_MAC
-/*  Infineon::Device:XMClib:ETH_PHY:2.1.22 */
-#define RTE_DEVICE_XMCLIB_ETH_PHY
 /*  Infineon::Device:XMClib:GPIO:2.1.22 */
 #define RTE_DEVICE_XMCLIB_GPIO
 /*  Infineon::Device:XMClib:SCU:2.1.22 */
@@ -41,9 +39,9 @@
 /*  Keil.ARM Compiler::Compiler:Event Recorder:DAP:1.4.0 */
 #define RTE_Compiler_EventRecorder
           #define RTE_Compiler_EventRecorder_DAP
-/*  Keil.ARM Compiler::Compiler:I/O:STDOUT:User:1.2.0 */
+/*  Keil.ARM Compiler::Compiler:I/O:STDOUT:EVR:1.2.0 */
 #define RTE_Compiler_IO_STDOUT          /* Compiler I/O: STDOUT */
-          #define RTE_Compiler_IO_STDOUT_User     /* Compiler I/O: STDOUT User */
+          #define RTE_Compiler_IO_STDOUT_EVR      /* Compiler I/O: STDOUT EVR */
 /*  Keil.ARM Compiler::Compiler:I/O:TTY:User:1.2.0 */
 #define RTE_Compiler_IO_TTY             /* Compiler I/O: TTY */
           #define RTE_Compiler_IO_TTY_User        /* Compiler I/O: TTY User */

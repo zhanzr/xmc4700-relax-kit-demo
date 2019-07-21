@@ -23,6 +23,7 @@ using namespace std;
 #include <xmc_vadc.h>
 
 #include "RTE_Components.h"
+#include "EventRecorder.h"
 
 #include "custom_def.h"
 #include "led.h"
@@ -36,23 +37,14 @@ using namespace std;
 
 #include "lwip/tcpip.h"
 #include "lwip/netif.h"
-#include "ethernetif.h"
-
-#include "EventRecorder.h"
-
 #include "netif/etharp.h"
-
 #include "ethernetif.h"
+
 #include "lwip/apps/httpd.h"
 
 #if LWIP_DHCP == 1
 #include <lwip/dhcp.h>
 #endif
-
-static uint32_t tmpDts;
-static float tmpCel;
-static float tmpV13;
-static float tmpV33;
 
 #define BUTTON1 P15_13
 #define BUTTON2 P15_12
@@ -83,7 +75,7 @@ static float tmpV33;
 #define MAC_ADDR4   0x03
 #define MAC_ADDR5   0x00
 
-#define BUTTONS_TMR_INTERVAL 100
+#define BUTTONS_TMR_INTERVAL 800
 
 #define XMC_ETH_MAC_NUM_RX_BUF (4)
 #define XMC_ETH_MAC_NUM_TX_BUF (8)
@@ -109,11 +101,10 @@ static __ALIGNED(4) uint8_t rx_buf[XMC_ETH_MAC_NUM_RX_BUF][XMC_ETH_MAC_BUF_SIZE]
 static __ALIGNED(4) uint8_t tx_buf[XMC_ETH_MAC_NUM_TX_BUF][XMC_ETH_MAC_BUF_SIZE] __attribute__((section ("ETH_RAM")));
 #endif
 
-static ETHIF_t ethif =
-{
+static ETHIF_t ethif = {
   .phy_addr = 0,
-  .mac =
-  {
+  
+	.mac = {
     .regs = ETH0,
     .rx_desc = rx_desc,
     .tx_desc = tx_desc,
@@ -122,15 +113,14 @@ static ETHIF_t ethif =
     .num_rx_buf = XMC_ETH_MAC_NUM_RX_BUF,
     .num_tx_buf = XMC_ETH_MAC_NUM_TX_BUF
   },
-  .phy =
-  {
+	
+  .phy = {
     .interface = XMC_ETH_LINK_INTERFACE_RMII,
     .enable_auto_negotiate = true,
   }
 };
 
-static struct netif xnetif = 
-{
+static struct netif xnetif = {
   /* set MAC hardware address length */
   .hwaddr_len = (u8_t)ETHARP_HWADDR_LEN,
 
@@ -140,9 +130,7 @@ static struct netif xnetif =
               (u8_t)MAC_ADDR4, (u8_t)MAC_ADDR5},
 };
 
-
-void LWIP_Init(void)
-{
+void LWIP_Init(void) {
   ip_addr_t ipaddr;
   ip_addr_t netmask;
   ip_addr_t gw;
@@ -175,31 +163,34 @@ void LWIP_Init(void)
   netif_add(&xnetif, &ipaddr, &netmask, &gw, &ethif, &ethernetif_init, &tcpip_input);
 }
 
-int8_t bx = 0;
-static void buttons_task(void *arg)
-{
+int8_t g_plot_value_i8;
+static void plot_value_task(void *arg) {
   XMC_UNUSED_ARG(arg);
 
-  while(1)
-  {
-    if (XMC_GPIO_GetInput(BUTTON1) != 0)
-    {
-      bx++;
-    }
-
-    if (XMC_GPIO_GetInput(BUTTON2) != 0)
-    {
-      bx--;
-    }
-
+  while(1) {
+//    if (XMC_GPIO_GetInput(BUTTON1) != 0) {
+//      g_plot_value_i8++;
+//    } else if (XMC_GPIO_GetInput(BUTTON2) != 0) {
+//      g_plot_value_i8--;
+//    } else {
+//			;
+//		}
+		XMC_SCU_StartTemperatureMeasurement();		
+		
+		printf("t:%u\n", xTaskGetTickCount());
+		//T_DTS = (RESULT - 605) / 2.05 [°C]
+		uint32_t raw_dts_sample = XMC_SCU_GetTemperatureMeasurement();
+		float dts_cel_f32 = (raw_dts_sample-605)/2.05f;
+		printf("%.2f\n", dts_cel_f32);
+		g_plot_value_i8 = (int8_t)dts_cel_f32;
+		
     sys_arch_msleep(BUTTONS_TMR_INTERVAL);
   }
 }
 
 /* Initialisation of functions to be used with CGi*/
 //  CGI handler to switch LED status
-const char *ledcontrol_handler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
-{
+const char *ledcontrol_handler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[]) {
   XMC_UNUSED_ARG(iIndex);
   XMC_UNUSED_ARG(iNumParams);
   XMC_UNUSED_ARG(pcParam);
@@ -208,24 +199,15 @@ const char *ledcontrol_handler(int iIndex, int iNumParams, char *pcParam[], char
     LED_Toggle(0);
   } else {
     LED_Toggle(1);
-		
-		XMC_SCU_StartTemperatureMeasurement();		
-		
-		printf("t:%u\n", xTaskGetTickCount());
-		//T_DTS = (RESULT - 605) / 2.05 [°C]
-		tmpDts = XMC_SCU_GetTemperatureMeasurement();
-		tmpCel = (tmpDts-605)/2.05;
-		printf("%.1f\n", tmpCel);
-
-		tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
-		tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%.1f %.1f\n", tmpV13, tmpV33);			
+	
+		float tmp_V13 = XMC_SCU_POWER_GetEVR13Voltage();
+		float tmp_V33 = XMC_SCU_POWER_GetEVR33Voltage();
+		printf("%.1f %.1f\n", tmp_V13, tmp_V33);	
   }
   return "/cgi.htm";
 }
 
-const char *data_handler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[])
-{
+const char *data_handler(int iIndex, int iNumParams, char *pcParam[], char *pcValue[]) {
   XMC_UNUSED_ARG(iIndex);
   XMC_UNUSED_ARG(iNumParams);
   XMC_UNUSED_ARG(pcParam);
@@ -234,20 +216,19 @@ const char *data_handler(int iIndex, int iNumParams, char *pcParam[], char *pcVa
   return "/data.ssi";
 }
 
-tCGI led_handler_struct[] =
-{
+tCGI led_handler_struct[] = {
   {
     .pcCGIName = "/ledcontrol.cgi",
     .pfnCGIHandler = ledcontrol_handler
   },
+	
   {
    .pcCGIName = "/data.cgi",
    .pfnCGIHandler = data_handler
   }
 };
 
-int cgi_init(void)
-{
+int cgi_init(void) {
   http_set_cgi_handlers(led_handler_struct, 2);
 
   return 0;
@@ -258,16 +239,14 @@ int cgi_init(void)
  */
 const char *TAGS[]={"bx"};
 
-static uint16_t ssi_handler(int iIndex, char *pcInsert, int iInsertLen)
-{
+static uint16_t ssi_handler(int iIndex, char *pcInsert, int iInsertLen) {
   XMC_UNUSED_ARG(iIndex);
   XMC_UNUSED_ARG(iInsertLen);
 
-  return (sprintf(pcInsert, "%d", bx));
+  return (sprintf(pcInsert, "%d", g_plot_value_i8));
 }
 
-void ssi_init(void)
-{
+void ssi_init(void) {
   http_set_ssi_handler(ssi_handler, (char const **)TAGS, 1);
 }
 
@@ -277,11 +256,9 @@ void ssi_init(void)
    and know when this address changes, then you can use the status callback hook.
    The function being called is netif_status_callback */
 
-void netif_status_cb(struct netif *netif)
-{
+void netif_status_cb(struct netif *netif) {
 #if LWIP_DHCP
-  if (dhcp_supplied_address(netif) > 0)
-  {
+  if (dhcp_supplied_address(netif) > 0) {
     printf("Got IP:%s\r\n", ip4addr_ntoa(netif_ip4_addr(netif)));
     
     /* Initialize HTTP server */
@@ -290,8 +267,7 @@ void netif_status_cb(struct netif *netif)
     ssi_init();
   }
 #else
-  if (netif_is_up(netif))
-  {
+  if (netif_is_up(netif)) {
     /* Initialize HTTP server */
     httpd_init();
     cgi_init();
@@ -305,7 +281,6 @@ void vApplicationDaemonTaskStartupHook(void) {
   XMC_GPIO_CONFIG_t config;
 
   config.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
-
   XMC_GPIO_Init(BUTTON1, &config);
   XMC_GPIO_Init(BUTTON2, &config);
 
@@ -313,7 +288,7 @@ void vApplicationDaemonTaskStartupHook(void) {
 
   LWIP_Init();
 
-  sys_thread_new("buttons_task", buttons_task, NULL, configMINIMAL_STACK_SIZE, tskIDLE_PRIORITY);
+  sys_thread_new("plot_value_task", plot_value_task, NULL, configMINIMAL_STACK_SIZE, tskIDLE_PRIORITY);
 }
 
 extern uint32_t __Vectors;
@@ -358,15 +333,19 @@ int main(void) {
 	XMC_SCU_StartTemperatureMeasurement();		
 	
 	printf("t:%u\n", xTaskGetTickCount());
-	//T_DTS = (RESULT - 605) / 2.05 [°C]
-	tmpDts = XMC_SCU_GetTemperatureMeasurement();
-	tmpCel = (tmpDts-605)/2.05;
-	printf("%.1f\n", tmpCel);
 
-	tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
-	tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-	printf("%.1f %.1f\n", tmpV13, tmpV33);	
+	//Discard the first DTS sample value
+	uint32_t tmp_dts = XMC_SCU_GetTemperatureMeasurement();
+
+	float tmp_V13 = XMC_SCU_POWER_GetEVR13Voltage();
+	float tmp_V33 = XMC_SCU_POWER_GetEVR33Voltage();
+	printf("%.1f %.1f\n", tmp_V13, tmp_V33);	
 	
+	printf("Rx_desc: %p size:%u \n", rx_desc, sizeof(rx_desc));
+	printf("Tx_desc: %p size:%u \n", tx_desc, sizeof(tx_desc));
+	printf("Rx_buf: %p size:%u \n", rx_buf, sizeof(rx_buf));
+	printf("Tx_buf: %p size:%u \n", tx_buf, sizeof(tx_buf));
+
   /* Start scheduler */  
 	vTaskStartScheduler();
 	

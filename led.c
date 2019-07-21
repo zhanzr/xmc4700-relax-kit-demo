@@ -37,8 +37,7 @@ void LED_Initialize (void) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-void LED_Uninitialize (void) 
-{
+void LED_Uninitialize (void) {
   uint32_t n;
 
   for (n = 0; n < LED_COUNT; ++n) {
@@ -54,8 +53,7 @@ void LED_Uninitialize (void)
    - \b  0: function succeeded
    - \b -1: function failed
 */
-void LED_On (uint8_t num) 
-{
+void LED_On (uint8_t num) {
   XMC_GPIO_SetOutputHigh(LED_PIN[num].port, LED_PIN[num].pin);
 }
 
@@ -67,12 +65,10 @@ void LED_On (uint8_t num)
    - \b  0: function succeeded
    - \b -1: function failed
 */
-void LED_Off (uint8_t num) __pure
-{
+void LED_Off (uint8_t num) __pure {
   XMC_GPIO_SetOutputLow(LED_PIN[num].port, LED_PIN[num].pin);
 }
 
-void LED_Toggle(uint8_t num) 
-{
+void LED_Toggle(uint8_t num) {
   XMC_GPIO_ToggleOutput(LED_PIN[num].port, LED_PIN[num].pin);
 }

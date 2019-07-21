@@ -8,8 +8,7 @@
 #include "xmc_eth_mac.h"
 #include "xmc_eth_phy.h"
 
-typedef enum ETHIF_ERROR
-{
+typedef enum ETHIF_ERROR {
   ETHIF_ERROR_NONE,          /**< No error*/
   ETHIF_ERROR_PHY_BUSY,      /**< PHY is busy*/
   ETHIF_ERROR_PHY_ERROR,     /**< PHY status error*/
@@ -17,8 +16,7 @@ typedef enum ETHIF_ERROR
   ETHIF_ERROR_PHY_TIMEOUT    /**< PHY read failed*/
 } ETHIF_ERROR_t;
 
-typedef struct ETHIF
-{ 
+typedef struct ETHIF {
   XMC_ETH_MAC_t mac;
   XMC_ETH_PHY_CONFIG_t phy;
   uint8_t phy_addr;

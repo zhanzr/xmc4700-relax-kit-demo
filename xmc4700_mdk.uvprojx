@@ -188,7 +188,7 @@
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>1</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>1</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -325,7 +325,7 @@
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
             <uC99>1</uC99>
-            <uGnu>0</uGnu>
+            <uGnu>1</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
             <v6LangP>1</v6LangP>
@@ -393,11 +393,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>xmc4700_nvic_handler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\xmc4700_nvic_handler.c</FilePath>
-            </File>
-            <File>
               <FileName>ethernetif_init.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ethernetif_init.c</FilePath>
@@ -418,19 +413,9 @@
               <FilePath>.\serial.c</FilePath>
             </File>
             <File>
-              <FileName>altcp_proxyconnect.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\altcp_proxyconnect.c</FilePath>
-            </File>
-            <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\apps\http\fs.c</FilePath>
-            </File>
-            <File>
-              <FileName>http_client.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\http_client.c</FilePath>
             </File>
             <File>
               <FileName>httpd.c</FileName>
@@ -821,6 +806,16 @@
               <FileName>ethernetif.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\port\freertos\netif\ethernetif.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>phy_driver</GroupName>
+          <Files>
+            <File>
+              <FileName>xmc_eth_phy_ksz8081rnb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rnb.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1235,11 +1230,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>xmc4700_nvic_handler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\xmc4700_nvic_handler.c</FilePath>
-            </File>
-            <File>
               <FileName>ethernetif_init.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ethernetif_init.c</FilePath>
@@ -1260,19 +1250,9 @@
               <FilePath>.\serial.c</FilePath>
             </File>
             <File>
-              <FileName>altcp_proxyconnect.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\altcp_proxyconnect.c</FilePath>
-            </File>
-            <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\apps\http\fs.c</FilePath>
-            </File>
-            <File>
-              <FileName>http_client.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\http_client.c</FilePath>
             </File>
             <File>
               <FileName>httpd.c</FileName>
@@ -1663,6 +1643,16 @@
               <FileName>ethernetif.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\port\freertos\netif\ethernetif.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>phy_driver</GroupName>
+          <Files>
+            <File>
+              <FileName>xmc_eth_phy_ksz8081rnb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rnb.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2284,11 +2274,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>xmc4700_nvic_handler.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\xmc4700_nvic_handler.c</FilePath>
-            </File>
-            <File>
               <FileName>ethernetif_init.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ethernetif_init.c</FilePath>
@@ -2309,19 +2294,9 @@
               <FilePath>.\serial.c</FilePath>
             </File>
             <File>
-              <FileName>altcp_proxyconnect.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\altcp_proxyconnect.c</FilePath>
-            </File>
-            <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\apps\http\fs.c</FilePath>
-            </File>
-            <File>
-              <FileName>http_client.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\http_client.c</FilePath>
             </File>
             <File>
               <FileName>httpd.c</FileName>
@@ -2716,6 +2691,16 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>phy_driver</GroupName>
+          <Files>
+            <File>
+              <FileName>xmc_eth_phy_ksz8081rnb.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rnb.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>doc</GroupName>
           <Files>
             <File>
@@ -2808,14 +2793,6 @@
           <targetInfo name="xmc47  RAM"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="XMClib" Csub="ETH_PHY" Cvendor="Infineon" Cversion="2.1.22" condition="XMC4 CMSIS SCU">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
-        <targetInfos>
-          <targetInfo name="application Flash Cached"/>
-          <targetInfo name="application Flash Uncached"/>
-          <targetInfo name="xmc47  RAM"/>
-        </targetInfos>
-      </component>
       <component Cclass="Device" Cgroup="XMClib" Csub="GPIO" Cvendor="Infineon" Cversion="2.1.22" condition="XMC4 CMSIS">
         <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
         <targetInfos>
@@ -2848,7 +2825,7 @@
           <targetInfo name="xmc47  RAM"/>
         </targetInfos>
       </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M">
+      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="EVR" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M with EVR">
         <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
         <targetInfos>
           <targetInfo name="application Flash Cached"/>
