@@ -16,9 +16,12 @@
  */
 #define CMSIS_device_header "XMC4700.h"
 
-/*  ARM::CMSIS:RTOS:Keil RTX:IFX:4.82.1 */
-#define RTE_CMSIS_RTOS                  /* CMSIS-RTOS */
-        #define RTE_CMSIS_RTOS_RTX              /* CMSIS-RTOS Keil RTX */
+/*  ARM.FreeRTOS::RTOS:Config:FreeRTOS:10.2.0 */
+#define RTE_RTOS_FreeRTOS_CONFIG        /* RTOS FreeRTOS Config for FreeRTOS API */
+/*  ARM.FreeRTOS::RTOS:Core:Cortex-M:10.2.0 */
+#define RTE_RTOS_FreeRTOS_CORE          /* RTOS FreeRTOS Core */
+/*  ARM.FreeRTOS::RTOS:Heap:Heap_4:10.2.0 */
+#define RTE_RTOS_FreeRTOS_HEAP_4        /* RTOS FreeRTOS Heap 4 */
 /*  Infineon::Device:RTE_Device:1.1.0 */
 #define RTE_DEVICE
 /*  Infineon::Device:Startup:2.2.4 */

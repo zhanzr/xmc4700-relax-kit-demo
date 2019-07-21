@@ -1,4 +1,4 @@
 XMC4700F144K2048 Relax Kit test.
 
-LWIP + CMSIS RTOS + RTX 4 + HTTP Server
+LWIP + FreeRTOS + HTTP Server
 
