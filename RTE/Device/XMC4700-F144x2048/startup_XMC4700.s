@@ -463,6 +463,7 @@ GPDMA1_0_IRQHandler
                 IF      :DEF:__MICROLIB
 
                 EXPORT  __initial_sp
+				EXPORT Stack_Size
                 EXPORT  __heap_base
                 EXPORT  __heap_limit
 

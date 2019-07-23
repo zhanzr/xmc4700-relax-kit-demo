@@ -75,31 +75,15 @@ using namespace std;
 #define MAC_ADDR4   0x03
 #define MAC_ADDR5   0x00
 
-#define BUTTONS_TMR_INTERVAL 800
+#define PLOT_VALUE_UPDATE_INTERVAL 800
 
 #define XMC_ETH_MAC_NUM_RX_BUF (4)
 #define XMC_ETH_MAC_NUM_TX_BUF (8)
 
-#if defined(__ICCARM__)
-#pragma data_alignment=4
-static XMC_ETH_MAC_DMA_DESC_t rx_desc[XMC_ETH_MAC_NUM_RX_BUF] @ ".dram";
-#pragma data_alignment=4
-static XMC_ETH_MAC_DMA_DESC_t tx_desc[XMC_ETH_MAC_NUM_TX_BUF] @ ".dram";
-#pragma data_alignment=4
-static uint8_t rx_buf[XMC_ETH_MAC_NUM_RX_BUF][XMC_ETH_MAC_BUF_SIZE] @ ".dram";
-#pragma data_alignment=4
-static uint8_t tx_buf[XMC_ETH_MAC_NUM_TX_BUF][XMC_ETH_MAC_BUF_SIZE] @ ".dram";
-#elif defined(__CC_ARM) || (defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
-static __ALIGNED(4) XMC_ETH_MAC_DMA_DESC_t rx_desc[XMC_ETH_MAC_NUM_RX_BUF] __attribute__((section ("RW_IRAM1")));
-static __ALIGNED(4) XMC_ETH_MAC_DMA_DESC_t tx_desc[XMC_ETH_MAC_NUM_TX_BUF] __attribute__((section ("RW_IRAM1")));
-static __ALIGNED(4) uint8_t rx_buf[XMC_ETH_MAC_NUM_RX_BUF][XMC_ETH_MAC_BUF_SIZE] __attribute__((section ("RW_IRAM1")));
-static __ALIGNED(4) uint8_t tx_buf[XMC_ETH_MAC_NUM_TX_BUF][XMC_ETH_MAC_BUF_SIZE] __attribute__((section ("RW_IRAM1")));
-#elif defined(__GNUC__)
-static __ALIGNED(4) XMC_ETH_MAC_DMA_DESC_t rx_desc[XMC_ETH_MAC_NUM_RX_BUF] __attribute__((section ("ETH_RAM")));
-static __ALIGNED(4) XMC_ETH_MAC_DMA_DESC_t tx_desc[XMC_ETH_MAC_NUM_TX_BUF] __attribute__((section ("ETH_RAM")));
-static __ALIGNED(4) uint8_t rx_buf[XMC_ETH_MAC_NUM_RX_BUF][XMC_ETH_MAC_BUF_SIZE] __attribute__((section ("ETH_RAM")));
-static __ALIGNED(4) uint8_t tx_buf[XMC_ETH_MAC_NUM_TX_BUF][XMC_ETH_MAC_BUF_SIZE] __attribute__((section ("ETH_RAM")));
-#endif
+static XMC_ETH_MAC_DMA_DESC_t rx_desc[XMC_ETH_MAC_NUM_RX_BUF];
+static XMC_ETH_MAC_DMA_DESC_t tx_desc[XMC_ETH_MAC_NUM_TX_BUF];
+static uint8_t rx_buf[XMC_ETH_MAC_NUM_RX_BUF][XMC_ETH_MAC_BUF_SIZE];
+static uint8_t tx_buf[XMC_ETH_MAC_NUM_TX_BUF][XMC_ETH_MAC_BUF_SIZE];
 
 static ETHIF_t ethif = {
   .phy_addr = 0,
@@ -181,15 +165,15 @@ static void plot_value_task(void *arg) {
 		
 		float tmp_V13 = XMC_SCU_POWER_GetEVR13Voltage();
 		float tmp_V33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%.1f %.1f\n", tmp_V13, tmp_V33);	
+//		printf("%.1f %.1f\n", tmp_V13, tmp_V33);	
 		
 		//T_DTS = (RESULT - 605) / 2.05 [°C]
 		uint32_t raw_dts_sample = XMC_SCU_GetTemperatureMeasurement();
 		float dts_cel_f32 = (raw_dts_sample-605)/2.05f;
-		printf("%.2f\n", dts_cel_f32);
+//		printf("%.2f\n", dts_cel_f32);
 		g_plot_value_i8 = (int8_t)dts_cel_f32;
 		
-    sys_arch_msleep(BUTTONS_TMR_INTERVAL);
+    sys_arch_msleep(PLOT_VALUE_UPDATE_INTERVAL);
   }
 }
 
@@ -298,6 +282,11 @@ void vApplicationDaemonTaskStartupHook(void) {
 
 extern uint32_t __Vectors;
 
+extern uint32_t __initial_sp;
+extern uint32_t Stack_Size;
+extern uint32_t __heap_base;
+extern uint32_t __heap_limit;
+
 #define TEST_BAUDRATE	(921600)
 int main(void) {
   EventRecorderInitialize(EventRecordAll, 1);
@@ -351,6 +340,11 @@ int main(void) {
 	printf("Rx_buf: %p size:%u \n", rx_buf, sizeof(rx_buf));
 	printf("Tx_buf: %p size:%u \n", tx_buf, sizeof(tx_buf));
 
+	printf("__initial_sp: %08X \n", (uint32_t)&__initial_sp);
+	printf("Stack_Size: %08X \n", (uint32_t)&Stack_Size);
+	printf("__heap_base: %08X \n", (uint32_t)&__heap_base);
+	printf("__heap_limit: %08X \n", (uint32_t)&__heap_limit);
+	
   /* Start scheduler */  
 	vTaskStartScheduler();
 	
