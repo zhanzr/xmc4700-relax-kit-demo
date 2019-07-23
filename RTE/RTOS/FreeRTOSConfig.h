@@ -76,7 +76,6 @@
 #define __NVIC_PRIO_BITS               6            /*!< Number of Bits used for Priority Levels                               */
 #endif
 
-
 /*-----------------------------------------------------------
  * Application specific definitions.
  *
@@ -93,7 +92,7 @@
 #define configUSE_PORT_OPTIMISED_TASK_SELECTION 1
 #define configUSE_TICKLESS_IDLE                 0
 #define configCPU_CLOCK_HZ                      ( SystemCoreClock )
-#define configTICK_RATE_HZ                      ( ( TickType_t ) 1000.0 )
+#define configTICK_RATE_HZ                      ( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES                    ( 5 )
 #define configMINIMAL_STACK_SIZE                ( ( unsigned short ) 256 )
 #define configMAX_TASK_NAME_LEN                 ( 16 )
@@ -115,7 +114,7 @@
 /* Memory allocation related definitions. */
 #define configSUPPORT_STATIC_ALLOCATION         0
 #define configSUPPORT_DYNAMIC_ALLOCATION        1
-#define configTOTAL_HEAP_SIZE                   ( ( size_t ) ( 32 * 1024 ) )
+#define configTOTAL_HEAP_SIZE                   ( ( size_t ) ( 24 * 1024 ) )
 #define configAPPLICATION_ALLOCATED_HEAP        0
 
 /* Hook function related definitions. */
@@ -147,9 +146,6 @@
 /* Define to trap errors during development. */
 #define configASSERT( x )                       if( ( x ) == 0 ) { taskDISABLE_INTERRUPTS(); for( ;; ); }
 
-/* Define to select memory allocation method */
-#define configMEM_ALLOC                         3
-
 /* Set the following definitions to 1 to include the API function, or zero
 to exclude the API function. */
 #define INCLUDE_vTaskPrioritySet                1
@@ -176,11 +172,7 @@ to exclude the API function. */
 
 /* Definitions that map the FreeRTOS port interrupt handlers to their CMSIS 
 standard names. */
-#if ENABLE_CPU_CM_001_WORKAROUND == 1
-    #define xPortPendSVHandler PendSV_Handler_Veneer
-#else
-    #define xPortPendSVHandler PendSV_Handler
-#endif
+#define xPortPendSVHandler PendSV_Handler
 #define vPortSVCHandler SVC_Handler
 #define xPortSysTickHandler SysTick_Handler
 
@@ -192,5 +184,3 @@ extern volatile uint32_t g_stat_timer_ticks;
 #endif
 
 #endif /* FREERTOS_CONFIG_H */
-
-    

@@ -177,7 +177,12 @@ static void plot_value_task(void *arg) {
 //		}
 		XMC_SCU_StartTemperatureMeasurement();		
 		
-		printf("t:%u\n", xTaskGetTickCount());
+//		printf("t:%u\n", xTaskGetTickCount());
+		
+		float tmp_V13 = XMC_SCU_POWER_GetEVR13Voltage();
+		float tmp_V33 = XMC_SCU_POWER_GetEVR33Voltage();
+		printf("%.1f %.1f\n", tmp_V13, tmp_V33);	
+		
 		//T_DTS = (RESULT - 605) / 2.05 [°C]
 		uint32_t raw_dts_sample = XMC_SCU_GetTemperatureMeasurement();
 		float dts_cel_f32 = (raw_dts_sample-605)/2.05f;

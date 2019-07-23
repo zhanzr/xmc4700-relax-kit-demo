@@ -393,11 +393,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>ethernetif_init.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ethernetif_init.c</FilePath>
-            </File>
-            <File>
               <FileName>retarget_io_user.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\retarget_io_user.c</FilePath>
@@ -412,6 +407,11 @@
               <FileType>1</FileType>
               <FilePath>.\serial.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>http</GroupName>
+          <Files>
             <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
@@ -425,167 +425,22 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>mqtt</GroupName>
+          <Files>
+            <File>
+              <FileName>mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lwip\src\apps\mqtt\mqtt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>lwip</GroupName>
           <Files>
             <File>
               <FileName>ethernet.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\netif\ethernet.c</FilePath>
-            </File>
-            <File>
-              <FileName>lowpan6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\lowpan6.c</FilePath>
-            </File>
-            <File>
-              <FileName>auth.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\auth.c</FilePath>
-            </File>
-            <File>
-              <FileName>ccp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ccp.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap-md5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap-md5.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap-new.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap-new.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap_ms.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap_ms.c</FilePath>
-            </File>
-            <File>
-              <FileName>demand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\demand.c</FilePath>
-            </File>
-            <File>
-              <FileName>eap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\eap.c</FilePath>
-            </File>
-            <File>
-              <FileName>ecp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ecp.c</FilePath>
-            </File>
-            <File>
-              <FileName>eui64.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\eui64.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\fsm.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ipcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipv6cp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ipv6cp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\lcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>magic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\magic.c</FilePath>
-            </File>
-            <File>
-              <FileName>mppe.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\mppe.c</FilePath>
-            </File>
-            <File>
-              <FileName>multilink.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\multilink.c</FilePath>
-            </File>
-            <File>
-              <FileName>ppp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ppp.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppapi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppapi.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppcrypt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppcrypt.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppoe.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppoe.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppol2tp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppol2tp.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppos.c</FilePath>
-            </File>
-            <File>
-              <FileName>upap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\upap.c</FilePath>
-            </File>
-            <File>
-              <FileName>utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\utils.c</FilePath>
-            </File>
-            <File>
-              <FileName>vj.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\vj.c</FilePath>
-            </File>
-            <File>
-              <FileName>arc4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\arc4.c</FilePath>
-            </File>
-            <File>
-              <FileName>des.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\des.c</FilePath>
-            </File>
-            <File>
-              <FileName>md4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\md4.c</FilePath>
-            </File>
-            <File>
-              <FileName>md5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\md5.c</FilePath>
-            </File>
-            <File>
-              <FileName>sha1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\sha1.c</FilePath>
             </File>
             <File>
               <FileName>api_lib.c</FileName>
@@ -683,11 +538,6 @@
               <FilePath>.\lwip\src\core\stats.c</FilePath>
             </File>
             <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\sys.c</FilePath>
-            </File>
-            <File>
               <FileName>tcp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\tcp.c</FilePath>
@@ -711,11 +561,6 @@
               <FileName>udp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\udp.c</FilePath>
-            </File>
-            <File>
-              <FileName>autoip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\autoip.c</FilePath>
             </File>
             <File>
               <FileName>dhcp.c</FileName>
@@ -752,50 +597,15 @@
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\ipv4\ip4_frag.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lwip_port</GroupName>
+          <Files>
             <File>
-              <FileName>dhcp6.c</FileName>
+              <FileName>ethernetif_init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\dhcp6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ethip6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ethip6.c</FilePath>
-            </File>
-            <File>
-              <FileName>icmp6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\icmp6.c</FilePath>
-            </File>
-            <File>
-              <FileName>inet6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\inet6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6_addr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6_addr.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6_frag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6_frag.c</FilePath>
-            </File>
-            <File>
-              <FileName>mld6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\mld6.c</FilePath>
-            </File>
-            <File>
-              <FileName>nd6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\nd6.c</FilePath>
+              <FilePath>.\ethernetif_init.c</FilePath>
             </File>
             <File>
               <FileName>sys_arch.c</FileName>
@@ -818,6 +628,9 @@
               <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rnb.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>freertos_port</GroupName>
         </Group>
         <Group>
           <GroupName>doc</GroupName>
@@ -1230,11 +1043,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>ethernetif_init.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ethernetif_init.c</FilePath>
-            </File>
-            <File>
               <FileName>retarget_io_user.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\retarget_io_user.c</FilePath>
@@ -1249,6 +1057,11 @@
               <FileType>1</FileType>
               <FilePath>.\serial.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>http</GroupName>
+          <Files>
             <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
@@ -1262,167 +1075,22 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>mqtt</GroupName>
+          <Files>
+            <File>
+              <FileName>mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lwip\src\apps\mqtt\mqtt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>lwip</GroupName>
           <Files>
             <File>
               <FileName>ethernet.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\netif\ethernet.c</FilePath>
-            </File>
-            <File>
-              <FileName>lowpan6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\lowpan6.c</FilePath>
-            </File>
-            <File>
-              <FileName>auth.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\auth.c</FilePath>
-            </File>
-            <File>
-              <FileName>ccp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ccp.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap-md5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap-md5.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap-new.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap-new.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap_ms.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap_ms.c</FilePath>
-            </File>
-            <File>
-              <FileName>demand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\demand.c</FilePath>
-            </File>
-            <File>
-              <FileName>eap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\eap.c</FilePath>
-            </File>
-            <File>
-              <FileName>ecp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ecp.c</FilePath>
-            </File>
-            <File>
-              <FileName>eui64.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\eui64.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\fsm.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ipcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipv6cp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ipv6cp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\lcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>magic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\magic.c</FilePath>
-            </File>
-            <File>
-              <FileName>mppe.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\mppe.c</FilePath>
-            </File>
-            <File>
-              <FileName>multilink.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\multilink.c</FilePath>
-            </File>
-            <File>
-              <FileName>ppp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ppp.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppapi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppapi.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppcrypt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppcrypt.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppoe.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppoe.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppol2tp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppol2tp.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppos.c</FilePath>
-            </File>
-            <File>
-              <FileName>upap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\upap.c</FilePath>
-            </File>
-            <File>
-              <FileName>utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\utils.c</FilePath>
-            </File>
-            <File>
-              <FileName>vj.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\vj.c</FilePath>
-            </File>
-            <File>
-              <FileName>arc4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\arc4.c</FilePath>
-            </File>
-            <File>
-              <FileName>des.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\des.c</FilePath>
-            </File>
-            <File>
-              <FileName>md4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\md4.c</FilePath>
-            </File>
-            <File>
-              <FileName>md5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\md5.c</FilePath>
-            </File>
-            <File>
-              <FileName>sha1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\sha1.c</FilePath>
             </File>
             <File>
               <FileName>api_lib.c</FileName>
@@ -1520,11 +1188,6 @@
               <FilePath>.\lwip\src\core\stats.c</FilePath>
             </File>
             <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\sys.c</FilePath>
-            </File>
-            <File>
               <FileName>tcp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\tcp.c</FilePath>
@@ -1548,11 +1211,6 @@
               <FileName>udp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\udp.c</FilePath>
-            </File>
-            <File>
-              <FileName>autoip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\autoip.c</FilePath>
             </File>
             <File>
               <FileName>dhcp.c</FileName>
@@ -1589,50 +1247,15 @@
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\ipv4\ip4_frag.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lwip_port</GroupName>
+          <Files>
             <File>
-              <FileName>dhcp6.c</FileName>
+              <FileName>ethernetif_init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\dhcp6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ethip6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ethip6.c</FilePath>
-            </File>
-            <File>
-              <FileName>icmp6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\icmp6.c</FilePath>
-            </File>
-            <File>
-              <FileName>inet6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\inet6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6_addr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6_addr.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6_frag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6_frag.c</FilePath>
-            </File>
-            <File>
-              <FileName>mld6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\mld6.c</FilePath>
-            </File>
-            <File>
-              <FileName>nd6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\nd6.c</FilePath>
+              <FilePath>.\ethernetif_init.c</FilePath>
             </File>
             <File>
               <FileName>sys_arch.c</FileName>
@@ -1655,6 +1278,9 @@
               <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rnb.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>freertos_port</GroupName>
         </Group>
         <Group>
           <GroupName>doc</GroupName>
@@ -2274,11 +1900,6 @@
               <FilePath>.\led.c</FilePath>
             </File>
             <File>
-              <FileName>ethernetif_init.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\ethernetif_init.c</FilePath>
-            </File>
-            <File>
               <FileName>retarget_io_user.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\retarget_io_user.c</FilePath>
@@ -2293,6 +1914,11 @@
               <FileType>1</FileType>
               <FilePath>.\serial.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>http</GroupName>
+          <Files>
             <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
@@ -2306,167 +1932,22 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>mqtt</GroupName>
+          <Files>
+            <File>
+              <FileName>mqtt.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\lwip\src\apps\mqtt\mqtt.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>lwip</GroupName>
           <Files>
             <File>
               <FileName>ethernet.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\netif\ethernet.c</FilePath>
-            </File>
-            <File>
-              <FileName>lowpan6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\lowpan6.c</FilePath>
-            </File>
-            <File>
-              <FileName>auth.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\auth.c</FilePath>
-            </File>
-            <File>
-              <FileName>ccp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ccp.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap-md5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap-md5.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap-new.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap-new.c</FilePath>
-            </File>
-            <File>
-              <FileName>chap_ms.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\chap_ms.c</FilePath>
-            </File>
-            <File>
-              <FileName>demand.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\demand.c</FilePath>
-            </File>
-            <File>
-              <FileName>eap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\eap.c</FilePath>
-            </File>
-            <File>
-              <FileName>ecp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ecp.c</FilePath>
-            </File>
-            <File>
-              <FileName>eui64.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\eui64.c</FilePath>
-            </File>
-            <File>
-              <FileName>fsm.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\fsm.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ipcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>ipv6cp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ipv6cp.c</FilePath>
-            </File>
-            <File>
-              <FileName>lcp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\lcp.c</FilePath>
-            </File>
-            <File>
-              <FileName>magic.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\magic.c</FilePath>
-            </File>
-            <File>
-              <FileName>mppe.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\mppe.c</FilePath>
-            </File>
-            <File>
-              <FileName>multilink.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\multilink.c</FilePath>
-            </File>
-            <File>
-              <FileName>ppp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\ppp.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppapi.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppapi.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppcrypt.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppcrypt.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppoe.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppoe.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppol2tp.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppol2tp.c</FilePath>
-            </File>
-            <File>
-              <FileName>pppos.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\pppos.c</FilePath>
-            </File>
-            <File>
-              <FileName>upap.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\upap.c</FilePath>
-            </File>
-            <File>
-              <FileName>utils.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\utils.c</FilePath>
-            </File>
-            <File>
-              <FileName>vj.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\vj.c</FilePath>
-            </File>
-            <File>
-              <FileName>arc4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\arc4.c</FilePath>
-            </File>
-            <File>
-              <FileName>des.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\des.c</FilePath>
-            </File>
-            <File>
-              <FileName>md4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\md4.c</FilePath>
-            </File>
-            <File>
-              <FileName>md5.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\md5.c</FilePath>
-            </File>
-            <File>
-              <FileName>sha1.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ppp\polarssl\sha1.c</FilePath>
             </File>
             <File>
               <FileName>api_lib.c</FileName>
@@ -2564,11 +2045,6 @@
               <FilePath>.\lwip\src\core\stats.c</FilePath>
             </File>
             <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\sys.c</FilePath>
-            </File>
-            <File>
               <FileName>tcp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\tcp.c</FilePath>
@@ -2592,11 +2068,6 @@
               <FileName>udp.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\udp.c</FilePath>
-            </File>
-            <File>
-              <FileName>autoip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\autoip.c</FilePath>
             </File>
             <File>
               <FileName>dhcp.c</FileName>
@@ -2633,50 +2104,15 @@
               <FileType>1</FileType>
               <FilePath>.\lwip\src\core\ipv4\ip4_frag.c</FilePath>
             </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>lwip_port</GroupName>
+          <Files>
             <File>
-              <FileName>dhcp6.c</FileName>
+              <FileName>ethernetif_init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\dhcp6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ethip6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ethip6.c</FilePath>
-            </File>
-            <File>
-              <FileName>icmp6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\icmp6.c</FilePath>
-            </File>
-            <File>
-              <FileName>inet6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\inet6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6_addr.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6_addr.c</FilePath>
-            </File>
-            <File>
-              <FileName>ip6_frag.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\ip6_frag.c</FilePath>
-            </File>
-            <File>
-              <FileName>mld6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\mld6.c</FilePath>
-            </File>
-            <File>
-              <FileName>nd6.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv6\nd6.c</FilePath>
+              <FilePath>.\ethernetif_init.c</FilePath>
             </File>
             <File>
               <FileName>sys_arch.c</FileName>
@@ -2699,6 +2135,9 @@
               <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rnb.c</FilePath>
             </File>
           </Files>
+        </Group>
+        <Group>
+          <GroupName>freertos_port</GroupName>
         </Group>
         <Group>
           <GroupName>doc</GroupName>
@@ -2825,7 +2264,7 @@
           <targetInfo name="xmc47  RAM"/>
         </targetInfos>
       </component>
-      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="EVR" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M with EVR">
+      <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="I/O" Csub="STDOUT" Cvariant="User" Cvendor="Keil" Cversion="1.2.0" condition="ARMCC Cortex-M">
         <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
         <targetInfos>
           <targetInfo name="application Flash Cached"/>
