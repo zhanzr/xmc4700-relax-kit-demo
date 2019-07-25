@@ -64,8 +64,8 @@ int fs_bytes_left(struct fs_file *file);
 
 struct fsdata_file {
   const struct fsdata_file *next;
-  const unsigned char *name;
-  const unsigned char *data;
+  const uint8_t *name;
+  const uint8_t *data;
   int len;
   u8_t flags;
 };

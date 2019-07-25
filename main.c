@@ -1,18 +1,7 @@
-#ifdef __cplusplus
-#include <iostream>
-#include <cstdio>
-#include <cstring>
-#include <cstdint>
-#include <cstdlib>
-#include "LiquidCrystal.h"
-
-using namespace std;
-#else
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
-#endif
 
 #include <XMC4700.h>
 #include <xmc_scu.h>

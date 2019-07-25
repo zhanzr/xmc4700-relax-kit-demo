@@ -35,11 +35,9 @@
 #include "lwip/def.h"
 #include "lwip/apps/fs.h"
 
-
 #include "fsdata.h"
 
 /*-----------------------------------------------------------------------------------*/
-
 /*-----------------------------------------------------------------------------------*/
 err_t fs_open(struct fs_file *file, const char *name) {
   const struct fsdata_file *f;

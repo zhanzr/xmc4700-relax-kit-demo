@@ -148,7 +148,7 @@
 
 typedef struct {
   const char *name;
-  u8_t shtml;
+  uint8_t shtml;
 } default_filename;
 
 static const default_filename httpd_default_filenames[] = {
@@ -224,8 +224,8 @@ struct http_ssi_state {
 #if LWIP_HTTPD_SSI_MULTIPART
   u16_t tag_part; /* Counter passed to and changed by tag insertion function to insert multiple times */
 #endif /* LWIP_HTTPD_SSI_MULTIPART */
-  u8_t tag_type; /* index into http_ssi_tag_desc array */
-  u8_t tag_name_len; /* Length of the tag name in string tag_name */
+  uint8_t tag_type; /* index into http_ssi_tag_desc array */
+  uint8_t tag_name_len; /* Length of the tag name in string tag_name */
   char tag_name[LWIP_HTTPD_MAX_TAG_NAME_LEN + 1]; /* Last tag name extracted */
   char tag_insert[LWIP_HTTPD_MAX_TAG_INSERT_LEN + 1]; /* Insert string for tag_name */
   enum tag_check_state tag_state; /* State of the tag processor */
@@ -256,9 +256,9 @@ struct http_state {
   int buf_len;      /* Size of file read buffer, buf. */
 #endif /* LWIP_HTTPD_DYNAMIC_FILE_READ */
   u32_t left;       /* Number of unsent bytes in buf. */
-  u8_t retries;
+  uint8_t retries;
 #if LWIP_HTTPD_SUPPORT_11_KEEPALIVE
-  u8_t keepalive;
+  uint8_t keepalive;
 #endif /* LWIP_HTTPD_SUPPORT_11_KEEPALIVE */
 #if LWIP_HTTPD_SSI
   struct http_ssi_state *ssi;
@@ -281,8 +281,8 @@ struct http_state {
   u32_t post_content_len_left;
 #if LWIP_HTTPD_POST_MANUAL_WND
   u32_t unrecved_bytes;
-  u8_t no_auto_wnd;
-  u8_t post_finished;
+  uint8_t no_auto_wnd;
+  uint8_t post_finished;
 #endif /* LWIP_HTTPD_POST_MANUAL_WND */
 #endif /* LWIP_HTTPD_SUPPORT_POST*/
 };
@@ -306,11 +306,11 @@ LWIP_MEMPOOL_DECLARE(HTTPD_SSI_STATE, MEMP_NUM_PARALLEL_HTTPD_SSI_CONNS, sizeof(
 #endif /* HTTPD_USE_MEM_POOL */
 
 static err_t http_close_conn(struct altcp_pcb *pcb, struct http_state *hs);
-static err_t http_close_or_abort_conn(struct altcp_pcb *pcb, struct http_state *hs, u8_t abort_conn);
+static err_t http_close_or_abort_conn(struct altcp_pcb *pcb, struct http_state *hs, uint8_t abort_conn);
 static err_t http_find_file(struct http_state *hs, const char *uri, int is_09);
-static err_t http_init_file(struct http_state *hs, struct fs_file *file, int is_09, const char *uri, u8_t tag_check, char *params);
+static err_t http_init_file(struct http_state *hs, struct fs_file *file, int is_09, const char *uri, uint8_t tag_check, char *params);
 static err_t http_poll(void *arg, struct altcp_pcb *pcb);
-static u8_t http_check_eof(struct altcp_pcb *pcb, struct http_state *hs);
+static uint8_t http_check_eof(struct altcp_pcb *pcb, struct http_state *hs);
 #if LWIP_HTTPD_FS_ASYNC_READ
 static void http_continue(void *connection);
 #endif /* LWIP_HTTPD_FS_ASYNC_READ */
@@ -378,7 +378,7 @@ http_remove_connection(struct http_state *hs)
 }
 
 static void
-http_kill_oldest_connection(u8_t ssi_required)
+http_kill_oldest_connection(uint8_t ssi_required)
 {
   struct http_state *hs = http_connections;
   struct http_state *hs_free_next = NULL;
@@ -530,7 +530,7 @@ http_state_free(struct http_state *hs)
  * @return the return value of tcp_write
  */
 static err_t
-http_write(struct altcp_pcb *pcb, const void *ptr, u16_t *length, u8_t apiflags)
+http_write(struct altcp_pcb *pcb, const void *ptr, u16_t *length, uint8_t apiflags)
 {
   u16_t len, max_len;
   err_t err;
@@ -593,7 +593,7 @@ http_write(struct altcp_pcb *pcb, const void *ptr, u16_t *length, u8_t apiflags)
  * @param hs connection state to free
  */
 static err_t
-http_close_or_abort_conn(struct altcp_pcb *pcb, struct http_state *hs, u8_t abort_conn)
+http_close_or_abort_conn(struct altcp_pcb *pcb, struct http_state *hs, uint8_t abort_conn)
 {
   err_t err;
   LWIP_DEBUGF(HTTPD_DEBUG, ("Closing connection %p\n", (void *)pcb));
@@ -947,7 +947,7 @@ get_http_headers(struct http_state *hs, const char *uri)
 static void
 get_http_content_length(struct http_state *hs)
 {
-  u8_t add_content_len = 0;
+  uint8_t add_content_len = 0;
 
   LWIP_ASSERT("already been here?", hs->hdrs[HDR_STRINGS_IDX_CONTENT_LEN_KEEPALIVE] == NULL);
 
@@ -994,12 +994,12 @@ get_http_content_length(struct http_state *hs)
  *                                      so don't send HTTP body yet
  *           - HTTP_DATA_TO_SEND_FREED: http_state and pcb are already freed
  */
-static u8_t
+static uint8_t
 http_send_headers(struct altcp_pcb *pcb, struct http_state *hs)
 {
   err_t err;
   u16_t len;
-  u8_t data_to_send = HTTP_NO_DATA_TO_SEND;
+  uint8_t data_to_send = HTTP_NO_DATA_TO_SEND;
   u16_t hdrlen, sendlen;
 
   if (hs->hdrs[HDR_STRINGS_IDX_CONTENT_LEN_KEEPALIVE] == NULL) {
@@ -1014,7 +1014,7 @@ http_send_headers(struct altcp_pcb *pcb, struct http_state *hs)
   while (len && (hs->hdr_index < NUM_FILE_HDR_STRINGS) && sendlen) {
     const void *ptr;
     u16_t old_sendlen;
-    u8_t apiflags;
+    uint8_t apiflags;
     /* How much do we have to send from the current header? */
     hdrlen = (u16_t)strlen(hs->hdrs[hs->hdr_index]);
 
@@ -1089,7 +1089,7 @@ http_send_headers(struct altcp_pcb *pcb, struct http_state *hs)
  * @returns: 0 if the file is finished or no data has been read
  *           1 if the file is not finished and data has been read
  */
-static u8_t
+static uint8_t
 http_check_eof(struct altcp_pcb *pcb, struct http_state *hs)
 {
   int bytes_left;
@@ -1188,12 +1188,12 @@ http_check_eof(struct altcp_pcb *pcb, struct http_state *hs)
  * @returns: - 1: data has been written (so call tcp_ouput)
  *           - 0: no data has been written (no need to call tcp_output)
  */
-static u8_t
+static uint8_t
 http_send_data_nonssi(struct altcp_pcb *pcb, struct http_state *hs)
 {
   err_t err;
   u16_t len;
-  u8_t data_to_send = 0;
+  uint8_t data_to_send = 0;
 
   /* We are not processing an SHTML file so no tag checking is necessary.
    * Just send the data as we received it from the file. */
@@ -1215,13 +1215,13 @@ http_send_data_nonssi(struct altcp_pcb *pcb, struct http_state *hs)
  * @returns: - 1: data has been written (so call tcp_ouput)
  *           - 0: no data has been written (no need to call tcp_output)
  */
-static u8_t
+static uint8_t
 http_send_data_ssi(struct altcp_pcb *pcb, struct http_state *hs)
 {
   err_t err = ERR_OK;
   u16_t len;
-  u8_t data_to_send = 0;
-  u8_t tag_type;
+  uint8_t data_to_send = 0;
+  uint8_t tag_type;
 
   struct http_ssi_state *ssi = hs->ssi;
   LWIP_ASSERT("ssi != NULL", ssi != NULL);
@@ -1336,7 +1336,7 @@ http_send_data_ssi(struct altcp_pcb *pcb, struct http_state *hs)
              * leadout string. */
             ssi->tag_state = TAG_LEADOUT;
             LWIP_ASSERT("ssi->tag_index <= 0xff", ssi->tag_index <= 0xff);
-            ssi->tag_name_len = (u8_t)ssi->tag_index;
+            ssi->tag_name_len = (uint8_t)ssi->tag_index;
             ssi->tag_name[ssi->tag_index] = '\0';
             if (*ssi->parsed == http_ssi_tag_desc[ssi->tag_type].lead_out[0]) {
               ssi->tag_index = 1;
@@ -1523,20 +1523,8 @@ http_send_data_ssi(struct altcp_pcb *pcb, struct http_state *hs)
   /* If we drop out of the end of the for loop, this implies we must have
    * file data to send so send it now. In TAG_SENDING state, we've already
    * handled this so skip the send if that's the case. */
-  if ((ssi->tag_state != TAG_SENDING) && (ssi->parsed > hs->file)) {
-#if LWIP_HTTPD_DYNAMIC_FILE_READ && !LWIP_HTTPD_SSI_INCLUDE_TAG
-    if ((ssi->tag_state != TAG_NONE) && (ssi->tag_started > ssi->tag_end)) {
-      /* If we found tag on the edge of the read buffer: just throw away the first part
-         (we have copied/saved everything required for parsing on later). */
-      len = (u16_t)(ssi->tag_started - hs->file);
-      hs->left -= (ssi->parsed - ssi->tag_started);
-      ssi->parsed = ssi->tag_started;
-      ssi->tag_started = hs->buf;
-    } else
-#endif /* LWIP_HTTPD_DYNAMIC_FILE_READ && !LWIP_HTTPD_SSI_INCLUDE_TAG */
-    {
-      len = (u16_t)LWIP_MIN(ssi->parsed - hs->file, 0xffff);
-    }
+  if ((ssi->tag_state != TAG_SENDING) && (ssi->parsed > hs->file)) {      
+		len = (u16_t)LWIP_MIN(ssi->parsed - hs->file, 0xffff);
 
     err = http_write(pcb, hs->file, &len, HTTP_IS_DATA_VOLATILE(hs));
     if (err == ERR_OK) {
@@ -1555,44 +1543,17 @@ http_send_data_ssi(struct altcp_pcb *pcb, struct http_state *hs)
  * @param pcb the pcb to send data
  * @param hs connection state
  */
-static u8_t
-http_send(struct altcp_pcb *pcb, struct http_state *hs)
+static uint8_t http_send(struct altcp_pcb *pcb, struct http_state *hs)
 {
-  u8_t data_to_send = HTTP_NO_DATA_TO_SEND;
+  uint8_t data_to_send = HTTP_NO_DATA_TO_SEND;
 
   LWIP_DEBUGF(HTTPD_DEBUG | LWIP_DBG_TRACE, ("http_send: pcb=%p hs=%p left=%d\n", (void *)pcb,
               (void *)hs, hs != NULL ? (int)hs->left : 0));
-
-#if LWIP_HTTPD_SUPPORT_POST && LWIP_HTTPD_POST_MANUAL_WND
-  if (hs->unrecved_bytes != 0) {
-    return 0;
-  }
-#endif /* LWIP_HTTPD_SUPPORT_POST && LWIP_HTTPD_POST_MANUAL_WND */
 
   /* If we were passed a NULL state structure pointer, ignore the call. */
   if (hs == NULL) {
     return 0;
   }
-
-#if LWIP_HTTPD_FS_ASYNC_READ
-  /* Check if we are allowed to read from this file.
-     (e.g. SSI might want to delay sending until data is available) */
-  if (!fs_is_file_ready(hs->handle, http_continue, hs)) {
-    return 0;
-  }
-#endif /* LWIP_HTTPD_FS_ASYNC_READ */
-
-#if LWIP_HTTPD_DYNAMIC_HEADERS
-  /* Do we have any more header data to send for this file? */
-  if (hs->hdr_index < NUM_FILE_HDR_STRINGS) {
-    data_to_send = http_send_headers(pcb, hs);
-    if ((data_to_send == HTTP_DATA_TO_SEND_FREED) ||
-        ((data_to_send != HTTP_DATA_TO_SEND_CONTINUE) &&
-         (hs->hdr_index < NUM_FILE_HDR_STRINGS))) {
-      return data_to_send;
-    }
-  }
-#endif /* LWIP_HTTPD_DYNAMIC_HEADERS */
 
   /* Have we run out of file data to send? If so, we need to read the next
    * block from the file. */
@@ -1622,45 +1583,7 @@ http_send(struct altcp_pcb *pcb, struct http_state *hs)
   return data_to_send;
 }
 
-#if LWIP_HTTPD_SUPPORT_EXTSTATUS
-/** Initialize a http connection with a file to send for an error message
- *
- * @param hs http connection state
- * @param error_nr HTTP error number
- * @return ERR_OK if file was found and hs has been initialized correctly
- *         another err_t otherwise
- */
-static err_t
-http_find_error_file(struct http_state *hs, u16_t error_nr)
-{
-  const char *uri, *uri1, *uri2, *uri3;
-
-  if (error_nr == 501) {
-    uri1 = "/501.html";
-    uri2 = "/501.htm";
-    uri3 = "/501.shtml";
-  } else {
-    /* 400 (bad request is the default) */
-    uri1 = "/400.html";
-    uri2 = "/400.htm";
-    uri3 = "/400.shtml";
-  }
-  if (fs_open(&hs->file_handle, uri1) == ERR_OK) {
-    uri = uri1;
-  } else if (fs_open(&hs->file_handle, uri2) == ERR_OK) {
-    uri = uri2;
-  } else if (fs_open(&hs->file_handle, uri3) == ERR_OK) {
-    uri = uri3;
-  } else {
-    LWIP_DEBUGF(HTTPD_DEBUG, ("Error page for error %"U16_F" not found\n",
-                              error_nr));
-    return ERR_ARG;
-  }
-  return http_init_file(hs, &hs->file_handle, 0, uri, 0, NULL);
-}
-#else /* LWIP_HTTPD_SUPPORT_EXTSTATUS */
 #define http_find_error_file(hs, error_nr) ERR_ARG
-#endif /* LWIP_HTTPD_SUPPORT_EXTSTATUS */
 
 /**
  * Get the file struct for a 404 error page.
@@ -1812,7 +1735,7 @@ http_post_request(struct pbuf *inp, struct http_state *hs,
           const char *hdr_start_after_uri = uri_end + 1;
           u16_t hdr_len = (u16_t)LWIP_MIN(data_len, crlfcrlf + 4 - data);
           u16_t hdr_data_len = (u16_t)LWIP_MIN(data_len, crlfcrlf + 4 - hdr_start_after_uri);
-          u8_t post_auto_wnd = 1;
+          uint8_t post_auto_wnd = 1;
           http_uri_buf[0] = 0;
           /* trim http header */
           *crlfcrlf = 0;
@@ -2129,11 +2052,11 @@ badrequest:
  *
  * @return 1 for SSI, 0 for standard files
  */
-static u8_t
+static uint8_t
 http_uri_is_ssi(struct fs_file *file, const char *uri)
 {
   size_t loop;
-  u8_t tag_check = 0;
+  uint8_t tag_check = 0;
   if (file != NULL) {
     /* See if we have been asked for an shtml file and, if so,
         enable tag checking. */
@@ -2186,7 +2109,7 @@ http_find_file(struct http_state *hs, const char *uri, int is_09)
   const
 #endif /* !LWIP_HTTPD_SSI */
   /* By default, assume we will not be processing server-side-includes tags */
-  u8_t tag_check = 0;
+  uint8_t tag_check = 0;
 
   /* Have we been asked for the default file (in root or a directory) ? */
 #if LWIP_HTTPD_MAX_REQUEST_URI_LEN
@@ -2301,9 +2224,8 @@ http_find_file(struct http_state *hs, const char *uri, int is_09)
  * @return ERR_OK if file was found and hs has been initialized correctly
  *         another err_t otherwise
  */
-static err_t
-http_init_file(struct http_state *hs, struct fs_file *file, int is_09, const char *uri,
-               u8_t tag_check, char *params)
+static err_t http_init_file(struct http_state *hs, struct fs_file *file, int is_09, const char *uri,
+               uint8_t tag_check, char *params)
 {
 #if !LWIP_HTTPD_SUPPORT_V09
   LWIP_UNUSED_ARG(is_09);
