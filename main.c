@@ -134,6 +134,7 @@ int main(void) {
 	printf("RTE_Compiler_IO_STDOUT_ITM\n");
 	#endif
 		
+	//Force the FPU register stacking
 	FPU->FPCCR &= ~FPU_FPCCR_LSPEN_Msk;
 	
   while (1) {
