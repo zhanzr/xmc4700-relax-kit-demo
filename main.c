@@ -12,6 +12,7 @@ using namespace std;
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <math.h>
 #endif
 
 #include <XMC4700.h>
@@ -27,32 +28,12 @@ using namespace std;
 #include "custom_def.h"
 #include "led.h"
 
-#include "dhry.h"
-
-#define RUN_NUMBER	2000000
-
-//static uint32_t tmpDts;
-//static float tmpCel;
-//static float tmpV13;
-//static float tmpV33;
-
 uint8_t g_tmp_uart_rx_buf;
 __IO uint32_t g_Ticks;
 
-#define UART_RX P1_4
-#define UART_TX P1_5
-
-XMC_GPIO_CONFIG_t uart_tx;
-XMC_GPIO_CONFIG_t uart_rx;
-
-/* UART configuration */
-const XMC_UART_CH_CONFIG_t uart_config = {	
-	.baudrate = 921600U,
-	.data_bits = 8U,
-	.frame_length = 8U,
-	.stop_bits = 1U,
-	.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
-};
+uint32_t HAL_GetTick(void) {
+	return g_Ticks;
+}
 
 int stdout_putchar (int ch) {
 	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
@@ -79,17 +60,125 @@ void SysTick_Handler(void) {
 	g_Ticks++;
 }
 
-uint32_t test_func_1(void) {
-	uint32_t ret = 0x11223344;
-	return ret;
+/* Private variables ---------------------------------------------------------*/
+/*
+ * C Converted Whetstone Single Precision Benchmark
+ *		Version 1.2	22 March 1998
+ *
+ *	(c) Copyright 1998 Painter Engineering, Inc.
+ *		All Rights Reserved.
+ *
+ *		Permission is granted to use, duplicate, and
+ *		publish this text and program as long as it
+ *		includes this entire comment block and limited
+ *		rights reference.
+ *
+ * Converted by Rich Painter, Painter Engineering, Inc. based on the
+ * www.netlib.org benchmark/whetstoned version obtained 16 March 1998.
+ *
+ * A novel approach was used here to keep the look and feel of the
+ * FORTRAN version.  Altering the FORTRAN-based array indices,
+ * starting at element 1, to start at element 0 for C, would require
+ * numerous changes, including decrementing the variable indices by 1.
+ * Instead, the array E1[] was declared 1 element larger in C.  This
+ * allows the FORTRAN index range to function without any literal or
+ * variable indices changes.  The array element E1[0] is simply never
+ * used and does not alter the benchmark results.
+ *
+ * The major FORTRAN comment blocks were retained to minimize
+ * differences between versions.  Modules N5 and N12, like in the
+ * FORTRAN version, have been eliminated here.
+ *
+ * An optional command-line argument has been provided [-c] to
+ * offer continuous repetition of the entire benchmark.
+ * An optional argument for setting an alternate LOOP count is also
+ * provided.  Define PRINTOUT to cause the POUT() function to print
+ * outputs at various stages.  Final timing measurements should be
+ * made with the PRINTOUT undefined.
+ *
+ * Questions and comments may be directed to the author at
+ *			r.painter@ieee.org
+ */
+/*
+C**********************************************************************
+C     Benchmark #2 -- Single Precision Whetstone (A001)
+C
+C     o	This is a REAL*8 version of
+C	the Whetstone benchmark program.
+C
+C     o	DO-loop semantics are ANSI-66 compatible.
+C
+C     o	Final measurements are to be made with all
+C	WRITE statements and FORMAT sttements removed.
+C
+C**********************************************************************
+*/
+/* map the FORTRAN math functions, etc. to the C versions */
+#define DSIN	sinf
+#define DCOS	cosf
+#define DATAN	atanf
+#define DLOG	logf
+#define DEXP	expf
+#define DSQRT	sqrtf
+#define IF		if
+
+/* function prototypes */
+void POUT(long N, long J, long K, float X1, float X2, float X3, float X4);
+void PA(float E[]);
+void P0(void);
+void P3(float X, float Y, float *Z);
+
+/*
+	COMMON T,T1,T2,E1(4),J,K,L
+*/
+float T,T1,T2,E1[5];
+int J,K,L;
+
+
+void PA(float E[]) {
+	J = 0;
+
+L10:
+	E[1] = ( E[1] + E[2] + E[3] - E[4]) * T;
+	E[2] = ( E[1] + E[2] - E[3] + E[4]) * T;
+	E[3] = ( E[1] - E[2] + E[3] + E[4]) * T;
+	E[4] = (-E[1] + E[2] + E[3] + E[4]) / T2;
+	J += 1;
+
+	if (J < 6)
+		goto L10;
 }
 
-void test_func(void) {
-	__NOP();
+void P0(void) {
+	E1[J] = E1[K];
+	E1[K] = E1[L];
+	E1[L] = E1[J];
 }
 
-#define TEST_BAUDRATE	(921600)
-int main(void) {
+void P3(float X, float Y, float *Z) {
+	float X1, Y1;
+
+	X1 = X;
+	Y1 = Y;
+	X1 = T * (X1 + Y1);
+	Y1 = T * (X1 + Y1);
+	*Z  = (X1 + Y1) / T2;
+}
+
+#ifdef PRINTOUT
+void
+POUT(long N, long J, long K, float X1, float X2, float X3, float X4)
+{
+	printf("%7ld %7ld %7ld %12.4e %12.4e %12.4e %12.4e\n",
+						N, J, K, X1, X2, X3, X4);
+}
+#endif
+
+
+int main(void) {	
+	//Force the FPU register stacking
+//	FPU->FPCCR &= ~FPU_FPCCR_LSPEN_Msk;
+	
   /* System timer configuration */
   SysTick_Config(SystemCoreClock / HZ);
 	
@@ -98,26 +187,13 @@ int main(void) {
 
 	LED_Initialize();
 	
-	/*Initialize the UART driver */
-	uart_tx.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT2;
-	uart_rx.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
- /* Configure UART channel */
-  XMC_UART_CH_Init(XMC_UART0_CH0, &uart_config);
-  XMC_UART_CH_SetInputSource(XMC_UART0_CH0, XMC_UART_CH_INPUT_RXD,USIC0_C0_DX0_P1_4);
-  
-	/* Start UART channel */
-  XMC_UART_CH_Start(XMC_UART0_CH0);
-
-  /* Configure pins */
-	XMC_GPIO_Init(UART_TX, &uart_tx);
-  XMC_GPIO_Init(UART_RX, &uart_rx);
-	
 	printf("XMC4700 ARMCC Test @ %u Hz\n", SystemCoreClock);
-
-	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
-			SystemCoreClock, SCB->CPUID,
-			__CORTEX_M, __FPU_USED,
-			SCU_GENERAL->IDCHIP);
+  printf("OSCHIPFreq:%u \n", OSCHP_GetFrequency());
+	
+	printf("%u Hz, %08X, CM:%d\n",
+			SystemCoreClock,
+			SCB->CPUID,
+			__CORTEX_M);
 					
 	printf("Boot Mode:%u, Vector:%08X\n",
 	XMC_SCU_GetBootMode(), (uint32_t)(&__Vectors));
@@ -134,10 +210,334 @@ int main(void) {
 	printf("RTE_Compiler_IO_STDOUT_ITM\n");
 	#endif
 		
-	//Force the FPU register stacking
-	FPU->FPCCR &= ~FPU_FPCCR_LSPEN_Msk;
+  #ifdef __FPU_PRESENT
+	printf("__FPU_PRESENT = %u\n", __FPU_PRESENT);
+	#else
+	printf("__FPU_PRESENT NA\n");
+	#endif
 	
+  #ifdef __FPU_USED
+	printf("__FPU_USED = %u\n", __FPU_USED);
+	#else
+	printf("__FPU_USED NA\n");
+	#endif
+	
+  #ifdef __TARGET_FPU_NONE
+	printf("__TARGET_FPU_NONE = %u\n", __TARGET_FPU_NONE);
+	#else
+	printf("__TARGET_FPU_NONE NA\n");
+	#endif		
+	
+  #ifdef __TARGET_FPU_VFP
+	printf("__TARGET_FPU_VFP = %u\n", __TARGET_FPU_VFP);
+	#else
+	printf("__TARGET_FPU_VFP NA\n");
+	#endif	
+	
+  #ifdef __TARGET_FPU_SOFTVFP
+	printf("__TARGET_FPU_SOFTVFP = %u\n", __TARGET_FPU_SOFTVFP);
+	#else
+	printf("__TARGET_FPU_SOFTVFP NA\n");
+	#endif		
+
+	/* used in the FORTRAN version */
+		long I;
+		long N1, N2, N3, N4, N6, N7, N8, N9, N10, N11;
+		float X1,X2,X3,X4,X,Y,Z;
+		long LOOP;
+		int II, JJ;
+
+		/* added for this version */
+		long loopstart;
+	//	long startsec, finisec;
+		uint32_t start_tick, fini_tick;
+		float KIPS;
+		int continuous;
+
+	//On my host PC
+	//Loops: 500000, Iterations: 1, Duration: 16 sec.
+	//C Converted Single Precision Whetstones: 3125.0 MIPS
+		loopstart = 10000;		/* see the note about LOOP below */
+		continuous = 1;
+		II = 1;		/* start at the first arg (temp use of II here) */
+
+	printf("whetstone single precision %d %d\n", sizeof(float), sizeof(double));
+			
+	LCONT:
+	/*
+	C
+	C	Start benchmark timing at this point.
+	C
+	*/
+		start_tick = HAL_GetTick();
+
+	/*
+	C
+	C	The actual benchmark starts here.
+	C
+	*/
+		T  = .499975f;
+		T1 = 0.50025f;
+		T2 = 2.0f;
+	/*
+	C
+	C	With loopcount LOOP=10, one million Whetstone instructions
+	C	will be executed in EACH MAJOR LOOP..A MAJOR LOOP IS EXECUTED
+	C	'II' TIMES TO INCREASE WALL-CLOCK TIMING ACCURACY.
+	C
+		LOOP = 1000;
+	*/
+		LOOP = loopstart;
+		II   = 1;
+
+		JJ = 1;
+
+	IILOOP:
+		N1  = 0;
+		N2  = 12 * LOOP;
+		N3  = 14 * LOOP;
+		N4  = 345 * LOOP;
+		N6  = 210 * LOOP;
+		N7  = 32 * LOOP;
+		N8  = 899 * LOOP;
+		N9  = 616 * LOOP;
+		N10 = 0;
+		N11 = 93 * LOOP;
+	/*
+	C
+	C	Module 1: Simple identifiers
+	C
+	*/
+		X1  =  1.0f;
+		X2  = -1.0f;
+		X3  = -1.0f;
+		X4  = -1.0f;
+
+		for (I = 1; I <= N1; I++) {
+		    X1 = (X1 + X2 + X3 - X4) * T;
+		    X2 = (X1 + X2 - X3 + X4) * T;
+		    X3 = (X1 - X2 + X3 + X4) * T;
+		    X4 = (-X1+ X2 + X3 + X4) * T;
+		}
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N1,N1,N1,X1,X2,X3,X4);
+	#endif
+
+	/*
+	C
+	C	Module 2: Array elements
+	C
+	*/
+		E1[1] =  1.0f;
+		E1[2] = -1.0f;
+		E1[3] = -1.0f;
+		E1[4] = -1.0f;
+
+		for (I = 1; I <= N2; I++) {
+		    E1[1] = ( E1[1] + E1[2] + E1[3] - E1[4]) * T;
+		    E1[2] = ( E1[1] + E1[2] - E1[3] + E1[4]) * T;
+		    E1[3] = ( E1[1] - E1[2] + E1[3] + E1[4]) * T;
+		    E1[4] = (-E1[1] + E1[2] + E1[3] + E1[4]) * T;
+		}
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N2,N3,N2,E1[1],E1[2],E1[3],E1[4]);
+	#endif
+
+	/*
+	C
+	C	Module 3: Array as parameter
+	C
+	*/
+		for (I = 1; I <= N3; I++)
+			PA(E1);
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N3,N2,N2,E1[1],E1[2],E1[3],E1[4]);
+	#endif
+
+	/*
+	C
+	C	Module 4: Conditional jumps
+	C
+	*/
+		J = 1;
+		for (I = 1; I <= N4; I++) {
+			if (J == 1)
+				J = 2;
+			else
+				J = 3;
+
+			if (J > 2)
+				J = 0;
+			else
+				J = 1;
+
+			if (J < 1)
+				J = 1;
+			else
+				J = 0;
+		}
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N4,J,J,X1,X2,X3,X4);
+	#endif
+
+	/*
+	C
+	C	Module 5: Omitted
+	C 	Module 6: Integer arithmetic
+	C
+	*/
+
+		J = 1;
+		K = 2;
+		L = 3;
+
+		for (I = 1; I <= N6; I++) {
+		    J = J * (K-J) * (L-K);
+		    K = L * K - (L-J) * K;
+		    L = (L-K) * (K+J);
+		    E1[L-1] = J + K + L;
+		    E1[K-1] = J * K * L;
+		}
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N6,J,K,E1[1],E1[2],E1[3],E1[4]);
+	#endif
+
+	/*
+	C
+	C	Module 7: Trigonometric functions
+	C
+	*/
+		X = 0.5f;
+		Y = 0.5f;
+
+		for (I = 1; I <= N7; I++) {
+			X = T * DATAN(T2*DSIN(X)*DCOS(X)/(DCOS(X+Y)+DCOS(X-Y)-1.0f));
+			Y = T * DATAN(T2*DSIN(Y)*DCOS(Y)/(DCOS(X+Y)+DCOS(X-Y)-1.0f));
+		}
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N7,J,K,X,X,Y,Y);
+	#endif
+
+	/*
+	C
+	C	Module 8: Procedure calls
+	C
+	*/
+		X = 1.0f;
+		Y = 1.0f;
+		Z = 1.0f;
+
+		for (I = 1; I <= N8; I++)
+			P3(X,Y,&Z);
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N8,J,K,X,Y,Z,Z);
+	#endif
+
+	/*
+	C
+	C	Module 9: Array references
+	C
+	*/
+		J = 1;
+		K = 2;
+		L = 3;
+		E1[1] = 1.0f;
+		E1[2] = 2.0f;
+		E1[3] = 3.0f;
+
+		for (I = 1; I <= N9; I++)
+			P0();
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N9,J,K,E1[1],E1[2],E1[3],E1[4]);
+	#endif
+
+	/*
+	C
+	C	Module 10: Integer arithmetic
+	C
+	*/
+		J = 2;
+		K = 3;
+
+		for (I = 1; I <= N10; I++) {
+		    J = J + K;
+		    K = J + K;
+		    J = K - J;
+		    K = K - J - J;
+		}
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N10,J,K,X1,X2,X3,X4);
+	#endif
+
+	/*
+	C
+	C	Module 11: Standard functions
+	C
+	*/
+		X = 0.75f;
+
+		for (I = 1; I <= N11; I++)
+			X = DSQRT(DEXP(DLOG(X)/T1));
+
+	#ifdef PRINTOUT
+		IF (JJ==II)POUT(N11,J,K,X,X,X,X);
+	#endif
+
+	/*
+	C
+	C      THIS IS THE END OF THE MAJOR LOOP.
+	C
+	*/
+		if (++JJ <= II)
+			goto IILOOP;
+
+	/*
+	C
+	C      Stop benchmark timing at this point.
+	C
+	*/
+		fini_tick = HAL_GetTick();
+
+	/*
+	C----------------------------------------------------------------
+	C      Performance in Whetstone KIP's per second is given by
+	C
+	C	(100*LOOP*II)/TIME
+	C
+	C      where TIME is in seconds.
+	C--------------------------------------------------------------------
+	*/
+		printf("\n");
+		if (fini_tick-start_tick <= SYSTIME_CLOCK) {
+			printf("Insufficient duration- Increase the loop count\n");
+			return(1);
+		}
+
+		printf("loops: %ld, Iterations: %d, Duration: %u/%u sec.\n",
+				LOOP, II, fini_tick-start_tick, SYSTIME_CLOCK);
+
+		KIPS = (SYSTIME_CLOCK * 100.0f * LOOP * II)/(float)(fini_tick-start_tick);
+		if (KIPS >= 1000.0f) {
+			printf("C Converted Single Precision Whetstones: %.4f MIPS\n", KIPS/1000.0f);
+		} else {
+			printf("C Converted Single Precision Whetstones: %.4f KIPS\n", KIPS);
+		}
+		
+		printf("%u %u\n",
+				SystemCoreClock,
+				HAL_GetTick());
+
+		if (continuous)
+			goto LCONT;			
+			
   while (1) {
-		test_func();
 	}
 }
