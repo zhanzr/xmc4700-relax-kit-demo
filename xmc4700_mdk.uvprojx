@@ -397,6 +397,11 @@
               <FileType>1</FileType>
               <FilePath>.\xmc4700_nvic_handler.c</FilePath>
             </File>
+            <File>
+              <FileName>serial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\serial.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -752,7 +757,7 @@
               <MiscControls></MiscControls>
               <Define>XMC_DEBUG_ENABLE,XMC_ASSERT_ENABLE</Define>
               <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <IncludePath>.</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -774,7 +779,7 @@
             </VariousControls>
           </Aads>
           <LDads>
-            <umfTarg>1</umfTarg>
+            <umfTarg>0</umfTarg>
             <Ropi>0</Ropi>
             <Rwpi>0</Rwpi>
             <noStLib>0</noStLib>
@@ -783,7 +788,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile></ScatterFile>
+            <ScatterFile>.\armcc.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -810,6 +815,11 @@
               <FileName>xmc4700_nvic_handler.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\xmc4700_nvic_handler.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\serial.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -70,6 +70,8 @@
 #include <xmc_uart.h>
 #include <xmc_gpio.h>
 
+#include "serial.h"
+
 /*******************************************************************************
  * MACROS
  *******************************************************************************/
@@ -319,25 +321,11 @@
  * GLOBAL VARIABLES
  *******************************************************************************/
 #if defined ( __CC_ARM )
-#if defined(XMC4700_E196x2048) || defined(XMC4700_F144x2048) || defined(XMC4700_F100x2048)
-uint32_t SystemCoreClock __attribute__((at(0x2003FFC0)));
-uint8_t g_chipid[16] __attribute__((at(0x2003FFC4)));
-#elif defined(XMC4700_E196x1536) || defined(XMC4700_F144x1536) || defined(XMC4700_F100x1536)
-uint32_t SystemCoreClock __attribute__((at(0x2002CFC0)));
-uint8_t g_chipid[16] __attribute__((at(0x2002CFC4)));
-#else
-#error "system_XMC4700.c: device not supported" 
-#endif
+uint32_t SystemCoreClock __attribute__( ( section( ".no_init"),zero_init) ) ;
+uint8_t g_chipid[16] __attribute__( ( section( ".no_init"),zero_init) );
 #elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-#if defined(XMC4700_E196x2048) || defined(XMC4700_F144x2048) || defined(XMC4700_F100x2048)
-uint32_t SystemCoreClock __attribute__((section(".ARM.__at_0x2003FFC0")));
-uint8_t g_chipid[16] __attribute__((section(".ARM.__at_0x2003FFC4")));
-#elif defined(XMC4700_E196x1536) || defined(XMC4700_F144x1536) || defined(XMC4700_F100x1536)
-uint32_t SystemCoreClock __attribute__((section(".ARM.__at_0x2002CFC0")));
-uint8_t g_chipid[16] __attribute__((section(".ARM.__at_0x2002CFC4")));
-#else
-#error "system_XMC4700.c: device not supported" 
-#endif   
+uint32_t SystemCoreClock __attribute__( ( section( ".bss.no_init"),zero_init) ) ;
+uint8_t g_chipid[16] __attribute__( ( section( ".bss.no_init"),zero_init) );  
 #elif defined ( __ICCARM__ )
 #if defined(XMC4700_E196x2048) || defined(XMC4700_F144x2048) || defined(XMC4700_F100x2048) || \
     defined(XMC4700_E196x1536) || defined(XMC4700_F144x1536) || defined(XMC4700_F100x1536)
@@ -383,22 +371,30 @@ static void delay(uint32_t cycles)
   }
 }
 
-#define TEST_BAUDRATE	(921600U)
-
-#define UART_RX P1_4
-#define UART_TX P1_5
-
 XMC_GPIO_CONFIG_t uart_tx;
 XMC_GPIO_CONFIG_t uart_rx;
 
 /* UART configuration */
+#ifdef __cplusplus
+// before C++ 20, C style partial initialization not supported
 const XMC_UART_CH_CONFIG_t uart_config = {	
-	.baudrate = TEST_BAUDRATE,
+  SERIAL_BAUDRATE,	// baudrate
+  false,	// normal_divider_mode
+	8U,	// data_bits
+	8U,	// frame_length
+  1U,	// stop_bits
+	0, // oversampling
+	XMC_USIC_CH_PARITY_MODE_NONE, // parity_mode
+};
+#else
+const XMC_UART_CH_CONFIG_t uart_config = {	
+	.baudrate = SERIAL_BAUDRATE,
 	.data_bits = 8U,
-	.frame_length = 8U,
+//	.frame_length = 8U,
 	.stop_bits = 1U,
 	.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
 };
+#endif
 
 /*******************************************************************************
  * API IMPLEMENTATION
@@ -407,23 +403,33 @@ const XMC_UART_CH_CONFIG_t uart_config = {
 __WEAK void SystemInit(void)
 {
   memcpy(g_chipid, CHIPID_LOC, 16);
+		
+  SystemCoreSetup();
+  SystemCoreClockSetup(); 	
 	
-	/*Initialize the UART driver */
+ /*Initialize the UART driver */
 	uart_tx.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL_ALT2;
-	uart_rx.mode = XMC_GPIO_MODE_INPUT_TRISTATE;
- /* Configure UART channel */
-  XMC_UART_CH_Init(XMC_UART0_CH0, &uart_config);
-  XMC_UART_CH_SetInputSource(XMC_UART0_CH0, XMC_UART_CH_INPUT_RXD,USIC0_C0_DX0_P1_4);
+	uart_rx.mode = XMC_GPIO_MODE_INPUT_PULL_UP;
+	/* Configure UART channel */
+  XMC_UART_CH_Init(SERIAL_UART, &uart_config);
+  XMC_UART_CH_SetInputSource(SERIAL_UART, XMC_UART_CH_INPUT_RXD, SERIAL_RX_INPUT);
   
+  /* Set service request for receive interrupt */
+  XMC_USIC_CH_SetInterruptNodePointer(SERIAL_UART, XMC_USIC_CH_INTERRUPT_NODE_POINTER_RECEIVE, 0U);
+  XMC_USIC_CH_SetInterruptNodePointer(SERIAL_UART, XMC_USIC_CH_INTERRUPT_NODE_POINTER_ALTERNATE_RECEIVE, 0U);
+
+  /*Set priority and enable NVIC node for receive interrupt*/
+  NVIC_SetPriority(SERIAL_RX_IRQN, 3);
+  NVIC_EnableIRQ(SERIAL_RX_IRQN);
+
+  XMC_UART_CH_EnableEvent(SERIAL_UART, XMC_UART_CH_EVENT_STANDARD_RECEIVE | XMC_UART_CH_EVENT_ALTERNATIVE_RECEIVE);
+	
 	/* Start UART channel */
-  XMC_UART_CH_Start(XMC_UART0_CH0);
+  XMC_UART_CH_Start(SERIAL_UART);
 
   /* Configure pins */
-	XMC_GPIO_Init(UART_TX, &uart_tx);
-  XMC_GPIO_Init(UART_RX, &uart_rx);
-	
-  SystemCoreSetup();
-  SystemCoreClockSetup(); 
+	XMC_GPIO_Init(SERIAL_TX_PIN, &uart_tx);
+  XMC_GPIO_Init(SERIAL_RX_PIN, &uart_rx);		
 }
 
 __WEAK void SystemCoreSetup(void)
