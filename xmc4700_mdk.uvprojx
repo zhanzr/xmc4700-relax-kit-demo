@@ -16,8 +16,8 @@
         <TargetCommonOption>
           <Device>XMC4700-F144x2048</Device>
           <Vendor>Infineon</Vendor>
-          <PackID>Infineon.XMC4000_DFP.2.12.0</PackID>
-          <PackURL>http://dave.infineon.com/Libraries/CMSIS_PACK/</PackURL>
+          <PackID>Infineon.XMC4000_DFP.2.13.0</PackID>
+          <PackURL>https://www.infineon.com/cmsis_packs/XMC4000/</PackURL>
           <Cpu>IRAM(0x20000000,0x3FFC0) IRAM2(0x1FFE8000,0x18000) IROM(0x08000000,0x200000) IROM2(0x0C000000,0x200000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -430,8 +430,8 @@
         <TargetCommonOption>
           <Device>XMC4700-F144x2048</Device>
           <Vendor>Infineon</Vendor>
-          <PackID>Infineon.XMC4000_DFP.2.12.0</PackID>
-          <PackURL>http://dave.infineon.com/Libraries/CMSIS_PACK/</PackURL>
+          <PackID>Infineon.XMC4000_DFP.2.13.0</PackID>
+          <PackURL>https://www.infineon.com/cmsis_packs/XMC4000/</PackURL>
           <Cpu>IRAM(0x20000000,0x3FFC0) IRAM2(0x1FFE8000,0x18000) IROM(0x08000000,0x200000) IROM2(0x0C000000,0x200000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile></StartupFile>
@@ -847,35 +847,35 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="RTE_Device" Cvendor="Infineon" Cversion="1.1.0" condition="XMC4 CMSIS">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.2.4" condition="XMC4 CMSIS">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="XMClib" Csub="GPIO" Cvendor="Infineon" Cversion="2.1.22" condition="XMC4 CMSIS">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+      <component Cclass="Device" Cgroup="XMClib" Csub="GPIO" Cvendor="Infineon" Cversion="2.1.24" condition="XMC4 CMSIS">
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="XMClib" Csub="SCU" Cvendor="Infineon" Cversion="2.1.22" condition="XMC4 CMSIS">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+      <component Cclass="Device" Cgroup="XMClib" Csub="SCU" Cvendor="Infineon" Cversion="2.1.24" condition="XMC4 CMSIS">
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
         </targetInfos>
       </component>
-      <component Cclass="Device" Cgroup="XMClib" Csub="UART" Cvendor="Infineon" Cversion="2.1.22" condition="XMC4 CMSIS SCU">
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+      <component Cclass="Device" Cgroup="XMClib" Csub="UART" Cvendor="Infineon" Cversion="2.1.24" condition="XMC4 CMSIS SCU">
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
@@ -913,7 +913,7 @@
       <file attr="config" category="header" condition="XMC4700_F144" name="RTE_Driver\Config\XMC4800_F144\RTE_Device.h" version="1.1.0">
         <instance index="0">RTE\Device\XMC4700-F144x2048\RTE_Device.h</instance>
         <component Cclass="Device" Cgroup="RTE_Device" Cvendor="Infineon" Cversion="1.1.0" condition="XMC4 CMSIS"/>
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
@@ -922,7 +922,7 @@
       <file attr="config" category="source" condition="XMC47xx_ARMCC" name="Device\XMC4700_series\Source\ARM\startup_XMC4700.s" version="1.0.0">
         <instance index="0">RTE\Device\XMC4700-F144x2048\startup_XMC4700.s</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.2.4" condition="XMC4 CMSIS"/>
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
@@ -931,7 +931,7 @@
       <file attr="config" category="source" condition="XMC47xx" name="Device\XMC4700_series\Source\system_XMC4700.c" version="1.0.5">
         <instance index="0">RTE\Device\XMC4700-F144x2048\system_XMC4700.c</instance>
         <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.2.4" condition="XMC4 CMSIS"/>
-        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="http://dave.infineon.com/Libraries/CMSIS_PACK/" vendor="Infineon" version="2.12.0"/>
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>
           <targetInfo name="flash"/>
