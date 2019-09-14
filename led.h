@@ -1,20 +1,41 @@
-#ifndef LED_H
-#define LED_H
+#pragma once
 
-#include <stdint.h>
-#include <xmc4_gpio.h>
+#include <utility> 
 
-/* GPIO Pin identifier */
-typedef struct _GPIO_PIN {
-  XMC_GPIO_PORT_t *port;
-  uint8_t         pin;
-} GPIO_PIN;
+#include <assert.h>      
 
-void LED_Initialize (void) ;
-void LED_Uninitialize (void) ;
+#include <xmc_gpio.h>
 
-void LED_On (uint8_t num) ;
-void LED_Off (uint8_t num);
-void LED_Toggle(uint8_t num);
+//Valid LED GPIO Pins for this application
+//5, 8 
+//5, 9
 
-#endif //LED_H
+typedef std::pair <XMC_GPIO_PORT_t*, uint8_t> led_position_pair;
+	
+class LED {
+	public:	
+	static XMC_GPIO_MODE_t InitMode;
+	static XMC_GPIO_MODE_t UnInitMode;
+	static XMC_GPIO_OUTPUT_LEVEL_t OutputLevel;
+	static XMC_GPIO_OUTPUT_STRENGTH Strength;
+	
+	static const uint8_t LED_COUNT = 2;
+		
+		LED(void);
+		
+		LED(const uint8_t num);
+	
+		~LED(void);
+		
+		void Init(const bool inv_logic);
+		void UnInit(void);
+	
+		void On(void);
+		void Off(void);		
+		void Toogle(void);
+		
+	private:
+		uint8_t m_num;
+		bool m_IsInv;
+		bool m_HasInit;
+};

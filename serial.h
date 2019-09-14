@@ -19,7 +19,7 @@
 #ifndef SERIAL_H
 #define SERIAL_H
 
-#define SERIAL_BAUDRATE 115200
+#define SERIAL_BAUDRATE 921600
 
 #define SERIAL_UART XMC_UART0_CH0
 #define SERIAL_TX_PIN P1_5
@@ -29,26 +29,16 @@
 
 #define SERIAL_RX_IRQN USIC0_0_IRQn
 
-inline int stdout_putchar (int ch) {
-	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
-	return ch;
-}
-
-inline int stderr_putchar (int ch) {
-	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
-	return ch;
-}
-
-inline void ttywrch (int ch) {
-	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
-}
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-void serial_init(void);
+int stdout_putchar (int ch);
 
+int stderr_putchar (int ch);
+
+void ttywrch (int ch);
+	
 #ifdef __cplusplus
 }
 #endif

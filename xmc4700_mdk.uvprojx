@@ -383,14 +383,14 @@
           <GroupName>xmc4700_mdk</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\main.cpp</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led.c</FilePath>
+              <FileName>led.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\led.cpp</FilePath>
             </File>
             <File>
               <FileName>xmc4700_nvic_handler.c</FileName>
@@ -398,9 +398,14 @@
               <FilePath>.\xmc4700_nvic_handler.c</FilePath>
             </File>
             <File>
-              <FileName>serial.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\serial.h</FilePath>
+              <FileName>file_descriptor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\file_descriptor.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>stdio_impl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stdio_impl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -732,7 +737,7 @@
           <Cads>
             <interw>1</interw>
             <Optim>4</Optim>
-            <oTime>1</oTime>
+            <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
             <Strict>0</Strict>
@@ -743,7 +748,7 @@
             <wLevel>2</wLevel>
             <uThumb>0</uThumb>
             <uSurpInc>0</uSurpInc>
-            <uC99>1</uC99>
+            <uC99>0</uC99>
             <uGnu>1</uGnu>
             <useXO>0</useXO>
             <v6Lang>1</v6Lang>
@@ -754,7 +759,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--cpp11</MiscControls>
               <Define>XMC_DEBUG_ENABLE,XMC_ASSERT_ENABLE</Define>
               <Undefine></Undefine>
               <IncludePath>.</IncludePath>
@@ -802,14 +807,14 @@
           <GroupName>xmc4700_mdk</GroupName>
           <Files>
             <File>
-              <FileName>main.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\main.c</FilePath>
+              <FileName>main.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\main.cpp</FilePath>
             </File>
             <File>
-              <FileName>led.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\led.c</FilePath>
+              <FileName>led.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\led.cpp</FilePath>
             </File>
             <File>
               <FileName>xmc4700_nvic_handler.c</FileName>
@@ -817,9 +822,14 @@
               <FilePath>.\xmc4700_nvic_handler.c</FilePath>
             </File>
             <File>
-              <FileName>serial.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\serial.h</FilePath>
+              <FileName>file_descriptor.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\file_descriptor.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>stdio_impl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\stdio_impl.c</FilePath>
             </File>
           </Files>
         </Group>

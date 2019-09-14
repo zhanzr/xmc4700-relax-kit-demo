@@ -2,11 +2,11 @@
 
 #include "serial.h"
 
-extern __IO uint32_t g_Ticks;
+extern __IO uint32_t g_ticks;
 extern __IO uint8_t g_tmp_uart_rx_buf;
 
 void SysTick_Handler(void) {	
-	g_Ticks++;
+	g_ticks ++;
 }
 
 void USIC0_0_IRQHandler(void) {

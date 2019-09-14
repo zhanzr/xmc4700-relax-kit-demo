@@ -390,7 +390,7 @@ const XMC_UART_CH_CONFIG_t uart_config = {
 const XMC_UART_CH_CONFIG_t uart_config = {	
 	.baudrate = SERIAL_BAUDRATE,
 	.data_bits = 8U,
-//	.frame_length = 8U,
+	.frame_length = 8U,
 	.stop_bits = 1U,
 	.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
 };
