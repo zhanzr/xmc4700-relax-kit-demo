@@ -1,6 +1,7 @@
 #pragma once
 
 #include <utility> 
+#include <string> 
 
 #include <assert.h>      
 
@@ -9,8 +10,9 @@
 //Valid LED GPIO Pins for this application
 //5, 8 
 //5, 9
+using namespace std;
 
-typedef std::pair <XMC_GPIO_PORT_t*, uint8_t> led_position_pair;
+typedef pair <XMC_GPIO_PORT_t*, uint8_t> led_position_pair;
 	
 class LED {
 	public:	
@@ -34,6 +36,8 @@ class LED {
 		void Off(void);		
 		void Toogle(void);
 		
+	string ToString(void);
+	
 	private:
 		uint8_t m_num;
 		bool m_IsInv;

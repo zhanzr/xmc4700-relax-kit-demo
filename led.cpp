@@ -143,3 +143,11 @@ void LED::Toogle(void) {
 											LedPositions[m_num].second);
 	}		
 }
+
+string LED::ToString(void) {
+  char buff[256];
+  snprintf(buff, sizeof(buff),
+		"num:%u, inv:%u, has_init:%u",
+		m_num, m_IsInv, m_HasInit);
+  return string(buff);
+}

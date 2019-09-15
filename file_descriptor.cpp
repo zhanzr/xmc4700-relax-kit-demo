@@ -11,6 +11,7 @@
 
 #include "serial.h"
 
+#if defined ( __CC_ARM )
 //Re-implement any functions that require re-implementation.
 namespace std {
   struct __FILE {
@@ -52,3 +53,6 @@ namespace std {
     return 0;
   }
 }
+#elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
+#warning TODO: figure out how to retarget iostream(std::cout) with armclang
+#endif

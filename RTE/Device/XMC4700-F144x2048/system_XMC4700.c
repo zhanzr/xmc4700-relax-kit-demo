@@ -324,8 +324,8 @@
 uint32_t SystemCoreClock __attribute__( ( section( ".no_init"),zero_init) ) ;
 uint8_t g_chipid[16] __attribute__( ( section( ".no_init"),zero_init) );
 #elif defined (__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050)
-uint32_t SystemCoreClock __attribute__( ( section( ".bss.no_init"),zero_init) ) ;
-uint8_t g_chipid[16] __attribute__( ( section( ".bss.no_init"),zero_init) );  
+uint32_t SystemCoreClock __attribute__((section(".bss.no_init")));
+uint8_t g_chipid[16] __attribute__((section(".bss.no_init")));
 #elif defined ( __ICCARM__ )
 #if defined(XMC4700_E196x2048) || defined(XMC4700_F144x2048) || defined(XMC4700_F100x2048) || \
     defined(XMC4700_E196x1536) || defined(XMC4700_F144x1536) || defined(XMC4700_F100x1536)

@@ -27,6 +27,16 @@
 #include "custom_def.h"
 #include "led.h"
 
+#if defined(__cplusplus) && (__cplusplus >= 201103)
+namespace std {
+	typedef decltype(nullptr) nullptr_t;
+}
+#else
+#ifndef nullptr
+#define	nullptr	NULL
+#endif
+#endif
+
 using namespace std;
 
 __IO uint8_t g_tmp_uart_rx_buf;
@@ -43,36 +53,39 @@ void HAL_Delay(uint32_t t) {
 	}
 }
 
-void XMC_AssertHandler(const char *const msg, const char *const file, uint32_t line) {
-	XMC_DEBUG("%s %s %u\n", msg, file, line);
-  abort();
-}
-
 extern uint32_t __Vectors;
 
-namespace std {
-	typedef decltype(nullptr) nullptr_t;
+void dump_bin(uint8_t* data, uint32_t len, string topics) {
+	cout << topics << ':' << endl;
+		
+	cout << hex << endl;
+	cout << setw(2);
+	cout << setfill('0');
+	for(uint32_t i=0; i<len; ++i) {
+		cout << *(data + i) << ' ';
+	}
+	cout << dec << endl;
 }
 
 void test_normal_ptr(void) {
 	cout << __func__ << endl;
 	
-	LED* p_auto_led1 (new LED(0));
+	LED* p_normal_led1 (new LED(0));
 	__IO uint32_t tmpTick;
 	
-	LED* p_auto_led2 = p_auto_led1; 
+	LED* p_normal_led2 = p_normal_led1; 
 	
 	HAL_Delay(400);
 	
-	p_auto_led2->Toogle(); 
+	p_normal_led2->Toogle(); 
 	HAL_Delay(400);
 
-	p_auto_led1->Toogle(); 	
+	p_normal_led1->Toogle(); 	
 	
 	cout << hex << endl;
 	cout << setw(8);
 	cout << setfill('0');
-	cout << p_auto_led1  << ' ' << p_auto_led2 << endl;
+	cout << p_normal_led1  << ' ' << p_normal_led2 << endl;
 	cout << dec << endl;
 
 		//Leaking memory
@@ -82,18 +95,18 @@ void test_normal_ptr(void) {
 void test_auto_ptr(void) {
 	cout << __func__ << endl;
 
-	auto_ptr<LED> p_auto_led1 (new LED(0));
+	auto_ptr<LED> p_smart_led1 (new LED(0));
 	
 	// Copy and transfer ownership. 																			
-	// p_auto_led1 gets set to empty!
-	auto_ptr<LED> p_auto_led2 = p_auto_led1; 
+	// p_smart_led1 gets set to empty!
+	auto_ptr<LED> p_smart_led2 = p_smart_led1; 
 	
 	HAL_Delay(400);
 	
 	// Works.
-	if(nullptr != p_auto_led2.get()) {
+	if(nullptr != p_smart_led2.get()) {
 		cout << "non null pointer, will work" << endl;
-		p_auto_led2.get()->Toogle(); 
+		p_smart_led2.get()->Toogle(); 
 	
 	} else {
 		cout << "null pointer, will not work" << endl;
@@ -102,9 +115,9 @@ void test_auto_ptr(void) {
 	HAL_Delay(400);
 	
 	// Hopefully raises some NULL pointer exception.		
-	if(nullptr != p_auto_led1.get()) {
+	if(nullptr != p_smart_led1.get()) {
 		cout << "non null pointer, will work" << endl;
-		p_auto_led1.get()->Toogle(); 
+		p_smart_led1.get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
 	}		
@@ -114,14 +127,160 @@ void test_auto_ptr(void) {
 	cout << hex << endl;
 	cout << setw(8);
 	cout << setfill('0');
-	cout << p_auto_led1.get()  << ' ' << p_auto_led2.get() << endl;
+	cout << p_smart_led1.get()  << ' ' << p_smart_led2.get() << endl;
 	cout << dec << endl;
 		
-		//Will call destructor via the owner of the pointer
+	if( nullptr != p_smart_led1.get() ) {
+		cout << p_smart_led1.get()->ToString() << endl;
+	} else {
+		cout << "null pointer, will not dump" << endl;
+	}
+	
+	if( nullptr != p_smart_led2.get() ) {
+		cout << p_smart_led2.get()->ToString() << endl;
+	} else {
+		cout << "null pointer, will not dump" << endl;
+	}
+		
+	//put it into vector
+	cout << "test auto pointer with vector" << endl;
+	vector< auto_ptr<LED> > vLed;
+#warning "no matching constructor for initialization of '__1::auto_ptr<LED>'"
+#if 0
+	vLed.push_back(p_smart_led2);
+	
+	if(nullptr != p_smart_led1.get()) {
+		cout << "non null pointer, will work" << endl;
+		p_smart_led1.get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}	
+	
+	if(nullptr != p_smart_led2.get()) {
+		cout << "non null pointer, will work" << endl;
+		p_smart_led2.get()->Toogle(); 
+	
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}
+			
+	if(nullptr != vLed.begin()->get()) {
+		cout << "non null pointer, will work" << endl;
+		vLed.begin()->get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}		
+#endif
+
+	// test with array
+	cout << "test with array" << endl;
+	size_t len = 10;
+#warning "error: no matching constructor for initialization of 'auto_ptr<std::uint32_t []>'"
+#if 0
+  auto_ptr<uint32_t[]> arr_u32 {new uint32_t[len]};
+	for (size_t i {}; i<len; ++i) {    
+		arr_u32[i] = i*i;
+		cout << arr_u32[i] << ' ';
+  }
+	cout << endl;
+#endif
+
+	//Will call destructor via the owner of the pointer
 	cout << "exit " << __func__ << endl;
 }
 
-__declspec(noreturn) int main(void) {
+#if defined(__cplusplus) && (__cplusplus >= 201103)
+void test_unique_ptr(void) {
+	cout << __func__ << endl;
+
+	unique_ptr<LED> p_smart_led1 (new LED(0));
+	
+	// Copy and transfer ownership. 																			
+	// p_smart_led1 gets set to empty!
+	unique_ptr<LED> p_smart_led2 = move(p_smart_led1); 
+	
+	HAL_Delay(400);
+	
+	if(nullptr != p_smart_led2.get()) {
+		cout << "non null pointer, will work" << endl;
+		p_smart_led2.get()->Toogle(); 
+	
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}
+		
+	HAL_Delay(400);
+	
+	if(nullptr != p_smart_led1.get()) {
+		cout << "non null pointer, will work" << endl;
+		p_smart_led1.get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}		
+	
+	HAL_Delay(400);
+
+	cout << hex << endl;
+	cout << setw(8);
+	cout << setfill('0');
+	cout << p_smart_led1.get()  << ' ' << p_smart_led2.get() << endl;
+	cout << dec << endl;
+		
+	if( nullptr != p_smart_led1.get() ) {
+		cout << p_smart_led1.get()->ToString() << endl;
+	} else {
+		cout << "null pointer, will not dump" << endl;
+	}
+	
+	if( nullptr != p_smart_led2.get() ) {
+		cout << p_smart_led2.get()->ToString() << endl;
+	} else {
+		cout << "null pointer, will not dump" << endl;
+	}
+	
+	//put it into vector
+	cout << "test unique pointer with vector" << endl;
+	vector< unique_ptr<LED> > vLed;
+	vLed.push_back(move(p_smart_led2));
+	
+	if(nullptr != p_smart_led1.get()) {
+		cout << "non null pointer, will work" << endl;
+		p_smart_led1.get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}	
+	
+	if(nullptr != p_smart_led2.get()) {
+		cout << "non null pointer, will work" << endl;
+		p_smart_led2.get()->Toogle(); 
+	
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}
+			
+	if(nullptr != vLed.begin()->get()) {
+		cout << "non null pointer, will work" << endl;
+		vLed.begin()->get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}	
+	
+	// test with array
+	cout << "test with array" << endl;
+	size_t len = 10;
+  unique_ptr<uint32_t[]> arr_u32 {new uint32_t[len]};
+	for (size_t i {}; i<len; ++i) {    
+		arr_u32[i] = i*i;
+		cout << arr_u32[i] << ' ';
+  }
+	cout << endl;
+	 
+	//Will call destructor via the owner of the pointer
+	cout << "exit " << __func__ << endl;
+}
+#endif
+
+int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
 	
@@ -184,9 +343,11 @@ __declspec(noreturn) int main(void) {
 	#else
 	printf("__TARGET_FPU_SOFTVFP NA\n");
 	#endif		
-					
+	
   cout << setprecision(3);					
   while (1) {
+		cout << endl << "C++ Standard " << __cplusplus  << endl;
+		
 		//T_DTS = (RESULT - 605) / 2.05 [°C]
 		float tmpDts = XMC_SCU_GetTemperatureMeasurement();
 		float tmpCel = (tmpDts-605)/2.05f;		
@@ -208,5 +369,13 @@ __declspec(noreturn) int main(void) {
 		cout << endl;	
 		
 		HAL_Delay(4000);
+
+#if defined(__cplusplus) && (__cplusplus >= 201103)
+		test_unique_ptr();	
+		
+		cout << endl;	
+		
+		HAL_Delay(4000);
+#endif		
 	}
 }
