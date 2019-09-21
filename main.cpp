@@ -105,7 +105,7 @@ void test_auto_ptr(void) {
 	
 	// Works.
 	if(nullptr != p_smart_led2.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led2.get()->Toogle(); 
 	
 	} else {
@@ -116,7 +116,7 @@ void test_auto_ptr(void) {
 	
 	// Hopefully raises some NULL pointer exception.		
 	if(nullptr != p_smart_led1.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led1.get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
@@ -150,14 +150,14 @@ void test_auto_ptr(void) {
 	vLed.push_back(p_smart_led2);
 	
 	if(nullptr != p_smart_led1.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led1.get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
 	}	
 	
 	if(nullptr != p_smart_led2.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led2.get()->Toogle(); 
 	
 	} else {
@@ -165,7 +165,7 @@ void test_auto_ptr(void) {
 	}
 			
 	if(nullptr != vLed.begin()->get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		vLed.begin()->get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
@@ -202,7 +202,7 @@ void test_unique_ptr(void) {
 	HAL_Delay(400);
 	
 	if(nullptr != p_smart_led2.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led2.get()->Toogle(); 
 	
 	} else {
@@ -212,7 +212,7 @@ void test_unique_ptr(void) {
 	HAL_Delay(400);
 	
 	if(nullptr != p_smart_led1.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led1.get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
@@ -244,14 +244,14 @@ void test_unique_ptr(void) {
 	vLed.push_back(move(p_smart_led2));
 	
 	if(nullptr != p_smart_led1.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led1.get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
 	}	
 	
 	if(nullptr != p_smart_led2.get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		p_smart_led2.get()->Toogle(); 
 	
 	} else {
@@ -259,7 +259,7 @@ void test_unique_ptr(void) {
 	}
 			
 	if(nullptr != vLed.begin()->get()) {
-		cout << "non null pointer, will work" << endl;
+		cout << "valid pointer, will work" << endl;
 		vLed.begin()->get()->Toogle(); 
 	} else {
 		cout << "null pointer, will not work" << endl;
@@ -275,6 +275,159 @@ void test_unique_ptr(void) {
   }
 	cout << endl;
 	 
+	//Will call destructor via the owner of the pointer
+	cout << "exit " << __func__ << endl;
+}
+#endif
+
+#if defined(__cplusplus) && (__cplusplus >= 201103)
+void test_shared_ptr(void) {
+	cout << __func__ << endl;
+
+	shared_ptr<LED> p_smart_led1 (new LED(0));
+	
+	// sharing
+	shared_ptr<LED> p_smart_led2 = p_smart_led1; 
+	
+	HAL_Delay(400);
+	
+	if(nullptr != p_smart_led2.get()) {
+		cout << "valid pointer, will work" << endl;
+		p_smart_led2.get()->Toogle(); 
+	
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}
+		
+	HAL_Delay(400);
+	
+	if(nullptr != p_smart_led1.get()) {
+		cout << "valid pointer, will work" << endl;
+		p_smart_led1.get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}		
+	
+	HAL_Delay(400);
+
+	cout << hex << endl;
+	cout << setw(8);
+	cout << setfill('0');
+	cout << p_smart_led1.get()  << ' ' << p_smart_led2.get() << endl;
+	cout << dec << endl;
+		
+	if( nullptr != p_smart_led1.get() ) {
+		cout << p_smart_led1.get()->ToString() << ", Count:" << p_smart_led1.use_count() << endl;
+	} else {
+		cout << "null pointer, will not dump" << endl;
+	}
+	
+	if( nullptr != p_smart_led2.get() ) {
+		cout << p_smart_led2.get()->ToString() << ", Count:" << p_smart_led2.use_count() << endl;
+	} else {
+		cout << "null pointer, will not dump" << endl;
+	}
+	
+	//put it into vector
+	cout << "test shared pointer with vector" << endl;
+	vector< shared_ptr<LED> > vLed;
+	vLed.push_back(p_smart_led1);
+	vLed.push_back(p_smart_led2);
+	
+	if(nullptr != p_smart_led1.get()) {
+		cout << p_smart_led1.get()->ToString() << ", Count:" << p_smart_led2.use_count() << endl;
+		p_smart_led1.get()->Toogle(); 
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}	
+	
+	if(nullptr != p_smart_led2.get()) {
+		cout << p_smart_led2.get()->ToString() << ", Count:" << p_smart_led2.use_count() << endl;
+		p_smart_led2.get()->Toogle(); 
+	
+	} else {
+		cout << "null pointer, will not work" << endl;
+	}
+			
+	// dump the smart pointer in the vector container
+	for(auto it=vLed.begin(); it!=vLed.end(); ++it) {
+		if(nullptr != it->get()) {
+			cout << it->get()->ToString() << ", Count:" << it->use_count() << endl;
+			it->get()->Toogle(); 
+		} else {
+			cout << "null pointer, will not work" << endl;
+		}	
+	}
+	
+	// remove the reference count
+	for(auto it=vLed.begin(); it!=vLed.end(); ++it) {
+		if(nullptr != it->get()) {
+			it->reset();
+		}
+		
+		if(nullptr != p_smart_led1.get()) {
+			cout << p_smart_led1.get()->ToString() << ", Count:" << p_smart_led2.use_count() << endl;
+			p_smart_led1.get()->Toogle(); 
+		} else {
+			cout << "null pointer, will not work" << endl;
+		}			
+	}
+		// test with array
+	cout << "test with array" << endl;
+#warning "error: no matching constructor for initialization of 'shared_ptr<std::uint32_t []>'	"
+//	size_t len = 10;
+//  shared_ptr<uint32_t[]> arr_u32 {new uint32_t[len]};
+//	
+//	for (size_t i {}; i<len; ++i) {    
+//		arr_u32[i] = i*i;
+//		cout << arr_u32[i] << ' ';
+//  }
+//	cout << endl;
+	 
+	//Will call destructor via the owner of the pointer
+	cout << "exit " << __func__ << endl;
+}
+#endif
+
+#if defined(__cplusplus) && (__cplusplus >= 201103)
+void test_weak_ptr(void) {
+	cout << __func__ << endl;
+    weak_ptr<LED> p_smart_led2;
+
+		// build a scope
+    {
+        shared_ptr<LED> p_smart_led1 (new LED(0));
+        
+        if( nullptr != p_smart_led1.get() ) {
+            cout << p_smart_led1.get()->ToString() << ", Count:" << p_smart_led1.use_count() << endl;
+        } else {
+            cout << "null pointer, will not dump" << endl;
+        }
+    
+        // weak sharing
+        p_smart_led2 = p_smart_led1;
+                
+        if( auto tmp_share_ptr = p_smart_led2.lock() ) {
+            cout << tmp_share_ptr.get()->ToString() << ", Count:" << tmp_share_ptr.use_count() << endl;
+        } else {
+            cout << "null pointer, will not dump" << endl;
+        }
+        
+        cout << hex << endl;
+        cout << setw(8);
+        cout << setfill('0');
+        cout << p_smart_led1.get()  << ' ' << p_smart_led2.lock().get() << endl;
+        cout << dec << endl;                
+	}
+    
+	if( auto tmp_share_ptr = p_smart_led2.lock() ) {
+			cout << tmp_share_ptr.get()->ToString() << ", Count:" << tmp_share_ptr.use_count() << endl;
+	} else {
+			cout << "null pointer, will not dump" << endl;
+	}
+        
+	HAL_Delay(400);
+	
 	//Will call destructor via the owner of the pointer
 	cout << "exit " << __func__ << endl;
 }
@@ -359,21 +512,19 @@ int main(void) {
 		XMC_SCU_StartTemperatureMeasurement();
 
 		test_normal_ptr();
-		
-		cout << endl;
-		
-		HAL_Delay(4000);
-		
+		cout << endl;	
 		test_auto_ptr();	
-		
 		cout << endl;	
 		
 		HAL_Delay(4000);
 
 #if defined(__cplusplus) && (__cplusplus >= 201103)
 		test_unique_ptr();	
-		
 		cout << endl;	
+		test_shared_ptr();	
+		cout << endl;	
+		test_weak_ptr();	
+		cout << endl;			
 		
 		HAL_Delay(4000);
 #endif		
