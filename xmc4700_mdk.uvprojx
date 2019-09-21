@@ -760,7 +760,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define></Define>
+              <Define>__ELF__</Define>
               <Undefine></Undefine>
               <IncludePath>.</IncludePath>
             </VariousControls>

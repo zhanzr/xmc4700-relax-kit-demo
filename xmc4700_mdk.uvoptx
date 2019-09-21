@@ -492,17 +492,17 @@
         <newCpu>0</newCpu>
         <uProt>0</uProt>
       </DebugFlag>
-      <LintExecutable></LintExecutable>
-      <LintConfigFile></LintConfigFile>
+      <LintExecutable>D:\lint\lint-nt.exe</LintExecutable>
+      <LintConfigFile>.\co-ARMCC-6.lnt</LintConfigFile>
       <bLintAuto>0</bLintAuto>
       <bAutoGenD>0</bAutoGenD>
-      <LntExFlags>0</LntExFlags>
-      <pMisraName></pMisraName>
-      <pszMrule></pszMrule>
+      <LntExFlags>32</LntExFlags>
+      <pMisraName>.\Lint\MISRA_C_1998_Config.lnt</pMisraName>
+      <pszMrule>MISRA_C_1998_Config</pszMrule>
       <pSingCmds></pSingCmds>
       <pMultCmds></pMultCmds>
-      <pMisraNamep></pMisraNamep>
-      <pszMrulep></pszMrulep>
+      <pMisraNamep>.\Lint\MISRA_CPP_2008_Config.lnt</pMisraNamep>
+      <pszMrulep>MISRA_CPP_2008_Config</pszMrulep>
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
     </TargetOption>

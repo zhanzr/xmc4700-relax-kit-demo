@@ -1,8 +1,3 @@
-#include <cstdint>
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -27,7 +22,7 @@
 #include "custom_def.h"
 #include "led.h"
 
-#if defined(__cplusplus) && (__cplusplus >= 201103)
+#if defined(__cplusplus) && (__cplusplus <= 201103)
 namespace std {
 	typedef decltype(nullptr) nullptr_t;
 }
