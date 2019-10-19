@@ -62,6 +62,58 @@ void dump_bin(uint8_t* data, uint32_t len, string topics) {
 	cout << dec << endl;
 }
 
+void test_raw_string(void) {
+	
+const string raw_string = R"raw(
+<html>
+
+<head>
+<title>XMC4700/XMC4800 RelaxKit Web Server</title>
+</head>
+
+<body>
+
+<script>
+function change1(){ 
+top.frames.ifr.location.href="./led1.html?LED1=OnOff"; 
+} 
+
+function change3(){ 
+top.frames.ifr.location.href="./dts.html?DTS=Console"; 
+} 
+</script>
+
+<div align=center>
+<p font=16>XMC4700 RelxKit Web Server Demo</p>
+<p>Press button to control board</p>
+<p/><a href="404.htm"><img src="img_sics.gif"></img></a>
+
+<button type="button" onclick="change1()">Switch LED1 </button>
+<button type="button" onclick="change3()">Die Temperature</button>
+<iframe id="ifr" name="ifr" frameborder="0" scrolling="no" width="0" height="0"></iframe> 
+</div>
+
+</body>
+
+</html>
+)raw";
+
+	cout << raw_string << endl;	
+	string normal_string = "(hello normal string\ntest\t\x41)";
+	cout << normal_string << endl;		
+	HAL_Delay(2000);
+}
+
+void test_cpp_string(void) {
+#if defined(__cplusplus) && (__cplusplus >= 201402)	
+	string cpp_string = "(hello cpp string\ntest\t\x41)"s;
+	cout << cpp_string << endl;	
+#endif	
+	string cstyle_string = "(hello cstyle string\ntest\t\x41)";
+	cout << cstyle_string << endl;		
+	HAL_Delay(2000);
+}
+
 void test_normal_ptr(void) {
 	cout << __func__ << endl;
 	
@@ -506,22 +558,25 @@ int main(void) {
 		
 		XMC_SCU_StartTemperatureMeasurement();
 
-		test_normal_ptr();
-		cout << endl;	
-		test_auto_ptr();	
-		cout << endl;	
+//		test_normal_ptr();
+//		cout << endl;	
+//		test_auto_ptr();	
+//		cout << endl;	
 		
-		HAL_Delay(4000);
-
+		test_raw_string();
+		cout << endl;	
+		HAL_Delay(2000);
+		test_cpp_string();
+		cout << endl;	
 #if defined(__cplusplus) && (__cplusplus >= 201103)
-		test_unique_ptr();	
-		cout << endl;	
-		test_shared_ptr();	
-		cout << endl;	
-		test_weak_ptr();	
-		cout << endl;			
+//		test_unique_ptr();	
+//		cout << endl;	
+//		test_shared_ptr();	
+//		cout << endl;	
+//		test_weak_ptr();	
+//		cout << endl;			
 		
-		HAL_Delay(4000);
+		HAL_Delay(2000);
 #endif		
 	}
 }
