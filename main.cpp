@@ -21,6 +21,7 @@
 
 #include "custom_def.h"
 #include "led.h"
+#include "utils.h"
 
 #if defined(__cplusplus) && (__cplusplus <= 201103)
 namespace std {
@@ -35,16 +36,6 @@ typedef decltype(nullptr) nullptr_t;
 using namespace std;
 
 __IO uint8_t g_tmp_uart_rx_buf;
-__IO uint32_t g_ticks;
-
-uint32_t HAL_GetTick(void) { return g_ticks; }
-
-void HAL_Delay(uint32_t t) {
-  uint32_t d = t + g_ticks;
-  while (d > g_ticks) {
-    __NOP();
-  }
-}
 
 extern uint32_t __Vectors;
 
@@ -674,18 +665,19 @@ int main(void) {
     //		test_auto_ptr();
     //		cout << endl;
 
-    test_hash_str_djb2();
-    cout << endl;
-    HAL_Delay(2000);
-    test_hash_str_sdbm();
-    cout << endl;
-		HAL_Delay(2000);
-    test_hash_str_lose_lose();
-    cout << endl;		
-		HAL_Delay(2000);
-    test_hash_std();
-    cout << endl;	
+//    test_hash_str_djb2();
+//    cout << endl;
+//    HAL_Delay(2000);
+//    test_hash_str_sdbm();
+//    cout << endl;
+//		HAL_Delay(2000);
+//    test_hash_str_lose_lose();
+//    cout << endl;		
+//		HAL_Delay(2000);
+//    test_hash_std();
+//    cout << endl;	
 
+		fpu_perfmance_test();
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
     //		cout << endl;

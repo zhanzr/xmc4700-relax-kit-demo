@@ -407,6 +407,16 @@
               <FileType>1</FileType>
               <FilePath>.\stdio_impl.c</FilePath>
             </File>
+            <File>
+              <FileName>fpu_perf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\fpu_perf.c</FilePath>
+            </File>
+            <File>
+              <FileName>utilis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utilis.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -607,7 +617,7 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>1</RvdsVP>
+            <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <hadIRAM2>1</hadIRAM2>
             <hadIROM2>1</hadIROM2>
@@ -736,7 +746,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>7</Optim>
+            <Optim>5</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -831,6 +841,16 @@
               <FileType>1</FileType>
               <FilePath>.\stdio_impl.c</FilePath>
             </File>
+            <File>
+              <FileName>fpu_perf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\fpu_perf.c</FilePath>
+            </File>
+            <File>
+              <FileName>utilis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utilis.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -860,6 +880,13 @@
     <apis/>
     <components>
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="5.3.0" condition="ARMv6_7_8-M Device">
+        <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
+        <targetInfos>
+          <targetInfo name="application"/>
+          <targetInfo name="flash"/>
+        </targetInfos>
+      </component>
+      <component Cclass="CMSIS" Cgroup="DSP" Cvariant="Library" Cvendor="ARM" Cversion="1.7.0" condition="CMSIS DSP">
         <package name="CMSIS" schemaVersion="1.3" url="http://www.keil.com/pack/" vendor="ARM" version="5.6.0"/>
         <targetInfos>
           <targetInfo name="application"/>
