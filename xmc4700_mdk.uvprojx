@@ -417,6 +417,16 @@
               <FileType>1</FileType>
               <FilePath>.\utilis.c</FilePath>
             </File>
+            <File>
+              <FileName>crc_perf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc_perf.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32_algorithm_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc32_algorithm_1.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -642,7 +652,7 @@
             <Ir2Chk>0</Ir2Chk>
             <Ra1Chk>0</Ra1Chk>
             <Ra2Chk>0</Ra2Chk>
-            <Ra3Chk>0</Ra3Chk>
+            <Ra3Chk>1</Ra3Chk>
             <Im1Chk>1</Im1Chk>
             <Im2Chk>0</Im2Chk>
             <OnChipMemories>
@@ -770,7 +780,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>__ELF__</Define>
+              <Define>XMC_ASSERT_ENABLE, FCE</Define>
               <Undefine></Undefine>
               <IncludePath>.</IncludePath>
             </VariousControls>
@@ -851,6 +861,16 @@
               <FileType>1</FileType>
               <FilePath>.\utilis.c</FilePath>
             </File>
+            <File>
+              <FileName>crc_perf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc_perf.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32_algorithm_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc32_algorithm_1.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -901,6 +921,13 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="2.2.4" condition="XMC4 CMSIS">
+        <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
+        <targetInfos>
+          <targetInfo name="application"/>
+          <targetInfo name="flash"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="XMClib" Csub="FCE" Cvendor="Infineon" Cversion="2.1.24" condition="XMC4 CMSIS SCU">
         <package license="License/CMSIS_END_USER_LICENSE_AGREEMENT.txt" name="XMC4000_DFP" schemaVersion="1.2" supportContact="http://www.infineon.com/cms/en/corporate/company/contact/support/index.html" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.13.0"/>
         <targetInfos>
           <targetInfo name="application"/>

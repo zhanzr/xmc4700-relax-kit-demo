@@ -21,7 +21,7 @@
 
 #include "custom_def.h"
 #include "led.h"
-#include "utils.h"
+#include "utilis.h"
 
 #if defined(__cplusplus) && (__cplusplus <= 201103)
 namespace std {
@@ -677,7 +677,8 @@ int main(void) {
 //    test_hash_std();
 //    cout << endl;	
 
-		fpu_perfmance_test();
+//		fpu_perfmance_test();
+		crc_perfmance_test();
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
     //		cout << endl;

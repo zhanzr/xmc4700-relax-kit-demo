@@ -21,6 +21,9 @@ uint32_t HAL_GetTick(void);
 void HAL_Delay(uint32_t t);
 	
 void fpu_perfmance_test(void);
+void crc_perfmance_test(void);
+
+uint32_t crc32_algorithm_1(uint32_t * crc32, uint32_t ** const pp_src, uint32_t len);
 
 #ifdef __cplusplus
 }

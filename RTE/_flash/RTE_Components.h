@@ -20,6 +20,8 @@
 #define RTE_DEVICE
 /*  Infineon::Device:Startup:2.2.4 */
 #define RTE_DEVICE_STARTUP
+/*  Infineon::Device:XMClib:FCE:2.1.24 */
+#define RTE_DEVICE_XMCLIB_FCE
 /*  Infineon::Device:XMClib:GPIO:2.1.24 */
 #define RTE_DEVICE_XMCLIB_GPIO
 /*  Infineon::Device:XMClib:SCU:2.1.24 */
