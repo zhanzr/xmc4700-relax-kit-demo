@@ -37,6 +37,12 @@
 /*  Keil.ARM Compiler::Compiler:I/O:TTY:User:1.2.0 */
 #define RTE_Compiler_IO_TTY             /* Compiler I/O: TTY */
           #define RTE_Compiler_IO_TTY_User        /* Compiler I/O: TTY User */
+/*  Keil::Data Exchange:JSON:Jansson:2.7.0 */
+#define JANSSON
+/*  MDK-Packs::Data Exchange:JSON:cJSON:1.7.7 */
+#define RTE_DataExchange_JSON_cJSON     /* cJSON */
+/*  MDK-Packs::Data Exchange:JSON:parson:0.0.0 */
+#define RTE_DataExchange_JSON_parson    /* parson */
 
 
 #endif /* RTE_COMPONENTS_H */

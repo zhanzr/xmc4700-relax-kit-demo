@@ -432,6 +432,11 @@
               <FileType>1</FileType>
               <FilePath>.\crc32_algorithm_2.c</FilePath>
             </File>
+            <File>
+              <FileName>base64.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\base64.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -449,6 +454,9 @@
         </Group>
         <Group>
           <GroupName>::Compiler</GroupName>
+        </Group>
+        <Group>
+          <GroupName>::Data Exchange</GroupName>
         </Group>
         <Group>
           <GroupName>::Device</GroupName>
@@ -881,6 +889,11 @@
               <FileType>1</FileType>
               <FilePath>.\crc32_algorithm_2.c</FilePath>
             </File>
+            <File>
+              <FileName>base64.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\base64.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -898,6 +911,9 @@
         </Group>
         <Group>
           <GroupName>::Compiler</GroupName>
+        </Group>
+        <Group>
+          <GroupName>::Data Exchange</GroupName>
         </Group>
         <Group>
           <GroupName>::Device</GroupName>
@@ -986,6 +1002,27 @@
           <targetInfo name="flash"/>
         </targetInfos>
       </component>
+      <component Cclass="Data Exchange" Cgroup="JSON" Csub="Jansson" Cvendor="Keil" Cversion="2.7.0" condition="ARMCC">
+        <package license="doc\license.txt" name="Jansson" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="application"/>
+          <targetInfo name="flash"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Data Exchange" Cgroup="JSON" Csub="cJSON" Cvendor="MDK-Packs" Cversion="1.7.7" condition="ARMCC">
+        <package license="LICENSE.txt" name="cJSON" schemaVersion="1.4" url="https://github.com/MDK-Packs/Pack/raw/master/cJSON/" vendor="MDK-Packs" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="application"/>
+          <targetInfo name="flash"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Data Exchange" Cgroup="JSON" Csub="parson" Cvendor="MDK-Packs" Cversion="0.0.0" condition="ARMCC">
+        <package license="LICENSE.txt" name="Azure_IoT" schemaVersion="1.4" url="https://github.com/MDK-Packs/Pack/raw/master/Azure_IoT/" vendor="MDK-Packs" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="application"/>
+          <targetInfo name="flash"/>
+        </targetInfos>
+      </component>
     </components>
     <files>
       <file attr="config" category="header" name="Config\EventRecorderConf.h" version="1.1.0">
@@ -993,6 +1030,15 @@
         <component Cbundle="ARM Compiler" Cclass="Compiler" Cgroup="Event Recorder" Cvariant="DAP" Cvendor="Keil" Cversion="1.4.0" condition="Cortex-M Device"/>
         <package name="ARM_Compiler" schemaVersion="1.4.9" url="http://www.keil.com/pack/" vendor="Keil" version="1.6.1"/>
         <targetInfos/>
+      </file>
+      <file attr="config" category="source" name="src\jansson_config.c" version="2.7.0">
+        <instance index="0">RTE\Data_Exchange\jansson_config.c</instance>
+        <component Cclass="Data Exchange" Cgroup="JSON" Csub="Jansson" Cvendor="Keil" Cversion="2.7.0" condition="ARMCC"/>
+        <package license="doc\license.txt" name="Jansson" schemaVersion="1.0" url="http://www.keil.com/pack/" vendor="Keil" version="1.0.0"/>
+        <targetInfos>
+          <targetInfo name="application"/>
+          <targetInfo name="flash"/>
+        </targetInfos>
       </file>
       <file attr="config" category="header" condition="XMC4700_F144" name="RTE_Driver\Config\XMC4800_F144\RTE_Device.h" version="1.1.0">
         <instance index="0">RTE\Device\XMC4700-F144x2048\RTE_Device.h</instance>
