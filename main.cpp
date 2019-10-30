@@ -584,6 +584,27 @@ void test_hash_std(void) {
   cout << dec << endl;	
 }
 
+void base64_test(void) {
+	cout << __func__ << endl;
+	string tmp_test_in = "any carnal pleasure.";
+	cout << tmp_test_in << endl;
+	
+	// Encode
+	size_t out_len = 0;
+	uint8_t* tmp_test_out = base64_encode((const uint8_t*)tmp_test_in.c_str(), tmp_test_in.size(), &out_len);
+	cout << tmp_test_out << endl;
+	
+	// Decode
+	size_t decode_len = 0;
+	uint8_t* tmp_test_decode = base64_decode((const uint8_t*)tmp_test_out, out_len, &decode_len);
+	cout << tmp_test_decode << endl;
+	
+	free(tmp_test_decode);
+	free(tmp_test_out);
+	while(true) {
+	}
+}
+
 int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
@@ -678,7 +699,8 @@ int main(void) {
 //    cout << endl;	
 
 //		fpu_perfmance_test();
-		crc_perfmance_test();
+//		crc_perfmance_test();
+		base64_test();
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
     //		cout << endl;

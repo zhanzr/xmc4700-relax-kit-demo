@@ -1,6 +1,7 @@
 #ifndef __UTILS_H__
 #define	__UTILS_H__
 
+
 #define PASS              0
 #define FAIL              1
 
@@ -17,6 +18,8 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+	
+#include "base64.h"
 	
 uint32_t HAL_GetTick(void);
 void HAL_Delay(uint32_t t);
