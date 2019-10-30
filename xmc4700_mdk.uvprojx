@@ -427,6 +427,11 @@
               <FileType>1</FileType>
               <FilePath>.\crc32_algorithm_1.c</FilePath>
             </File>
+            <File>
+              <FileName>crc32_algorithm_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc32_algorithm_2.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -870,6 +875,11 @@
               <FileName>crc32_algorithm_1.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\crc32_algorithm_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32_algorithm_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc32_algorithm_2.c</FilePath>
             </File>
           </Files>
         </Group>

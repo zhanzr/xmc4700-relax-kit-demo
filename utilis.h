@@ -11,7 +11,8 @@
 #define DELTA             (int32_t)0x00001000       // Max residual error for sines, with 6 cycle precision:           
 						
 /* Number of calculation loops (depends on clock config) */
-#define LOOP_NB           (uint32_t)((170000000 / 750) / ARRAY_SIZE)
+//#define LOOP_NB           (uint32_t)((170000000 / 750) / ARRAY_SIZE)
+#define LOOP_NB	5000U
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,6 +26,8 @@ void crc_perfmance_test(void);
 
 uint32_t crc32_algorithm_1(uint32_t * crc32, uint32_t ** const pp_src, uint32_t len);
 
+uint32_t mss_ethernet_crc(const uint8_t *data, uint32_t data_length);
+		
 #ifdef __cplusplus
 }
 #endif

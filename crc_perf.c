@@ -57,7 +57,7 @@ uint8_t test_vec5[]= {0xAA, 0xBB }; // 0xF90A
  *          : XOR with final CRC enabled
  * Initial seedvalue: 0U
  */
-XMC_FCE_t FCE_config00 = {.kernel_ptr =
+XMC_FCE_t g_FCE_0 = {.kernel_ptr =
                               FCE_KE0, /**< FCE Kernel Pointer */
                           .fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET,
                           .fce_cfg_update.config_refout = XMC_FCE_REFOUT_RESET,
@@ -70,7 +70,7 @@ XMC_FCE_t FCE_config00 = {.kernel_ptr =
  *          : XOR with final CRC disabled
  * Initial seedvalue: 0U
  */
-XMC_FCE_t FCE_config1 = {.kernel_ptr =
+XMC_FCE_t g_FCE_1 = {.kernel_ptr =
                              FCE_KE1, /**< FCE Kernel Pointer */
                          .fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET,
                          .fce_cfg_update.config_refout = XMC_FCE_REFOUT_RESET,
@@ -95,7 +95,7 @@ XMC_FCE_t g_FCE_2 = {.kernel_ptr = FCE_KE2, /**< FCE Kernel Pointer */
  *          : XOR with final CRC disabled
  * Initial seedvalue: 0U
  */
-XMC_FCE_t FCE_config3 = {.kernel_ptr = FCE_KE3, /**< FCE Kernel Pointer */
+XMC_FCE_t g_FCE_3 = {.kernel_ptr = FCE_KE3, /**< FCE Kernel Pointer */
                          .fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET,
                          .fce_cfg_update.config_refout = XMC_FCE_REFOUT_RESET,
                          .fce_cfg_update.config_xsel = XMC_FCE_INVSEL_RESET,
@@ -191,10 +191,10 @@ void crc_perfmance_test(void) {
   XMC_FCE_Enable();
 
   /* Initialize the FCE Configuration */
-  //	XMC_FCE_Init(&FCE_config0);
-  XMC_FCE_Init(&FCE_config1);
+//	XMC_FCE_Init(&FCE_config0);
+  XMC_FCE_Init(&g_FCE_1);
   XMC_FCE_Init(&g_FCE_2);
-  XMC_FCE_Init(&FCE_config3);
+  XMC_FCE_Init(&g_FCE_3);
 
   temp_mismatch = 0;
 
@@ -205,313 +205,362 @@ void crc_perfmance_test(void) {
 
   XMC_FCE_t *p_fce;
 
-//  p_fce = &FCE_config00;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+	
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+	p_fce->seedvalue = 0;
+	
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config01;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+	p_fce->seedvalue = 0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config02;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+	p_fce->seedvalue = 0;								 
+	XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config03;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+	p_fce->seedvalue = 0;								 
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config04;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+	p_fce->seedvalue = 0;								 
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config05;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+	p_fce->seedvalue = 0;								 
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config06;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+	p_fce->seedvalue = 0;								 
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config07;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+	p_fce->seedvalue = 0;								 
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config08;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+	p_fce->seedvalue = UINT32_MAX;
+	XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config09;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config0A;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config0B;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config0C;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config0D;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config0E;
-//  XMC_FCE_Init(&FCE_config0E);
-//  XMC_FCE_CalculateCRC32(&FCE_config0E, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(&FCE_config0E, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_RESET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  p_fce = &FCE_config0F;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data1,
-//                         strlen((const char *)(usecase1_Data1)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+	p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+	p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_SET;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data1,
+                         strlen((const char *)(usecase1_Data1)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X %08X\n", CRC_result, Read_CRCResult32);
 
-//  printf("\n");
-//  p_fce = &FCE_config00;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  printf("\n");
+												 
+	CRC_result = mss_ethernet_crc((uint8_t*)usecase1_Data1, strlen((const char *)(usecase1_Data1)));
+  printf("Soft CRC32 IEEE802.3 Result: %08X\n", CRC_result);
+  printf("\n");
+												 
+												 p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config01;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config02;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config03;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config04;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config05;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config06;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config07;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config08;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config09;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config0A;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config0B;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config0C;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config0D;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config0E;
-//  XMC_FCE_Init(&FCE_config0E);
-//  XMC_FCE_CalculateCRC32(&FCE_config0E, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(&FCE_config0E, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
 
-//  p_fce = &FCE_config0F;
-//  XMC_FCE_Init(p_fce);
-//  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
-//                         strlen((const char *)(usecase1_Data4)),
-//                         &Read_CRCResult32);
-//  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
-//  printf("\n");
-//  /* Step 2: Performs a CRC32 check using Kernel 1 on Usecase1_Data1
-//   * Seed value is set to 0. CRC check comparison is enabled
-//   * CRC checksum is using result from earlier CRC check
-//   * No CRC mismatch found.
-//   * CRC = 0xbb8d49a6, RES = 0xbb8d49a6
-//   */
-//  XMC_FCE_EnableOperation(&FCE_config1, XMC_FCE_CFG_CONFIG_CCE);
+  p_fce = &g_FCE_0;
+  XMC_FCE_Init(p_fce);
+  XMC_FCE_CalculateCRC32(p_fce, (uint32_t *)usecase1_Data4,
+                         strlen((const char *)(usecase1_Data4)),
+                         &Read_CRCResult32);
+  XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
+  printf("\n");
+  /* Step 2: Performs a CRC32 check using Kernel 1 on Usecase1_Data1
+   * Seed value is set to 0. CRC check comparison is enabled
+   * CRC checksum is using result from earlier CRC check
+   * No CRC mismatch found.
+   * CRC = 0xbb8d49a6, RES = 0xbb8d49a6
+   */
+  XMC_FCE_EnableOperation(&g_FCE_1, XMC_FCE_CFG_CONFIG_CCE);
 
-//  /* Used in 32bit FCE, therefore temp_length is divided by 4*/
-//  temp_length = (strlen((char *)(usecase1_Data1))) >> 2;
-//  XMC_FCE_UpdateCRCCheck(&FCE_config1, Read_CRCResult32);
-//  XMC_FCE_UpdateLength(&FCE_config1, temp_length);
+  /* Used in 32bit FCE, therefore temp_length is divided by 4*/
+  temp_length = (strlen((char *)(usecase1_Data1))) >> 2;
+  XMC_FCE_UpdateCRCCheck(&g_FCE_1, Read_CRCResult32);
+  XMC_FCE_UpdateLength(&g_FCE_1, temp_length);
 
-//  XMC_FCE_InitializeSeedValue(&FCE_config1, 0);
-//  fce_status = XMC_FCE_CalculateCRC32(&FCE_config1, (uint32_t *)usecase1_Data1,
-//                                      strlen((const char *)(usecase1_Data1)),
-//                                      &Read_CRCResult32);
-//  while (fce_status == XMC_FCE_STATUS_ERROR) {
+  XMC_FCE_InitializeSeedValue(&g_FCE_1, 0);
+  fce_status = XMC_FCE_CalculateCRC32(&g_FCE_1, (uint32_t *)usecase1_Data1,
+                                      strlen((const char *)(usecase1_Data1)),
+                                      &Read_CRCResult32);
+  while (fce_status == XMC_FCE_STATUS_ERROR) {
 
-//    Error_Handler();
-//  }
+    Error_Handler();
+  }
 
-//  XMC_FCE_GetCRCResult(&FCE_config1, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
-//  if (XMC_FCE_GetEventStatus(&FCE_config1, XMC_FCE_STS_MISMATCH_CRC)) {
-//    temp_mismatch += 1U;
-//  }
+  XMC_FCE_GetCRCResult(&g_FCE_1, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
+  if (XMC_FCE_GetEventStatus(&g_FCE_1, XMC_FCE_STS_MISMATCH_CRC)) {
+    temp_mismatch += 1U;
+  }
 
-//  /* Step 3: Performs a CRC32 check using Kernel 1 on Usecase1_Data2
-//   * Seed value is set to 0. CRC check comparison is enabled
-//   * CRC checksum is using result from earlier CRC check
-//   * CRC mismatch found and Length Error found.
-//   * CRC = 0x8f2d7440, RES = 0x8f2d7440
-//   */
-//  XMC_FCE_InitializeSeedValue(&FCE_config1, 0);
-//  XMC_FCE_UpdateLength(&FCE_config1, temp_length);
+  /* Step 3: Performs a CRC32 check using Kernel 1 on Usecase1_Data2
+   * Seed value is set to 0. CRC check comparison is enabled
+   * CRC checksum is using result from earlier CRC check
+   * CRC mismatch found and Length Error found.
+   * CRC = 0x8f2d7440, RES = 0x8f2d7440
+   */
+  XMC_FCE_InitializeSeedValue(&g_FCE_1, 0);
+  XMC_FCE_UpdateLength(&g_FCE_1, temp_length);
 
-//  fce_status = XMC_FCE_CalculateCRC32(&FCE_config1, (uint32_t *)usecase1_Data2,
-//                                      strlen((const char *)(usecase1_Data2)),
-//                                      &Read_CRCResult32);
-//  while (fce_status == XMC_FCE_STATUS_ERROR) {
+  fce_status = XMC_FCE_CalculateCRC32(&g_FCE_1, (uint32_t *)usecase1_Data2,
+                                      strlen((const char *)(usecase1_Data2)),
+                                      &Read_CRCResult32);
+  while (fce_status == XMC_FCE_STATUS_ERROR) {
 
-//    Error_Handler();
-//  }
+    Error_Handler();
+  }
 
-//  XMC_FCE_GetCRCResult(&FCE_config1, &CRC_result);
-//  printf("Result: %08X\n", CRC_result);
-//  if (XMC_FCE_GetEventStatus(&FCE_config1, XMC_FCE_STS_MISMATCH_CRC)) {
-//    temp_mismatch += 2U;
-//  }
+  XMC_FCE_GetCRCResult(&g_FCE_1, &CRC_result);
+  printf("Result: %08X\n", CRC_result);
+  if (XMC_FCE_GetEventStatus(&g_FCE_1, XMC_FCE_STS_MISMATCH_CRC)) {
+    temp_mismatch += 2U;
+  }
 
   /* Step 4: Performs a CRC16 check using Kernel 2 on Usecase1_Data3
    * Seed value is set to 0.
@@ -599,8 +648,8 @@ void crc_perfmance_test(void) {
   /* Step 5: Performs a CRC8 check using Kernel 3 on Usecase1_Data4
    * Seed value is set to 0. CRC = 0xbe, RES = 0xbe
    */
-  XMC_FCE_InitializeSeedValue(&FCE_config3, 0);
-  fce_status = XMC_FCE_CalculateCRC8(&FCE_config3, (uint8_t *)usecase1_Data3,
+  XMC_FCE_InitializeSeedValue(&g_FCE_3, 0);
+  fce_status = XMC_FCE_CalculateCRC8(&g_FCE_3, (uint8_t *)usecase1_Data3,
                                      strlen((const char *)(usecase1_Data3)),
                                      &Read_CRCResult8);
   while (fce_status == XMC_FCE_STATUS_ERROR) {
@@ -611,12 +660,48 @@ void crc_perfmance_test(void) {
 
   /* Step 6: Trigger a mismatch flag
    */
-  flagstatus = XMC_FCE_GetEventStatus(&FCE_config3, XMC_FCE_STS_MISMATCH_CRC);
+  flagstatus = XMC_FCE_GetEventStatus(&g_FCE_3, XMC_FCE_STS_MISMATCH_CRC);
   while (flagstatus) {
     /* endless loop if mismatch flag is triggered */
   }
-  XMC_FCE_TriggerMismatch(&FCE_config3, XMC_FCE_CTR_MISMATCH_CRC);
-  flagstatus = XMC_FCE_GetEventStatus(&FCE_config3, XMC_FCE_STS_MISMATCH_CRC);
+  XMC_FCE_TriggerMismatch(&g_FCE_3, XMC_FCE_CTR_MISMATCH_CRC);
+  flagstatus = XMC_FCE_GetEventStatus(&g_FCE_3, XMC_FCE_STS_MISMATCH_CRC);
+	
+	//CRC32 Performance benchmark
+	{
+		uint32_t start_ticks;
+		uint32_t end_ticks;
+
+		/*################### Calculation using Hardware FCE0 #############*/
+		start_ticks = HAL_GetTick();
+		for (uint32_t i = 0; i < LOOP_NB; i++) {		
+			p_fce = &g_FCE_0;
+			p_fce->fce_cfg_update.config_refin = XMC_FCE_REFIN_SET;
+			p_fce->fce_cfg_update.config_refout = XMC_FCE_REFIN_SET;
+			p_fce->fce_cfg_update.config_xsel = XMC_FCE_REFIN_RESET;
+			p_fce->seedvalue = UINT32_MAX;			
+			XMC_FCE_Init(p_fce);
+			XMC_FCE_CalculateCRC32Ex(p_fce, (const uint8_t*)usecase1_Data3,
+														 strlen((const char *)(usecase1_Data3)),
+														 &Read_CRCResult32);
+			XMC_FCE_GetCRCResult(p_fce, &CRC_result);
+		}
+		end_ticks = HAL_GetTick();
+		printf("Result: %08X [%u-%u]=%u\n", CRC_result, end_ticks, start_ticks, end_ticks-start_ticks);
+
+		printf("\n");
+
+		/*################### Calculation using Software CRC Algorithm 2 #############*/		
+		start_ticks = HAL_GetTick();							 
+		for (uint32_t i = 0; i < LOOP_NB; i++) {
+			CRC_result = mss_ethernet_crc((uint8_t*)usecase1_Data3, strlen((const char *)(usecase1_Data3)));
+		}		
+		end_ticks = HAL_GetTick();
+		printf("Soft CRC32 IEEE802.3 Result: %08X [%u-%u]=%u\n", CRC_result, end_ticks, start_ticks, end_ticks-start_ticks);
+		printf("\n");		
+	}
+	
+	
   while (flagstatus) {
     printf("mismatch flag is triggered\n");
     Error_Handler();
