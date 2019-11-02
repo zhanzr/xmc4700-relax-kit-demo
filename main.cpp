@@ -584,23 +584,76 @@ void test_hash_std(void) {
   cout << dec << endl;	
 }
 
-void base64_test(void) {
-	cout << __func__ << endl;
-	string tmp_test_in = "any carnal pleasure.";
-	cout << tmp_test_in << endl;
+// Test Vector of Base64 Encoding according to https://tools.ietf.org/html/rfc4648
+//10.  Test Vectors
+
+//   BASE64("") = ""
+
+//   BASE64("f") = "Zg=="
+
+//   BASE64("fo") = "Zm8="
+
+//   BASE64("foo") = "Zm9v"
+
+//   BASE64("foob") = "Zm9vYg=="
+
+//   BASE64("fooba") = "Zm9vYmE="
+
+//   BASE64("foobar") = "Zm9vYmFy"
+
+void base64_test_case(string in, string ref_out) {
+	cout <<"input:" << in << ",ref out:" << ref_out << ",len:" << ref_out.size() << endl;
 	
 	// Encode
 	size_t out_len = 0;
-	uint8_t* tmp_test_out = base64_encode((const uint8_t*)tmp_test_in.c_str(), tmp_test_in.size(), &out_len);
-	cout << tmp_test_out << endl;
+	uint8_t* tmp_test_out = base64_encode((const uint8_t*)in.c_str(), in.size(), &out_len);
+	string tmp_test_out_str((const char*)tmp_test_out, out_len);
+	cout << "encoded:" << tmp_test_out_str << ",len:" << tmp_test_out_str.size() << endl;
+	XMC_ASSERT("Equal", (0 == tmp_test_out_str.compare(ref_out)));
 	
 	// Decode
 	size_t decode_len = 0;
 	uint8_t* tmp_test_decode = base64_decode((const uint8_t*)tmp_test_out, out_len, &decode_len);
-	cout << tmp_test_decode << endl;
+	string tmp_test_dec_str((const char*)tmp_test_decode);
+	cout << "decoded:" << tmp_test_dec_str << endl;
+	XMC_ASSERT("Equal", (0 == tmp_test_dec_str.compare(in)));
 	
 	free(tmp_test_decode);
 	free(tmp_test_out);
+}
+
+void base64_test(void) {
+	cout << __func__ << endl;
+	auto test_step = 0;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string(""), string(""));
+	test_step ++;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string("f"), string("Zg=="));
+	test_step ++;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string("fo"), string("Zm8="));
+	test_step ++;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string("foo"), string("Zm9v"));
+	test_step ++;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string("foob"), string("Zm9vYg=="));
+	test_step ++;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string("fooba"), string("Zm9vYmE="));
+	test_step ++;
+	
+	cout << endl << "test step:" << test_step << endl;
+	base64_test_case(string("foobar"), string("Zm9vYmFy"));
+	test_step ++;
+	
 	while(true) {
 	}
 }

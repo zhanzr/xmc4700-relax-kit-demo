@@ -21,6 +21,8 @@ void ttywrch (int ch) {
 }
 
 void XMC_AssertHandler(const char *const msg, const char *const file, uint32_t line) {
-	XMC_DEBUG("%s %s %u\n", msg, file, line);
-  while(1);
+	XMC_DEBUG("Assert Failed: %s, %s, %u\n", msg, file, line);
+  while(1) {
+		;
+	}
 }

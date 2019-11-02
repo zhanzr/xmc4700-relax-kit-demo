@@ -793,7 +793,7 @@
             <v6Rtti>0</v6Rtti>
             <VariousControls>
               <MiscControls></MiscControls>
-              <Define>XMC_ASSERT_ENABLE, FCE</Define>
+              <Define>XMC_ASSERT_ENABLE, XMC_DEBUG_ENABLE</Define>
               <Undefine></Undefine>
               <IncludePath>.</IncludePath>
             </VariousControls>

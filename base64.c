@@ -31,8 +31,16 @@ uint8_t *base64_encode(const uint8_t *src, size_t len, size_t *out_len)
 	uint8_t *out, *pos;
 	const uint8_t *end, *in;
 	size_t olen;
-	int line_len;
+//	int line_len;
 
+	//special case
+	if(0 == len) {
+		*out_len = 0;
+		out = malloc((*out_len) + 1);
+		*out = NULL;
+		return out;
+	}
+	
 	olen = len * 4 / 3 + 4;		/* 3-byte blocks to 4-byte */
 	olen += olen / 72;			/* line feeds */
 	olen++;						/* nul termination */
@@ -47,18 +55,18 @@ uint8_t *base64_encode(const uint8_t *src, size_t len, size_t *out_len)
 	end = src + len;
 	in = src;
 	pos = out;
-	line_len = 0;
+//	line_len = 0;
 	while (end - in >= 3) {
 		*pos++ = base64_table[(in[0] >> 2) & 0x3f];
 		*pos++ = base64_table[(((in[0] & 0x03) << 4) | (in[1] >> 4)) & 0x3f];
 		*pos++ = base64_table[(((in[1] & 0x0f) << 2) | (in[2] >> 6)) & 0x3f];
 		*pos++ = base64_table[in[2] & 0x3f];
 		in += 3;
-		line_len += 4;
-		if (line_len >= 72) {
-			*pos++ = '\n';
-			line_len = 0;
-		}
+//		line_len += 4;
+//		if (line_len >= 72) {
+//			*pos++ = '\n';
+//			line_len = 0;
+//		}
 	}
 
 	if (end - in) {
@@ -71,12 +79,12 @@ uint8_t *base64_encode(const uint8_t *src, size_t len, size_t *out_len)
 			*pos++ = base64_table[((in[1] & 0x0f) << 2) & 0x3f];
 		}
 		*pos++ = '=';
-		line_len += 4;
+//		line_len += 4;
 	}
 
-	if (line_len) {
-		*pos++ = '\n';
-	}
+//	if (line_len) {
+//		*pos++ = '\n';
+//	}
 
 	*pos = '\0';
 	if (out_len) {
@@ -100,7 +108,15 @@ uint8_t *base64_decode(const uint8_t *src, size_t len, size_t *out_len)
 	uint8_t dtable[256], *out, *pos, block[4], tmp;
 	size_t i, count, olen;
 	int pad = 0;
-
+	
+	//special case
+	if(0 == len) {
+		*out_len = 0;
+		out = malloc((*out_len) + 1);
+		*out = NULL;
+		return out;
+	}
+	
 	memset(dtable, 0x80, 256);
 	for (i = 0; i < sizeof(base64_table) - 1; i++) {
 		dtable[base64_table[i]] = (uint8_t)i;
