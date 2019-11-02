@@ -37,6 +37,14 @@
 
 #include "fsdata.h"
 
+const char* file_name_404_htm = "/404.htm";
+const char* file_name_cgi_htm = "/cgi.htm";
+const char* file_name_data_ssi = "/data.ssi";
+const char* file_name_img_sics_gif = "/img_sics.gif";
+const char* file_name_index_htm = "/index.htm";
+const char* file_name_jquery_min_js = "/jquery.min.js";
+const char* file_name_smoothie_min_js = "/smoothie.min.js";
+
 /*-----------------------------------------------------------------------------------*/
 /*-----------------------------------------------------------------------------------*/
 err_t fs_open(struct fs_file *file, const char *name) {

@@ -60,8 +60,8 @@
 #define PHYCTRL1_OPMODE_DUPLEX  (0x0004U)
 
 /* PHY Identifier Registers */
-#define PHY_ID1                 (0x0022U)      /* KSZ8031 Device Identifier MSB */
-#define PHY_ID2                 (0x1560U)      /* KSZ8031 Device Identifier LSB */
+#define PHY_ID1                 (0x0022U)      /* KSZ8081 Device Identifier MSB */
+#define PHY_ID2                 (0x1560U)      /* KSZ8081 Device Identifier LSB */
 
 /*******************************************************************************
  * API IMPLEMENTATION
@@ -73,11 +73,15 @@ static int32_t XMC_ETH_PHY_IsDeviceIdValid(XMC_ETH_MAC_t *const eth_mac, uint8_t
   uint16_t phy_id2;
   XMC_ETH_PHY_STATUS_t status;
 
+	XMC_DEBUG("%s\n", __func__);
+	
   /* Check Device Identification. */
   if ((XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYIDR1, &phy_id1) == XMC_ETH_MAC_STATUS_OK) &&
       (XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYIDR2, &phy_id2) == XMC_ETH_MAC_STATUS_OK)) {
     if ((phy_id1 == PHY_ID1) && ((phy_id2 & (uint16_t)0xfff0) == PHY_ID2)) {
       status = XMC_ETH_PHY_STATUS_OK;
+			
+			XMC_DEBUG("phy_id1:%04X, phy_id2:%04X\n", phy_id1, phy_id2);
     } else {
       status = XMC_ETH_PHY_STATUS_ERROR_DEVICE_ID;
     }
@@ -93,6 +97,8 @@ int32_t XMC_ETH_PHY_Init(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr, const X
   uint32_t retries = 0xffffffffUL;
   int32_t status;
   uint16_t reg_bmcr;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   while (((status = XMC_ETH_PHY_IsDeviceIdValid(eth_mac, phy_addr)) != XMC_ETH_PHY_STATUS_OK) && --retries);
 
@@ -129,6 +135,8 @@ int32_t XMC_ETH_PHY_Reset(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
 {
   int32_t status;
   uint16_t reg_bmcr;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   /* Reset PHY*/
   status = (int32_t)XMC_ETH_MAC_WritePhy(eth_mac, phy_addr, REG_BMCR, BMCR_RESET);
@@ -146,6 +154,8 @@ int32_t XMC_ETH_PHY_Reset(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr)
 int32_t XMC_ETH_PHY_PowerDown(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
   int32_t status;
   uint16_t reg_bmcr;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   status = XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMCR, &reg_bmcr);
   if (status == (int32_t)XMC_ETH_PHY_STATUS_OK) {      
@@ -159,6 +169,8 @@ int32_t XMC_ETH_PHY_PowerDown(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
 int32_t XMC_ETH_PHY_ExitPowerDown(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
   int32_t status;
   uint16_t reg_bmcr;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   status = XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMCR, &reg_bmcr);  
   if (status == (int32_t)XMC_ETH_PHY_STATUS_OK) {      
@@ -170,6 +182,7 @@ int32_t XMC_ETH_PHY_ExitPowerDown(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr
 
 /* Get link status */
 XMC_ETH_LINK_STATUS_t XMC_ETH_PHY_GetLinkStatus(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
+//	XMC_DEBUG("%s\n", __func__);
   uint16_t val;
 
   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMSR, &val);
@@ -180,6 +193,8 @@ XMC_ETH_LINK_STATUS_t XMC_ETH_PHY_GetLinkStatus(XMC_ETH_MAC_t *const eth_mac, ui
 /* Get link speed */
 XMC_ETH_LINK_SPEED_t XMC_ETH_PHY_GetLinkSpeed(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
   uint16_t val;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYCTRL1, &val);
 
@@ -189,6 +204,8 @@ XMC_ETH_LINK_SPEED_t XMC_ETH_PHY_GetLinkSpeed(XMC_ETH_MAC_t *const eth_mac, uint
 /* Get link duplex settings */
 XMC_ETH_LINK_DUPLEX_t XMC_ETH_PHY_GetLinkDuplex(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
   uint16_t val;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_PHYCTRL1, &val);
 
@@ -197,7 +214,20 @@ XMC_ETH_LINK_DUPLEX_t XMC_ETH_PHY_GetLinkDuplex(XMC_ETH_MAC_t *const eth_mac, ui
 
 bool XMC_ETH_PHY_IsAutonegotiationCompleted(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
   uint16_t val;
+	
+	XMC_DEBUG("%s\n", __func__);
 
   XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, REG_BMSR, &val);
   return ((val & BMSR_ANEG_COMPL) == BMSR_ANEG_COMPL);
+}
+
+void lowlevel_dump_phy_reg(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr) {
+	for(uint8_t i=0; i<0x20; ++i) {
+		uint16_t reg_val;
+		if(XMC_ETH_MAC_ReadPhy(eth_mac, phy_addr, i, &reg_val) == XMC_ETH_MAC_STATUS_OK) {
+			XMC_DEBUG("[%02X]\t=\t%04X\n", i, reg_val);
+		} else {
+			XMC_ASSERT("read phy reg error", 0);
+		}
+	}
 }

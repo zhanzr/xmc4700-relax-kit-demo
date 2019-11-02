@@ -173,15 +173,28 @@ const char *ledcontrol_handler(int iIndex, int iNumParams, char *pcParam[], char
   XMC_UNUSED_ARG(iNumParams);
   XMC_UNUSED_ARG(pcParam);
 
-  if(strcmp(pcValue[0], "led1") == 0) {
+  if(strcmp(pcValue[0], "led0") == 0) {
     LED_Toggle(0);
-  } else {
+  } else if(strcmp(pcValue[0], "led1") == 0) {
     LED_Toggle(1);
-	
+  } else if(strcmp(pcValue[0], "led2") == 0) {
+    LED_Toggle(2);
+  } else if(strcmp(pcValue[0], "voltage") == 0) {
 		float tmp_V13 = XMC_SCU_POWER_GetEVR13Voltage();
 		float tmp_V33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%.1f %.1f\n", tmp_V13, tmp_V33);	
-  }
+		XMC_DEBUG("%.1f %.1f\n", tmp_V13, tmp_V33);	
+	} else if(strcmp(pcValue[0], "dump_phy") == 0) {
+		dump_phy_reg(&xnetif);
+	} else if(strcmp(pcValue[0], "get_dts") == 0) {
+		XMC_SCU_StartTemperatureMeasurement();		
+		XMC_DEBUG("t:%u\t", xTaskGetTickCount());
+		//T_DTS = (RESULT - 605) / 2.05 [°C]
+		uint32_t raw_dts_sample = XMC_SCU_GetTemperatureMeasurement();
+		float dts_cel_f32 = (raw_dts_sample-605)/2.05f;
+		XMC_DEBUG("%.2f\n", dts_cel_f32);	
+  } else {
+		XMC_ASSERT("no implentmation", 0);
+	}
   return "/cgi.htm";
 }
 

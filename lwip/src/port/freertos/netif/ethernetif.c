@@ -71,6 +71,8 @@ extern void netif_status_cb(struct netif *netif);
 /*Weak function to be called incase of error*/
 __WEAK void ethernetif_error(ETHIF_ERROR_t error_code)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   switch (error_code)
   {
     case ETHIF_ERROR_PHY_DEVICE_ID:
@@ -95,6 +97,8 @@ __WEAK void ethernetif_error(ETHIF_ERROR_t error_code)
 
 static void ethernetif_link_callback(struct netif *netif)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   ETHIF_t *ethif = netif->state;
   XMC_ETH_PHY_CONFIG_t *phy = &ethif->phy;
   XMC_ETH_MAC_t *mac = &ethif->mac;
@@ -169,6 +173,8 @@ static void ethernetif_link_callback(struct netif *netif)
 
 static void ethernetif_link_status(void *args)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   struct netif *netif = (struct netif *)args;
 
   ETHIF_t *ethif = netif->state;
@@ -220,6 +226,8 @@ extern void low_level_init(struct netif *netif);
 static err_t
 low_level_output(struct netif *netif, struct pbuf *p)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   ETHIF_t *ethif = netif->state;
   XMC_ETH_MAC_t *mac = &ethif->mac;
 
@@ -274,6 +282,8 @@ low_level_output(struct netif *netif, struct pbuf *p)
  */
 static struct pbuf *low_level_input(struct netif *netif)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   ETHIF_t *ethif = netif->state;
   XMC_ETH_MAC_t *mac = &ethif->mac;
 
@@ -348,6 +358,8 @@ static struct pbuf *low_level_input(struct netif *netif)
  */
 void net_task(void *arg)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   struct pbuf *p = NULL;
   struct netif *netif = (struct netif *)arg;
   ETHIF_t *ethif = netif->state;
@@ -393,6 +405,8 @@ void net_task(void *arg)
  */
 err_t ethernetif_init(struct netif *netif)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("netif != NULL", (netif != NULL));
     
 #if LWIP_NETIF_HOSTNAME
@@ -454,8 +468,9 @@ err_t ethernetif_init(struct netif *netif)
   return ERR_OK;
 }
 
-void ETH0_0_IRQHandler(void)
-{
+void ETH0_0_IRQHandler(void) {
+//	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
   NVIC_DisableIRQ(ETH0_0_IRQn);
@@ -465,4 +480,12 @@ void ETH0_0_IRQHandler(void)
   /* Context switch needed? */
   portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 
+}
+
+extern void lowlevel_dump_phy_reg(XMC_ETH_MAC_t *const eth_mac, uint8_t phy_addr);
+
+void dump_phy_reg(struct netif *netif) {
+  ETHIF_t *ethif = netif->state;
+  XMC_ETH_MAC_t *mac = &ethif->mac;	
+	lowlevel_dump_phy_reg(mac, ethif->phy_addr);
 }

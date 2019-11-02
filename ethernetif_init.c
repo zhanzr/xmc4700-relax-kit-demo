@@ -24,8 +24,11 @@
  */
 void low_level_init(struct netif *netif)
 {
+	XMC_DEBUG("%s\n", __func__);
+	
   XMC_ETH_MAC_PORT_CTRL_t port_control;
   XMC_GPIO_CONFIG_t gpio_config;
+
 
   ETHIF_t *ethif = netif->state;
   XMC_ETH_MAC_t *mac = &ethif->mac;
@@ -78,3 +81,4 @@ void low_level_init(struct netif *netif)
   XMC_ETH_MAC_DisableJumboFrame(mac);
   XMC_ETH_MAC_SetAddressEx(mac, netif->hwaddr);
 }
+

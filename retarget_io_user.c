@@ -26,7 +26,7 @@ int _write(int fd, const void *buf, size_t count)
   for (size_t i = 0; i < count; ++i)
   {
     XMC_UART_CH_Transmit(SERIAL_UART, *(const uint8_t *)buf);
-    buf++;
+    (uint8_t*)buf++;
   }
   return count;
 }
@@ -53,7 +53,7 @@ int _read(int fd, void *buf, size_t count)
       break;                           /* Stop loop and return received char(s) */
     }
 
-    buf++;
+    (uint8_t*)buf++;
   }
 
   return char_cnt;
@@ -85,12 +85,24 @@ int stdin_getchar (void) {
   \return          The character written, or -1 on write error.
 */
 int stdout_putchar (int ch) {
-  XMC_UART_CH_Transmit(SERIAL_UART, ch);
+  XMC_UART_CH_Transmit(SERIAL_UART, (uint8_t)ch);
   return (1);
+}
+
+int stderr_putchar (int ch) {
+	XMC_UART_CH_Transmit(SERIAL_UART, (uint8_t)ch);
+	return ch;
 }
 
 void ttywrch (int ch) {
 	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
+}
+
+void XMC_AssertHandler(const char *const msg, const char *const file, uint32_t line) {
+	XMC_DEBUG("Assert Failed: %s, %s, %u\n", msg, file, line);
+  while(1) {
+		;
+	}
 }
 
 #endif

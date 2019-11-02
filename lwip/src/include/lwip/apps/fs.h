@@ -70,6 +70,11 @@ struct fsdata_file {
   u8_t flags;
 };
 
+typedef struct str_static_file {
+	const char* file_name;
+	const char* file_data;
+} static_file;
+
 #ifdef __cplusplus
 }
 #endif

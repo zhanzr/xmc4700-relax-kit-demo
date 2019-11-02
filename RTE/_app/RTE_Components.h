@@ -4,7 +4,7 @@
  *      *** Do not modify ! ***
  *
  * Project: 'xmc4700_mdk' 
- * Target:  'xmc47  RAM' 
+ * Target:  'app' 
  */
 
 #ifndef RTE_COMPONENTS_H

@@ -111,6 +111,8 @@ static sys_prot_t sys_arch_protect_nesting;
 void
 sys_init(void)
 {
+	XMC_DEBUG("%s\n", __func__);
+
 #if SYS_LIGHTWEIGHT_PROT && LWIP_FREERTOS_SYS_ARCH_PROTECT_USES_MUTEX
   /* initialize sys_arch_protect global mutex */
   sys_arch_protect_mutex = xSemaphoreCreateRecursiveMutex();
@@ -127,6 +129,8 @@ sys_init(void)
 u32_t
 sys_now(void)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   return xTaskGetTickCount() * portTICK_PERIOD_MS;
 }
 #endif
@@ -134,6 +138,8 @@ sys_now(void)
 u32_t
 sys_jiffies(void)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   return xTaskGetTickCount();
 }
 
@@ -142,6 +148,8 @@ sys_jiffies(void)
 sys_prot_t
 sys_arch_protect(void)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
 #if LWIP_FREERTOS_SYS_ARCH_PROTECT_USES_MUTEX
   BaseType_t ret;
   LWIP_ASSERT("sys_arch_protect_mutex != NULL", sys_arch_protect_mutex != NULL);
@@ -167,6 +175,8 @@ sys_arch_protect(void)
 void
 sys_arch_unprotect(sys_prot_t pval)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
 #if LWIP_FREERTOS_SYS_ARCH_PROTECT_USES_MUTEX
   BaseType_t ret;
 #endif
@@ -192,6 +202,8 @@ sys_arch_unprotect(sys_prot_t pval)
 void
 sys_arch_msleep(u32_t delay_ms)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   TickType_t delay_ticks = delay_ms / portTICK_PERIOD_MS;
   vTaskDelay(delay_ticks);
 }
@@ -202,6 +214,8 @@ sys_arch_msleep(u32_t delay_ms)
 err_t
 sys_mutex_new(sys_mutex_t *mutex)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("mutex != NULL", mutex != NULL);
 
   mutex->mut = xSemaphoreCreateRecursiveMutex();
@@ -216,6 +230,8 @@ sys_mutex_new(sys_mutex_t *mutex)
 void
 sys_mutex_lock(sys_mutex_t *mutex)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   LWIP_ASSERT("mutex != NULL", mutex != NULL);
   LWIP_ASSERT("mutex->mut != NULL", mutex->mut != NULL);
@@ -227,6 +243,8 @@ sys_mutex_lock(sys_mutex_t *mutex)
 void
 sys_mutex_unlock(sys_mutex_t *mutex)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   LWIP_ASSERT("mutex != NULL", mutex != NULL);
   LWIP_ASSERT("mutex->mut != NULL", mutex->mut != NULL);
@@ -238,6 +256,8 @@ sys_mutex_unlock(sys_mutex_t *mutex)
 void
 sys_mutex_free(sys_mutex_t *mutex)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("mutex != NULL", mutex != NULL);
   LWIP_ASSERT("mutex->mut != NULL", mutex->mut != NULL);
 
@@ -251,6 +271,8 @@ sys_mutex_free(sys_mutex_t *mutex)
 err_t
 sys_sem_new(sys_sem_t *sem, u8_t initial_count)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("sem != NULL", sem != NULL);
   LWIP_ASSERT("initial_count invalid (not 0 or 1)",
     (initial_count == 0) || (initial_count == 1));
@@ -272,6 +294,8 @@ sys_sem_new(sys_sem_t *sem, u8_t initial_count)
 void
 sys_sem_signal(sys_sem_t *sem)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   LWIP_ASSERT("sem != NULL", sem != NULL);
   LWIP_ASSERT("sem->sem != NULL", sem->sem != NULL);
@@ -285,6 +309,8 @@ sys_sem_signal(sys_sem_t *sem)
 u32_t
 sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout_ms)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   LWIP_ASSERT("sem != NULL", sem != NULL);
   LWIP_ASSERT("sem->sem != NULL", sem->sem != NULL);
@@ -312,6 +338,8 @@ sys_arch_sem_wait(sys_sem_t *sem, u32_t timeout_ms)
 void
 sys_sem_free(sys_sem_t *sem)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("sem != NULL", sem != NULL);
   LWIP_ASSERT("sem->sem != NULL", sem->sem != NULL);
 
@@ -323,6 +351,8 @@ sys_sem_free(sys_sem_t *sem)
 err_t
 sys_mbox_new(sys_mbox_t *mbox, int size)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("size > 0", size > 0);
 
@@ -338,6 +368,8 @@ sys_mbox_new(sys_mbox_t *mbox, int size)
 void
 sys_mbox_post(sys_mbox_t *mbox, void *msg)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("mbox->mbx != NULL", mbox->mbx != NULL);
@@ -349,6 +381,8 @@ sys_mbox_post(sys_mbox_t *mbox, void *msg)
 err_t
 sys_mbox_trypost(sys_mbox_t *mbox, void *msg)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("mbox->mbx != NULL", mbox->mbx != NULL);
@@ -366,6 +400,8 @@ sys_mbox_trypost(sys_mbox_t *mbox, void *msg)
 err_t
 sys_mbox_trypost_fromisr(sys_mbox_t *mbox, void *msg)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   BaseType_t xHigherPriorityTaskWoken = pdFALSE;
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
@@ -387,6 +423,8 @@ sys_mbox_trypost_fromisr(sys_mbox_t *mbox, void *msg)
 u32_t
 sys_arch_mbox_fetch(sys_mbox_t *mbox, void **msg, u32_t timeout_ms)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   void *msg_dummy;
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
@@ -420,6 +458,8 @@ sys_arch_mbox_fetch(sys_mbox_t *mbox, void **msg, u32_t timeout_ms)
 u32_t
 sys_arch_mbox_tryfetch(sys_mbox_t *mbox, void **msg)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   BaseType_t ret;
   void *msg_dummy;
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
@@ -445,6 +485,8 @@ sys_arch_mbox_tryfetch(sys_mbox_t *mbox, void **msg)
 void
 sys_mbox_free(sys_mbox_t *mbox)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   LWIP_ASSERT("mbox != NULL", mbox != NULL);
   LWIP_ASSERT("mbox->mbx != NULL", mbox->mbx != NULL);
 
@@ -467,6 +509,8 @@ sys_mbox_free(sys_mbox_t *mbox)
 sys_thread_t
 sys_thread_new(const char *name, lwip_thread_fn thread, void *arg, int stacksize, int prio)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   TaskHandle_t rtos_task;
   BaseType_t ret;
   sys_thread_t lwip_thread;
@@ -514,6 +558,8 @@ sys_thread_new(const char *name, lwip_thread_fn thread, void *arg, int stacksize
 sys_sem_t *
 sys_arch_netconn_sem_get(void)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   void* ret;
   TaskHandle_t task = xTaskGetCurrentTaskHandle();
   LWIP_ASSERT("task != NULL", task != NULL);
@@ -525,6 +571,8 @@ sys_arch_netconn_sem_get(void)
 void
 sys_arch_netconn_sem_alloc(void)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   void *ret;
   TaskHandle_t task = xTaskGetCurrentTaskHandle();
   LWIP_ASSERT("task != NULL", task != NULL);
@@ -545,6 +593,8 @@ sys_arch_netconn_sem_alloc(void)
 
 void sys_arch_netconn_sem_free(void)
 {
+	XMC_DEBUG("%s\n", __func__);
+
   void* ret;
   TaskHandle_t task = xTaskGetCurrentTaskHandle();
   LWIP_ASSERT("task != NULL", task != NULL);
@@ -574,6 +624,8 @@ static TaskHandle_t lwip_core_lock_holder_thread;
 void
 sys_lock_tcpip_core(void)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
    sys_mutex_lock(&lock_tcpip_core);
    if (lwip_core_lock_count == 0) {
      lwip_core_lock_holder_thread = xTaskGetCurrentTaskHandle();
@@ -584,6 +636,8 @@ sys_lock_tcpip_core(void)
 void
 sys_unlock_tcpip_core(void)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
    lwip_core_lock_count--;
    if (lwip_core_lock_count == 0) {
        lwip_core_lock_holder_thread = 0;
@@ -600,6 +654,8 @@ static TaskHandle_t lwip_tcpip_thread;
 void
 sys_mark_tcpip_thread(void)
 {
+	XMC_DEBUG("%s\n", __func__);
+
 #if !NO_SYS
   lwip_tcpip_thread = xTaskGetCurrentTaskHandle();
 #endif
@@ -608,6 +664,8 @@ sys_mark_tcpip_thread(void)
 void
 sys_check_core_locking(void)
 {
+//	XMC_DEBUG("%s\n", __func__);
+
   /* Embedded systems should check we are NOT in an interrupt context here */
   /* E.g. core Cortex-M3/M4 ports:
          configASSERT( ( portNVIC_INT_CTRL_REG & portVECTACTIVE_MASK ) == 0 );

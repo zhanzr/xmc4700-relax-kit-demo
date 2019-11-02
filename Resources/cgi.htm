@@ -1,22 +1,20 @@
 <html>
   <head>
-    <title>XMC4700 RelaxKit Web Server CGI Demo</title>
-	<style>
-    html *
-   {
-      font-family: Verdana  !important;
-   }
-    </style>
+    <title>RelaxKit Web Server CGI Page</title>
   </head>
 
   <body>
     <h1 align=center style='text-align:center'><img id="logo" src="img_sics.gif"></h1>
-    <h1 align=center style='text-align:center'>XMC4700 RelaxKit Web Server CGI Demo</h1>
+    <h1 align=center style='text-align:center'>RelaxKit Web Server CGI Page</h1>
     <h3 align=center style='text-align:center'>Press buttons below to toggle LEDs</h3>
     <form action="ledcontrol.cgi" method="get">
     <div align=center>    
+      <button type="submit" name="toggle" value="led0">Switch LED0</button>    
       <button type="submit" name="toggle" value="led1">Switch LED1</button> 
       <button type="submit" name="toggle" value="led2">Switch LED2</button>    
+      <button type="submit" name="get die voltage" value="voltage">Get Die Voltage</button>    
+      <button type="submit" name="dump phy" value="dump_phy">Dump Phy</button>    
+      <button type="submit" name="Get DTS" value="get_dts">Get DTS</button>    
     </div>
     </form>
 

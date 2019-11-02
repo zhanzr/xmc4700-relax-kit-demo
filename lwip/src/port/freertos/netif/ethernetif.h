@@ -27,4 +27,6 @@ void ethernetif_error(ETHIF_ERROR_t error_code);
 void ethernetif_input(void *arg);
 void ethernetif_poll(struct netif *netif);
 
+void dump_phy_reg(struct netif *netif);
+
 #endif 
