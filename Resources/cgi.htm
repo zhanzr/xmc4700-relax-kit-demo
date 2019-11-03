@@ -17,6 +17,36 @@
       <button type="submit" name="Get DTS" value="get_dts">Get DTS</button>    
     </div>
     </form>
+        
+    <div align=center>    
+    <p/><a href="http://minibrd.com/" target="_blank">Test a link</a>
+    
+    <h1>Using a DOM function</h1>
+        
+    <h2><a id="showhide" href="#">Show paragraph</a></h2>
+        
+	<p id="toggleMe"><a href="makefile_tutorial.htm" target="_blank">Makefile Tutorial</a>
+
+        <p>The general flow of the document continues.
+        
+        <script>
+            function changeDisplayState(id) {
+                var d = document.getElementById('showhide'),
+                    e = document.getElementById(id);
+                if (e.style.display === 'none' || e.style.display === '') {
+                    e.style.display = 'block';
+                    d.innerHTML = 'Hide paragraph';
+                } else {
+                    e.style.display = 'none';
+                    d.innerHTML = 'Show paragraph';
+                }
+            }
+            document.getElementById('showhide').addEventListener('click', function (e) {
+                e.preventDefault();
+                changeDisplayState('toggleMe');
+            });
+        </script>    
+    </div>
 
    </body>
 </html>
