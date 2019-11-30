@@ -11,6 +11,7 @@
 #include <string>
 #include <memory>
 #include <iomanip>
+#include <array>
 
 #include <XMC4700.h>
 #include <xmc_scu.h>
@@ -658,6 +659,47 @@ void base64_test(void) {
 	}
 }
 
+void carr_func(int * arr, size_t size) {
+    std::cout << "carr_func - arr: " << arr << std::endl;
+}
+
+void array_test(void) {
+	//Declares an array of 10 ints. Size is always required
+	std::array<int, 10> a1;
+
+	//Declare and initialize with an initializer list
+	std::array<int, 5> a2 = {-1, 1, 3, 2, 0};
+	
+	//Making a new array via copy
+	auto a3 = a2;
+
+	//This works too:
+	auto a4(a2);
+	
+	//Assign a2 to a3's values:
+	a2 = a3;
+
+	// But you can only use the '=' operator on arrays of equivalent size.
+	//Error:
+	//a1 = a2; //<[...],10> vs <[...],5>! invalid
+	
+	//Assigning values works as expected
+	a3[0] = -2;
+	
+	std::cout << "a2.at(4): " << a2.at(4) << std::endl;
+
+	// Bounds checking can generate exceptions. Try:
+	//auto b = a2.at(10);
+	
+	//Error:
+	//carr_func(a2, a2.size());
+
+	//OK:
+	carr_func(a2.data(), a2.size());
+	
+	
+}
+
 int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
@@ -753,7 +795,8 @@ int main(void) {
 
 //		fpu_perfmance_test();
 //		crc_perfmance_test();
-		base64_test();
+//		base64_test();
+		array_test();
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
     //		cout << endl;
