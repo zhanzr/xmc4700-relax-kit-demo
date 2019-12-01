@@ -8,6 +8,8 @@
 
 #include "utilis.h"
 
+#include "test_mangling.h"
+
 /* Array of angles in Q1.31 format, regularly incremented from 0 to 2*pi */
 static int32_t aAnglesCordic[ARRAY_SIZE] = {
     0x00000000, 0x04000000, 0x08000000, 0x0C000000, 0x10000000, 0x14000000,
@@ -189,4 +191,9 @@ void fpu_perfmance_test(void) {
   // BSP_LED_On(LED2);
   printf("Correct double precision output[%u-%u = %u]\n", start_ticks,
          end_ticks, end_ticks - start_ticks);
+	
+		
+	int var1 = func_e();
+	int var2 = func_f(1);
+	printf("var1:%d,var2:%d\n", var1, var2);
 }

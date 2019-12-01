@@ -437,6 +437,11 @@
               <FileType>1</FileType>
               <FilePath>.\base64.c</FilePath>
             </File>
+            <File>
+              <FileName>test_mangling.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\test_mangling.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -629,7 +634,7 @@
             <AdsLsun>1</AdsLsun>
             <AdsLven>1</AdsLven>
             <AdsLsxf>1</AdsLsxf>
-            <RvctClst>0</RvctClst>
+            <RvctClst>1</RvctClst>
             <GenPPlst>0</GenPPlst>
             <AdsCpuType>"Cortex-M4"</AdsCpuType>
             <RvctDeviceName></RvctDeviceName>
@@ -893,6 +898,11 @@
               <FileName>base64.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\base64.c</FilePath>
+            </File>
+            <File>
+              <FileName>test_mangling.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\test_mangling.cpp</FilePath>
             </File>
           </Files>
         </Group>

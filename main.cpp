@@ -696,8 +696,6 @@ void array_test(void) {
 
 	//OK:
 	carr_func(a2.data(), a2.size());
-	
-	
 }
 
 int main(void) {
