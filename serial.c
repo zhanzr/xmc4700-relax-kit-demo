@@ -27,17 +27,15 @@ RING_BUFFER_DEF(serial_buffer, SERIAL_BUFFER_SIZE);
 XMC_GPIO_CONFIG_t uart_tx;
 XMC_GPIO_CONFIG_t uart_rx;
 
-const XMC_UART_CH_CONFIG_t uart_config =
-{
-	.baudrate = 921600,
+const XMC_UART_CH_CONFIG_t uart_config = {
+	.baudrate = SERIAL_BAUDRATE,
 	.data_bits = 8U,
 	.frame_length = 8U,
 	.stop_bits = 1U,
 	.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
 };
 
-void serial_init(void)
-{
+void serial_init(void) {
   XMC_UART_CH_Init(SERIAL_UART, &uart_config);
 
   XMC_GPIO_SetMode(SERIAL_RX_PIN, XMC_GPIO_MODE_INPUT_PULL_UP);
@@ -64,13 +62,10 @@ void serial_init(void)
   XMC_GPIO_Init(UART_RX, &uart_rx);	
 }
 
-void USIC0_0_IRQHandler(void)
-{
+void USIC0_0_IRQHandler(void) {
   static uint8_t data;
 
   data = XMC_UART_CH_GetReceivedData(SERIAL_UART);
 
   ring_buffer_put(&serial_buffer, data);
 }
-
-

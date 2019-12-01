@@ -1,10 +1,15 @@
 import os,sys
+import mimetypes
 
 #print("Start")
 
 LINE_WIDTH = 16
 PATH_NAME_PAD_WIDTH = 4
 ENCODING_NAME = "ASCII"
+
+accept_file_types = set(['html', 'htm', 'ssi', 'gif', 'js', 'ico'])
+
+mimetypes.add_type('text/html', '.ssi')
 
 def print_usage():
     print("%s %s [The resource name] [http response number]" % (sys.executable, __file__))
@@ -20,7 +25,7 @@ if __name__ == '__main__':
     input_name = sys.argv[1]
     relative_path_name = "/%s" % input_name
     input_name_split_array = input_name.split('.')
-    if('htm' != input_name_split_array[-1]) and ('html' != input_name_split_array[-1]):
+    if(input_name_split_array[-1] not in accept_file_types):
         print("unsupported resource type")
         exit()
     
@@ -103,7 +108,9 @@ if __name__ == '__main__':
         content_len_str = "%d" % len(content)
 
         mime_str ="\r\n" + \
-        "Content-Type: text/html\r\n\r\n"
+        "Content-Type: " + \
+        mimetypes.guess_type(input_name)[0] + \
+        "\r\n\r\n"
     elif(404 == http_response_num):
         html_reply_str = "HTTP/1.0 404 File not found\r\n" + \
         "Server: lwIP/2.1.0 (http://savannah.nongnu.org/projects/lwip)\r\n" + \

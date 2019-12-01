@@ -1,0 +1,7 @@
+HTTP/1.0 200 OK
+Server: lwIP/2.1.0 (http://savannah.nongnu.org/projects/lwip)
+Content-Type: text/html
+Expires: Fri, 10 Apr 2008 14:00:00 GMT
+Pragma: no-cache
+
+{"button_count":"<!--#b-->","bx":"<!--#bx-->","by":"<!--#by-->","bz":"<!--#bz-->"}

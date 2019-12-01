@@ -289,7 +289,6 @@ extern uint32_t Stack_Size;
 extern uint32_t __heap_base;
 extern uint32_t __heap_limit;
 
-#define TEST_BAUDRATE	(921600)
 int main(void) {
   EventRecorderInitialize(EventRecordAll, 1);
   serial_init();

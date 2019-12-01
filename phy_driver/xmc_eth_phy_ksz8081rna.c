@@ -1,5 +1,5 @@
 /**
- * @file xmc_eth_phy_ksz8081rnb.c
+ * @file xmc_eth_phy_ksz8081rna.c
  * @date 2018-08-06 
  *
  * @cond

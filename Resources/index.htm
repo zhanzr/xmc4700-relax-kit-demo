@@ -1,8 +1,3 @@
-HTTP/1.0 200 OK
-Server: lwIP/2.1.0 (http://savannah.nongnu.org/projects/lwip)
-Content-Length: 1446
-Content-Type: text/html
-
 ﻿<html>
   <head>
     <title>XMC4700 RelaxKit Web Server Demo</title>
@@ -19,7 +14,7 @@ Content-Type: text/html
   <body>
     <h1 align=center style='text-align:center'><img id="logo" src="img_sics.gif"></h1>
     <h1 align=center style='text-align:center'>XMC4700 RelaxKit Web Server Demo</h1>
-    <h3 align=center style='text-align:center'>Realtime Data - Press buttons in the kit</h3>
+    <h3 align=center style='text-align:center'>Realtime Data - The DTS data</h3>
     <table align=center>
       <td>
         <canvas id="mycanvas" width="600" height="300"></canvas>
@@ -45,6 +40,11 @@ Content-Type: text/html
 
       smoothie.addTimeSeries(linex, { strokeStyle:'rgb(255, 0, 0)', lineWidth:3 });
 
-    </script>    
-   </body>
+    </script>
+    
+    <center>    
+    <a href="https://www.freertos.org/"><img id="freertos_logo" src="freertos_logo.gif"/></a>
+    </center>
+    
+</body>
 </html>

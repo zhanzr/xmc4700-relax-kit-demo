@@ -630,16 +630,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>resource</GroupName>
-          <Files>
-            <File>
-              <FileName>404.htm</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Resources\404.htm</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>doc</GroupName>
           <Files>
             <File>
@@ -1283,16 +1273,6 @@
               <FileName>xmc_eth_phy_ksz8081rna.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rna.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>resource</GroupName>
-          <Files>
-            <File>
-              <FileName>404.htm</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Resources\404.htm</FilePath>
             </File>
           </Files>
         </Group>
@@ -2147,16 +2127,6 @@
               <FileName>xmc_eth_phy_ksz8081rna.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\phy_driver\xmc_eth_phy_ksz8081rna.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>resource</GroupName>
-          <Files>
-            <File>
-              <FileName>404.htm</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Resources\404.htm</FilePath>
             </File>
           </Files>
         </Group>
