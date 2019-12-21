@@ -23,6 +23,7 @@
 #include "custom_def.h"
 #include "led.h"
 #include "utilis.h"
+#include "test_function.h"
 
 #if defined(__cplusplus) && (__cplusplus <= 201103)
 namespace std {
@@ -794,7 +795,18 @@ int main(void) {
 //		fpu_perfmance_test();
 //		crc_perfmance_test();
 //		base64_test();
-		array_test();
+//		array_test();
+
+  cout << __VERSION__ << endl;
+  cout << __TIMESTAMP__ << endl;
+  cout << __FILE__ << endl;
+  cout << __func__ << endl;
+  cout << __LINE__ << endl;
+  cout << __COUNTER__ << endl;
+  cout << __COUNTER__ << endl;
+
+		test_function();
+		
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
     //		cout << endl;

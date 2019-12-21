@@ -442,6 +442,11 @@
               <FileType>8</FileType>
               <FilePath>.\test_mangling.cpp</FilePath>
             </File>
+            <File>
+              <FileName>test_function.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\test_function.cpp</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -903,6 +908,11 @@
               <FileName>test_mangling.cpp</FileName>
               <FileType>8</FileType>
               <FilePath>.\test_mangling.cpp</FilePath>
+            </File>
+            <File>
+              <FileName>test_function.cpp</FileName>
+              <FileType>8</FileType>
+              <FilePath>.\test_function.cpp</FilePath>
             </File>
           </Files>
         </Group>
