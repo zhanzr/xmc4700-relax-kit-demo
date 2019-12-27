@@ -699,6 +699,45 @@ void array_test(void) {
 	carr_func(a2.data(), a2.size());
 }
 
+void normal_func(void) {
+// cout << "Enter " << __func__ << endl;	
+	__NOP();
+// cout << "Exit " << __func__ << endl;	
+}
+
+[[ noreturn ]] void noreturn_a(void) {
+// cout << "Enter " << __func__ << endl;	
+	__NOP();
+// cout << "Exit " << __func__ << endl;	
+	// Should not Return
+}
+
+void noreturn_b(void) __attribute__((noreturn));
+
+void noreturn_b(void) {
+// cout << "Enter " << __func__ << endl;	
+	__NOP();
+// cout << "Exit " << __func__ << endl;	
+}
+
+__declspec(noreturn) void noreturn_c(void);
+
+void noreturn_c(void) {
+// cout << "Enter " << __func__ << endl;	
+	__NOP();
+// cout << "Exit " << __func__ << endl;	
+}
+
+void test_noreturn(void) {
+	normal_func();
+	
+	noreturn_a();
+	
+	noreturn_b();
+	
+	noreturn_c();
+}
+
 int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
@@ -805,7 +844,9 @@ int main(void) {
   cout << __COUNTER__ << endl;
   cout << __COUNTER__ << endl;
 
-		test_function();
+//		test_function();
+		
+		test_noreturn();
 		
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
