@@ -738,6 +738,30 @@ void test_noreturn(void) {
 	noreturn_c();
 }
 
+class DemoClass { 
+	public:
+		DemoClass() = default;
+		~DemoClass() = default;
+
+	mutable uint32_t u32_a = 0;
+	uint32_t u32_b = 1;
+}; 
+
+const DemoClass demo_a;
+
+void test_const_mutable(void) {
+	const DemoClass demo_b;
+  
+	cout << "demo_a @ " << hex << setfill('0') << setw(8) << reinterpret_cast<uint32_t>(&demo_a) << endl;
+	
+	cout << "demo_b @ " << hex << setfill('0') << setw(8) << reinterpret_cast<uint32_t>(&demo_b) << endl;
+	
+	demo_a.u32_a = 2;
+	demo_b.u32_a = 2;
+
+	cout << dec;
+}
+
 int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
@@ -846,7 +870,9 @@ int main(void) {
 
 //		test_function();
 		
-		test_noreturn();
+//		test_noreturn();
+		
+		test_const_mutable();
 		
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
