@@ -762,7 +762,7 @@ void test_const_mutable(void) {
 	cout << dec;
 }
 
-int main(void) {
+[[ noreturn ]] int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
 
@@ -826,6 +826,8 @@ int main(void) {
 
   cout << setprecision(3);
   while (1) {
+		__asm volatile("");
+		
     cout << endl << "C++ Standard " << __cplusplus << endl;
 
     // T_DTS = (RESULT - 605) / 2.05 [°C]
@@ -867,6 +869,17 @@ int main(void) {
   cout << __LINE__ << endl;
   cout << __COUNTER__ << endl;
   cout << __COUNTER__ << endl;
+
+	auto errno_ptr = __aeabi_errno_addr();
+	cout << "errno @ " << hex << setfill('0') << setw(8) << reinterpret_cast<uint32_t>(errno_ptr) << endl;
+	__heapstats((__heapprt)fprintf, stderr);
+
+	auto ip = malloc(128);
+	__heapstats((__heapprt)fprintf, stderr);
+	
+	free(ip);
+	
+	__heapstats((__heapprt)fprintf, stderr);
 
 //		test_function();
 		
