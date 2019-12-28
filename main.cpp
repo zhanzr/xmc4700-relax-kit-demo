@@ -762,6 +762,30 @@ void test_const_mutable(void) {
 	cout << dec;
 }
 
+inline void very_simple(void) {
+	__NOP();
+}
+
+inline void not_worthwhile(void) {  	
+	cout << __func__  << endl;
+  cout << __VERSION__ << endl;
+}
+
+void force_inline(void) __attribute__((always_inline));
+
+void force_inline(void) {
+	cout << __func__  << endl;
+  cout << __VERSION__ << endl;
+}
+
+void test_inline(void) {
+	very_simple();
+	not_worthwhile();
+	force_inline();
+	very_simple();
+	not_worthwhile();
+}
+
 [[ noreturn ]] int main(void) {
   /* System timer configuration */
   ::SysTick_Config(SystemCoreClock / HZ);
@@ -862,31 +886,13 @@ void test_const_mutable(void) {
 //		base64_test();
 //		array_test();
 
-  cout << __VERSION__ << endl;
-  cout << __TIMESTAMP__ << endl;
-  cout << __FILE__ << endl;
-  cout << __func__ << endl;
-  cout << __LINE__ << endl;
-  cout << __COUNTER__ << endl;
-  cout << __COUNTER__ << endl;
-
-	auto errno_ptr = __aeabi_errno_addr();
-	cout << "errno @ " << hex << setfill('0') << setw(8) << reinterpret_cast<uint32_t>(errno_ptr) << endl;
-	__heapstats((__heapprt)fprintf, stderr);
-
-	auto ip = malloc(128);
-	__heapstats((__heapprt)fprintf, stderr);
-	
-	free(ip);
-	
-	__heapstats((__heapprt)fprintf, stderr);
-
 //		test_function();
 		
 //		test_noreturn();
 		
-		test_const_mutable();
-		
+//		test_const_mutable();
+	
+		test_inline();
 #if defined(__cplusplus) && (__cplusplus >= 201103)
     //		test_unique_ptr();
     //		cout << endl;
