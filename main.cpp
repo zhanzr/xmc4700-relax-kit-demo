@@ -762,7 +762,17 @@ void test_const_mutable(void) {
 	cout << dec;
 }
 
-inline void very_simple(void) {
+void very_simple(void) {
+	__yield();
+}
+
+inline void very_simple_hint(void) {
+	__SEV();
+}
+
+void very_simple_noinline(void) __attribute__((noinline));
+
+void very_simple_noinline(void) {
 	__NOP();
 }
 
@@ -780,10 +790,15 @@ void force_inline(void) {
 
 void test_inline(void) {
 	very_simple();
+	very_simple_hint();
+//	very_simple_noinline();
 	not_worthwhile();
 	force_inline();
-	very_simple();
-	not_worthwhile();
+//	very_simple();
+//	very_simple_hint();
+//	very_simple_noinline();
+//	not_worthwhile();
+//	force_inline();
 }
 
 [[ noreturn ]] int main(void) {
