@@ -67,7 +67,7 @@ void LED_On (uint8_t num)
    - \b  0: function succeeded
    - \b -1: function failed
 */
-void LED_Off (uint8_t num) __pure
+void LED_Off (uint8_t num)
 {
   XMC_GPIO_SetOutputLow(LED_PIN[num].port, LED_PIN[num].pin);
 }
