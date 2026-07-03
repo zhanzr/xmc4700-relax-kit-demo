@@ -124,6 +124,8 @@ extern uint32_t __Vectors_Size;
 		printf("Boot Mode:%u, FPU type:%u\n", XMC_SCU_GetBootMode(), SCB_GetFPUType());
 		printf("vector: %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size));
 		
-		printf("%u %s %s\n", __COUNTER__, __TIMESTAMP__, __VERSION__);
+		printf("start to test\n");
+		
+		crc_perfmance_test();		
 	}
 }

@@ -2,7 +2,7 @@
 #define LED_H
 
 #include <stdint.h>
-#include <xmc4_gpio.h>
+#include <xmc_gpio.h>
 
 /* GPIO Pin identifier */
 typedef struct _GPIO_PIN {

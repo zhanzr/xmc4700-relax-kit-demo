@@ -20,6 +20,8 @@
 #define RTE_CMSIS_Compiler_STDOUT_Custom         /* CMSIS-Compiler STDOUT: Custom */
 /* Infineon::Device:Startup@3.0.0 */
 #define RTE_DEVICE_STARTUP
+/* Infineon::Device:XMClib:FCE@2.2.0 */
+#define RTE_DEVICE_XMCLIB_FCE
 /* Infineon::Device:XMClib:GPIO@2.2.0 */
 #define RTE_DEVICE_XMCLIB_GPIO
 /* Infineon::Device:XMClib:SCU@2.2.0 */

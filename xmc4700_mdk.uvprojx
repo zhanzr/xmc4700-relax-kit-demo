@@ -404,6 +404,31 @@
               <FileType>1</FileType>
               <FilePath>.\utilis.c</FilePath>
             </File>
+            <File>
+              <FileName>crc_perf.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc_perf.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32_algorithm_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc32_algorithm_1.c</FilePath>
+            </File>
+            <File>
+              <FileName>crc32_algorithm_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\crc32_algorithm_2.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Doc</GroupName>
+          <Files>
+            <File>
+              <FileName>README.md</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\README.md</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -448,6 +473,12 @@
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="3.0.0" condition="XMC4 CMSIS" ymlID="Device:Startup">
+        <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
+        <targetInfos>
+          <targetInfo name="flash_cached"/>
+        </targetInfos>
+      </component>
+      <component Cclass="Device" Cgroup="XMClib" Csub="FCE" Cvendor="Infineon" Cversion="2.2.0" condition="XMC4 CMSIS SCU" ymlID="Device:XMClib:FCE">
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
           <targetInfo name="flash_cached"/>
