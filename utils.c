@@ -4,7 +4,7 @@
 
 #include <XMC4700.h>
 
-#include "utilis.h"
+#include "utils.h"
 
 volatile uint32_t g_ticks;
 

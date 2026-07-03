@@ -17,7 +17,7 @@
 
 #include "custom_def.h"
 #include "led.h"
-#include "utilis.h"
+#include "utils.h"
 
 static uint32_t tmpDts;
 static float tmpCel;
@@ -126,6 +126,6 @@ extern uint32_t __Vectors_Size;
 		
 		printf("start to test\n");
 		
-		crc_perfmance_test();		
+		fpu_perfmance_test();
 	}
 }
