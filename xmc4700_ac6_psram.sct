@@ -7,6 +7,8 @@
 ; <h> Stack / Heap Configuration
 ;   <o0> Stack Size (in Bytes) <0x0-0xFFFFFFFF:8>
 ;   <o1> Heap Size (in Bytes) <0x0-0xFFFFFFFF:8>
+;   <o2> gap between stack top and heap base (in Bytes) <0x0-0xFFFFFFFF:8>
+;   <o3> gap between heap top and rw_zi base (in Bytes) <0x0-0xFFFFFFFF:8>
 ; </h>
  *----------------------------------------------------------------------------*/
 #define __STACK_SIZE		0x00004000
@@ -14,14 +16,8 @@
 #define __STACK_HEAP_GAP	0x10
 #define __HEAP_RW_GAP		0x10
 
-/*
-;------------- <<< end of configuration section >>> ---------------------------
-*/
-; flash cached
-;#define __ROM_BASE     0x08000000
-;#define __ROM_SIZE     0x00200000
-; flash uncached
-#define __ROM_BASE     0x0C000000
+#define __ROM_BASE     0x08000000
+;#define __ROM_BASE     0x0C000000
 #define __ROM_SIZE     0x00200000
 
 #define __PSRAM_BASE   0x1FFE8000
@@ -30,37 +26,34 @@
 #define __DSRAM_1_2_BASE  0x20000000
 #define __DSRAM_1_2_SIZE  0x00040000
 
-/*----------------------------------------------------------------------------
-  User Stack & Heap boundery definition
- *----------------------------------------------------------------------------*/
 #define __STACK_TOP			(__DSRAM_1_2_BASE + __STACK_SIZE)
 #define __HEAP_BASE			(AlignExpr(__STACK_TOP + __STACK_HEAP_GAP, 8))
 #define __RWZI_BASE			(AlignExpr(__HEAP_BASE + __HEAP_SIZE + __HEAP_RW_GAP, 8))
 #define __RWZI_SIZE			(AlignExpr(__DSRAM_1_2_SIZE - __STACK_SIZE - __STACK_HEAP_GAP - __HEAP_SIZE - __HEAP_RW_GAP, 8))
-/*----------------------------------------------------------------------------
-  Scatter File Definitions definition
- *----------------------------------------------------------------------------*/
+
 #define __RO_BASE         __ROM_BASE
 #define __RO_SIZE         __ROM_SIZE
-
 #define __NO_INIT         0x40
 
-LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
-  ER_ROM __RO_BASE __RO_SIZE  {                     ; load address = execution address
+LR_ROM __RO_BASE __RO_SIZE  {
+  ER_ROM __RO_BASE __RO_SIZE  {
    *.o (RESET, +First)
    *(InRoot$$Sections)
    .ANY (+RO)
    .ANY (+XO)
   }
 
-  ARM_LIB_STACK __STACK_TOP EMPTY -__STACK_SIZE {   ; Reserve empty region for stack
+  ER_PSRAM __PSRAM_BASE __PSRAM_SIZE {
+    *.o (RAM_CODE)                                ; Matches explicit section name from attributes
+  }
+  
+  ARM_LIB_STACK __STACK_TOP EMPTY -__STACK_SIZE {
   }
 
-  ARM_LIB_HEAP  __HEAP_BASE EMPTY  __HEAP_SIZE  {   ; Reserve empty region for heap
+  ARM_LIB_HEAP  __HEAP_BASE EMPTY  __HEAP_SIZE {
   }
 
   RW_IRAM1 __RWZI_BASE (__RWZI_SIZE - __NO_INIT)  {
    .ANY (+RW +ZI)
   }
 }
-

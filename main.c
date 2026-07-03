@@ -19,6 +19,8 @@
 #include "led.h"
 #include "utils.h"
 
+#include "dhry.h"
+
 static uint32_t tmpDts;
 static float tmpCel;
 static float tmpV13;
@@ -26,10 +28,6 @@ static float tmpV33;
 
 uint8_t g_tmp_uart_rx_buf;
 	
-#ifndef configTICK_RATE_HZ
-#define	configTICK_RATE_HZ	1000
-#endif
-
 #define UART_RX P1_4
 #define UART_TX P1_5
 
@@ -54,10 +52,12 @@ extern uint32_t __Vectors;
 extern uint32_t __Vectors_End;
 extern uint32_t __Vectors_Size;
 
+extern void Proc_5 (void);
+
 [[ noreturn ]] int main(void) {
 //	EventRecorderInitialize(EventRecordAll, 1);
 
-	SysTick_Config(SystemCoreClock / HZ);
+	SysTick_Config(SystemCoreClock / configTICK_RATE_HZ);
 	
 	XMC_SCU_EnableTemperatureSensor();
 	XMC_SCU_StartTemperatureMeasurement();
@@ -85,8 +85,8 @@ extern uint32_t __Vectors_Size;
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
 	printf("Boot Mode:%u\n", XMC_SCU_GetBootMode());
-	printf("vector: %08X %08X %08X\n", __Vectors, __Vectors_End, __Vectors_Size);
-		
+	printf("vector: %08X %08X %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size), (uint32_t)(&dhry_main), (uint32_t)(&Proc_5));
+
 	//T_DTS = (RESULT - 605) / 2.05 [°C]
 	tmpDts = XMC_SCU_GetTemperatureMeasurement();
 	tmpCel = (tmpDts-605)/2.05;
@@ -97,10 +97,11 @@ extern uint32_t __Vectors_Size;
 	printf("%.1f %.1f\n", tmpV13, tmpV33);	
 							
 	XMC_SCU_StartTemperatureMeasurement();		
-								
+			
+  dhry_main(SystemCoreClock);
+				
 	while (1) {
 		LED_Toggle(0);
-		HAL_Delay(HZ * 2);
 		
 		//T_DTS = (RESULT - 605) / 2.05 [°C]
 		tmpDts = XMC_SCU_GetTemperatureMeasurement();
@@ -111,9 +112,7 @@ extern uint32_t __Vectors_Size;
 		printf("%.1f %.1f %.1f\n", tmpCel, tmpV13, tmpV33);	
 							
 		XMC_SCU_StartTemperatureMeasurement();	
-		
-		LED_Toggle(1);
-		
+				
 		printf("\n");
 		printf("OSCHIPFreq:%u \n", OSCHP_GetFrequency());
 		printf("CC: %s %s\n", COMPILER_NAME, __VERSION__);		
@@ -123,9 +122,8 @@ extern uint32_t __Vectors_Size;
 				SCU_GENERAL->IDCHIP);
 		printf("Boot Mode:%u, FPU type:%u\n", XMC_SCU_GetBootMode(), SCB_GetFPUType());
 		printf("vector: %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size));
-		
-		printf("start to test\n");
-		
-		fpu_perfmance_test();
+				
+		HAL_Delay(configTICK_RATE_HZ * 20);
+		LED_Toggle(1);
 	}
 }

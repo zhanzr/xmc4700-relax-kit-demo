@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#ifndef HZ
-#define	HZ	1000
-#endif
+#include "utils.h"
 
-#define	TEST_LOOP_N	10000
+#ifndef configTICK_RATE_HZ
+#define	configTICK_RATE_HZ	1000
+#endif
 
 // Helper macro to convert numeric value to string
 #define STRINGIFY(x) #x

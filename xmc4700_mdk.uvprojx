@@ -7,7 +7,7 @@
 
   <Targets>
     <Target>
-      <TargetName>flash_cached</TargetName>
+      <TargetName>dhry</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
       <pArmCC>6240000::V6.24::ARMCLANG</pArmCC>
@@ -135,11 +135,11 @@
             <RunIndependent>0</RunIndependent>
             <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
-            <DriverSelection>-1</DriverSelection>
+            <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -184,7 +184,7 @@
             <hadIRAM>1</hadIRAM>
             <hadXRAM>0</hadXRAM>
             <uocXRam>0</uocXRam>
-            <RvdsVP>1</RvdsVP>
+            <RvdsVP>2</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
             <nBranchProt>0</nBranchProt>
@@ -372,7 +372,7 @@
             <TextAddressRange>0x08000000</TextAddressRange>
             <DataAddressRange>0x20000000</DataAddressRange>
             <pXoBase></pXoBase>
-            <ScatterFile>.\RTE\Device\XMC4700-F144x2048\XMC4700x2048_ac6.sct</ScatterFile>
+            <ScatterFile>.\xmc4700_ac6_psram.sct</ScatterFile>
             <IncludeLibs></IncludeLibs>
             <IncludeLibsPath></IncludeLibsPath>
             <Misc></Misc>
@@ -401,14 +401,19 @@
               <FilePath>.\xmc4700_nvic_handler.c</FilePath>
             </File>
             <File>
-              <FileName>fpu_perf.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\fpu_perf.c</FilePath>
-            </File>
-            <File>
               <FileName>utils.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>dhry_2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\dhry_2.c</FilePath>
+            </File>
+            <File>
+              <FileName>dhry_1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\dhry_1.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -419,6 +424,16 @@
               <FileName>README.md</FileName>
               <FileType>5</FileType>
               <FilePath>.\README.md</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>scatter</GroupName>
+          <Files>
+            <File>
+              <FileName>xmc4700_ac6_psram.sct</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\xmc4700_ac6_psram.sct</FilePath>
             </File>
           </Files>
         </Group>
@@ -440,7 +455,7 @@
       <api Capiversion="1.1.0" Cclass="CMSIS-Compiler" Cgroup="STDOUT" condition="CortexDevice" exclusive="1">
         <package name="CMSIS-Compiler" schemaVersion="1.7.36" url="https://www.keil.com/pack/" vendor="ARM" version="2.3.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </api>
     </apis>
@@ -448,55 +463,49 @@
       <component Cclass="CMSIS-Compiler" Cgroup="CORE" Cvendor="ARM" Cversion="1.2.1" condition="ARMCC CortexDevice" ymlID="CMSIS-Compiler:CORE">
         <package name="CMSIS-Compiler" schemaVersion="1.7.36" url="https://www.keil.com/pack/" vendor="ARM" version="2.3.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Capiversion="1.1.0" Cclass="CMSIS-Compiler" Cgroup="STDOUT" Csub="Custom" Cvendor="ARM" Cversion="1.1.0" condition="CORE" custom="1" ymlID="CMSIS-Compiler:STDOUT:Custom">
         <package name="CMSIS-Compiler" schemaVersion="1.7.36" url="https://www.keil.com/pack/" vendor="ARM" version="2.3.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Cclass="CMSIS" Cgroup="CORE" Cvendor="ARM" Cversion="6.2.0" condition="ARMv6_7_8-M Device" ymlID="CMSIS:CORE">
         <package name="CMSIS" schemaVersion="1.7.53" url="https://www.keil.com/pack/" vendor="ARM" version="6.3.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
-        </targetInfos>
-      </component>
-      <component Cclass="CMSIS" Cgroup="DSP" Cvariant="Source" Cvendor="ARM" Cversion="1.16.2" condition="CMSISCORE" ymlID="CMSIS:DSP&amp;Source">
-        <package name="CMSIS-DSP" schemaVersion="1.7.27" url="https://www.keil.com/pack/" vendor="ARM" version="1.16.2"/>
-        <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="3.0.0" condition="XMC4 CMSIS" ymlID="Device:Startup">
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="XMClib" Csub="FCE" Cvendor="Infineon" Cversion="2.2.0" condition="XMC4 CMSIS SCU" ymlID="Device:XMClib:FCE">
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="XMClib" Csub="GPIO" Cvendor="Infineon" Cversion="2.2.0" condition="XMC4 CMSIS" ymlID="Device:XMClib:GPIO">
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="XMClib" Csub="SCU" Cvendor="Infineon" Cversion="2.2.0" condition="XMC4 CMSIS" ymlID="Device:XMClib:SCU">
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
       <component Cclass="Device" Cgroup="XMClib" Csub="UART" Cvendor="Infineon" Cversion="2.2.0" condition="XMC4 CMSIS SCU" ymlID="Device:XMClib:UART">
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </component>
     </components>
@@ -506,7 +515,7 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="3.0.0" condition="XMC4 CMSIS"/>
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </file>
       <file attr="config" category="sourceAsm" condition="XMC47xx_ARMCC" name="Device\XMC4700_series\Source\ARM\startup_XMC4700.s" version="1.1.0">
@@ -514,7 +523,7 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="3.0.0" condition="XMC4 CMSIS"/>
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </file>
       <file attr="config" category="source" condition="XMC47xx" name="Device\XMC4700_series\Source\system_XMC4700.c" version="1.0.8">
@@ -522,7 +531,7 @@
         <component Cclass="Device" Cgroup="Startup" Cvendor="Infineon" Cversion="3.0.0" condition="XMC4 CMSIS"/>
         <package name="XMC4000_DFP" schemaVersion="1.2" url="https://www.infineon.com/cmsis_packs/XMC4000/" vendor="Infineon" version="2.14.0"/>
         <targetInfos>
-          <targetInfo name="flash_cached"/>
+          <targetInfo name="dhry"/>
         </targetInfos>
       </file>
     </files>
