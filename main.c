@@ -1,18 +1,7 @@
-#ifdef __cplusplus
-#include <iostream>
-#include <cstdio>
-#include <cstring>
-#include <cstdint>
-#include <cstdlib>
-#include "LiquidCrystal.h"
-
-using namespace std;
-#else
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
 #include <stdlib.h>
-#endif
 
 #include <XMC4700.h>
 #include <xmc_scu.h>
@@ -28,6 +17,7 @@ using namespace std;
 
 #include "custom_def.h"
 #include "led.h"
+#include "utilis.h"
 
 static uint32_t tmpDts;
 static float tmpCel;
@@ -55,29 +45,16 @@ const XMC_UART_CH_CONFIG_t uart_config = {
 	.parity_mode = XMC_USIC_CH_PARITY_MODE_NONE
 };
 
-
-uint32_t g_ticks;
-
-uint32_t HAL_GetTick(void) {
-	return g_ticks;
-}
-
-void HAL_Delay(uint32_t t) {
-	uint32_t d = t + g_ticks;
-	while(d > g_ticks) {
-		__NOP();
-	}
-}
-
 int stdout_putchar (int ch) {
 	XMC_UART_CH_Transmit(XMC_UART0_CH0, (uint8_t)ch);
 	return ch;
 }
 
-extern volatile uint32_t test_val32[3];
+extern uint32_t __Vectors;
+extern uint32_t __Vectors_End;
+extern uint32_t __Vectors_Size;
 
-
-int main(void) {
+[[ noreturn ]] int main(void) {
 //	EventRecorderInitialize(EventRecordAll, 1);
 
 	SysTick_Config(SystemCoreClock / HZ);
@@ -102,15 +79,13 @@ int main(void) {
 	XMC_GPIO_Init(UART_RX, &uart_rx);
 	
 	printf("XMC4700 ARMCC Test @ %u Hz\n", SystemCoreClock);
-	
 	printf("CC: %s\n", COMPILER_NAME);		
-
 	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
 			SystemCoreClock, SCB->CPUID,
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
 	printf("Boot Mode:%u\n", XMC_SCU_GetBootMode());
-	
+	printf("vector: %08X %08X %08X\n", __Vectors, __Vectors_End, __Vectors_Size);
 		
 	//T_DTS = (RESULT - 605) / 2.05 [°C]
 	tmpDts = XMC_SCU_GetTemperatureMeasurement();
@@ -120,26 +95,35 @@ int main(void) {
 	tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
 	tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
 	printf("%.1f %.1f\n", tmpV13, tmpV33);	
-						
-	LED_Toggle(0);
-	
+							
 	XMC_SCU_StartTemperatureMeasurement();		
 								
 	while (1) {
+		LED_Toggle(0);
+		HAL_Delay(HZ * 2);
+		
 		//T_DTS = (RESULT - 605) / 2.05 [°C]
 		tmpDts = XMC_SCU_GetTemperatureMeasurement();
 		tmpCel = (tmpDts-605)/2.05;
-		printf("%.1f\n", tmpCel);
 
 		tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
 		tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%.1f %.1f\n", tmpV13, tmpV33);	
+		printf("%.1f %.1f %.1f\n", tmpCel, tmpV13, tmpV33);	
 							
-		LED_Toggle(0);
-		
 		XMC_SCU_StartTemperatureMeasurement();	
 		
-		HAL_Delay(HZ * 2);
 		LED_Toggle(1);
+		
+		printf("\n");
+		printf("OSCHIPFreq:%u \n", OSCHP_GetFrequency());
+		printf("CC: %s %s\n", COMPILER_NAME, __VERSION__);		
+		printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
+				SystemCoreClock, SCB->CPUID,
+				__CORTEX_M, __FPU_USED,
+				SCU_GENERAL->IDCHIP);
+		printf("Boot Mode:%u, FPU type:%u\n", XMC_SCU_GetBootMode(), SCB_GetFPUType());
+		printf("vector: %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size));
+		
+		printf("%u %s %s\n", __COUNTER__, __TIMESTAMP__, __VERSION__);
 	}
 }

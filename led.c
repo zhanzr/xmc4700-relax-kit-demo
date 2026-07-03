@@ -22,7 +22,7 @@ void LED_Initialize (void) {
   XMC_GPIO_CONFIG_t gpio_config;
 
   gpio_config.mode = XMC_GPIO_MODE_OUTPUT_PUSH_PULL;
-  gpio_config.output_level = XMC_GPIO_OUTPUT_LEVEL_LOW;
+  gpio_config.output_level = XMC_GPIO_OUTPUT_LEVEL_HIGH;
   gpio_config.output_strength = XMC_GPIO_OUTPUT_STRENGTH_WEAK;
 
   for (n = 0; n < LED_COUNT; ++n) {

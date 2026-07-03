@@ -74,10 +74,10 @@
 #define __PSRAM_SIZE   0x00018000
 
 #define __DSRAM1_BASE  0x20000000
-#define __DSRAM1_SIZE  0x00020000
+#define __DSRAM1_SIZE  0x00040000
 
-#define __DSRAM2_BASE  0x20020000
-#define __DSRAM2_SIZE  0x0001FFC0
+;#define __DSRAM2_BASE  0x20020000
+;#define __DSRAM2_SIZE  0x0001FFC0
 
 /*----------------------------------------------------------------------------
   User Stack & Heap boundery definition
@@ -115,7 +115,7 @@ LR_ROM __RO_BASE __RO_SIZE  {                       ; load region size_region
   }
  *----------------------------------------------------------------------------*/
 
-  RW_IRAM1 __DSRAM1_BASE (__DSRAM1_SIZE + __DSRAM2_SIZE - __NO_INIT)  {
+  RW_IRAM1 __DSRAM1_BASE (__DSRAM1_SIZE - __NO_INIT)  {
    .ANY (+RW +ZI)
   }
 

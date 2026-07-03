@@ -399,6 +399,11 @@
               <FileType>1</FileType>
               <FilePath>.\xmc4700_nvic_handler.c</FilePath>
             </File>
+            <File>
+              <FileName>utilis.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\utilis.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
