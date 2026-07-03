@@ -19,7 +19,7 @@
 #include "led.h"
 #include "utils.h"
 
-#include "dhry.h"
+#include "core_portme.h"
 
 static uint32_t tmpDts;
 static float tmpCel;
@@ -52,9 +52,37 @@ extern uint32_t __Vectors;
 extern uint32_t __Vectors_End;
 extern uint32_t __Vectors_Size;
 
-extern void Proc_5 (void);
+extern void portable_init(core_portable *p, int *argc, char *argv[]);
+extern void portable_fini(core_portable *p);
 
-[[ noreturn ]] int main(void) {
+void user_loop(void) {
+		LED_Toggle(0);
+	
+	//T_DTS = (RESULT - 605) / 2.05 [°C]
+	tmpDts = XMC_SCU_GetTemperatureMeasurement();
+	tmpCel = (tmpDts-605)/2.05;
+
+	tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
+	tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
+	printf("%.1f %.1f %.1f\n", tmpCel, tmpV13, tmpV33);	
+						
+	XMC_SCU_StartTemperatureMeasurement();	
+			
+	printf("\n");
+	printf("OSCHIPFreq:%u \n", OSCHP_GetFrequency());
+	printf("CC: %s %s\n", COMPILER_NAME, __VERSION__);		
+	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
+			SystemCoreClock, SCB->CPUID,
+			__CORTEX_M, __FPU_USED,
+			SCU_GENERAL->IDCHIP);
+	printf("Boot Mode:%u, FPU type:%u\n", XMC_SCU_GetBootMode(), SCB_GetFPUType());
+	printf("vector: %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size));
+			
+	HAL_Delay(configTICK_RATE_HZ * 200);
+	LED_Toggle(1);
+}
+
+int original_main(void) {
 //	EventRecorderInitialize(EventRecordAll, 1);
 
 	SysTick_Config(SystemCoreClock / configTICK_RATE_HZ);
@@ -85,7 +113,7 @@ extern void Proc_5 (void);
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
 	printf("Boot Mode:%u\n", XMC_SCU_GetBootMode());
-	printf("vector: %08X %08X %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size), (uint32_t)(&dhry_main), (uint32_t)(&Proc_5));
+	printf("vector: %08X %08X %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size), (uint32_t)(&portable_init), (uint32_t)(&portable_fini));
 
 	//T_DTS = (RESULT - 605) / 2.05 [°C]
 	tmpDts = XMC_SCU_GetTemperatureMeasurement();
@@ -97,33 +125,8 @@ extern void Proc_5 (void);
 	printf("%.1f %.1f\n", tmpV13, tmpV33);	
 							
 	XMC_SCU_StartTemperatureMeasurement();		
-			
-  dhry_main(SystemCoreClock);
-				
-	while (1) {
-		LED_Toggle(0);
-		
-		//T_DTS = (RESULT - 605) / 2.05 [°C]
-		tmpDts = XMC_SCU_GetTemperatureMeasurement();
-		tmpCel = (tmpDts-605)/2.05;
-
-		tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
-		tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-		printf("%.1f %.1f %.1f\n", tmpCel, tmpV13, tmpV33);	
 							
-		XMC_SCU_StartTemperatureMeasurement();	
-				
-		printf("\n");
-		printf("OSCHIPFreq:%u \n", OSCHP_GetFrequency());
-		printf("CC: %s %s\n", COMPILER_NAME, __VERSION__);		
-		printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
-				SystemCoreClock, SCB->CPUID,
-				__CORTEX_M, __FPU_USED,
-				SCU_GENERAL->IDCHIP);
-		printf("Boot Mode:%u, FPU type:%u\n", XMC_SCU_GetBootMode(), SCB_GetFPUType());
-		printf("vector: %08X %08X %08X\n", (uint32_t)(&__Vectors), (uint32_t)(&__Vectors_End), (uint32_t)(&__Vectors_Size));
-				
-		HAL_Delay(configTICK_RATE_HZ * 20);
-		LED_Toggle(1);
-	}
+//	while (1) {
+//		user_loop();
+//	}
 }

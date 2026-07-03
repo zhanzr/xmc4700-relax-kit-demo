@@ -2,7 +2,7 @@
 
 LED + UART.
 
-## dhrystone
+## coremark
 
 144 MHz, Standard Lib
 
@@ -11,26 +11,79 @@ ARMCLANG 6.24
 #### With FPU
 ===================================================
 -O1
-MicroSecond for one run through Dhrystone[4-5825]:       2.911
-Dhrystones per Second:  343583.562
-DMIPS/MHz:      1.358
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 34057
+Total time (secs): 34.057000
+Iterations/Sec   : 293.625393
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+-o ./Objects/*.o -MMD
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 293.625393 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
 -Ofast
-MicroSecond for one run through Dhrystone[4-5422]:       2.709
-Dhrystones per Second:  369139.906
-DMIPS/MHz:      1.459
-===================================================
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 23825
+Total time (secs): 23.825000
+Iterations/Sec   : 419.727177
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 419.727177 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
+========================
 #### Without FPU
 ===================================================
 -O1
-MicroSecond for one run through Dhrystone[4-5797]:       2.896
-Dhrystones per Second:  345244.250
-DMIPS/MHz:      1.365
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 34057
+Total time (secs): 34.057000
+Iterations/Sec   : 293.625393
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 293.625393 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
 -Ofast
-MicroSecond for one run through Dhrystone[4-5450]:       2.723
-Dhrystones per Second:  367242.000
-DMIPS/MHz:      1.452
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 23823
+Total time (secs): 23.823000
+Iterations/Sec   : 419.762414
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 419.762414 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
 
 ### Flash uncached
@@ -38,27 +91,42 @@ ARMCLANG 6.24
 #### With FPU
 ===================================================
 -O1
-MicroSecond for one run through Dhrystone[5-13537]:      6.766
-Dhrystones per Second:  147797.812
-DMIPS/MHz:      0.584
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 91848
+Total time (secs): 91.848000
+Iterations/Sec   : 108.875533
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 108.875533 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
 -Ofast
-MicroSecond for one run through Dhrystone[5-12384]:      6.189
-Dhrystones per Second:  161563.938
-DMIPS/MHz:      0.639
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 59591
+Total time (secs): 59.591000
+Iterations/Sec   : 167.810575
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 167.810575 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
-#### Without FPU
-===================================================
--O1
-MicroSecond for one run through Dhrystone[5-13189]:      6.592
-Dhrystones per Second:  151699.031
-DMIPS/MHz:      0.600
-===================================================
--Ofast
-MicroSecond for one run through Dhrystone[5-12384]:      6.189
-Dhrystones per Second:  161563.938
-DMIPS/MHz:      0.639
-===================================================
+
 
 ### PSRAM
 ```C
@@ -80,11 +148,23 @@ void FunctionTwo(void) {
 
 #pragma clang section text="" // Reset back to default flash execution
 ```
-#### Without FPU
+#### With FPU
 ===================================================
 -Ofast
-MicroSecond for one run through Dhrystone[4-4908]:       2.452
-Dhrystones per Second:  407830.344
-DMIPS/MHz:      1.612
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 23791
+Total time (secs): 23.791000
+Iterations/Sec   : 420.327014
+Iterations    t
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 420.327014 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
 
