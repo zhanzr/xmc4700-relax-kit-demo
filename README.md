@@ -150,6 +150,24 @@ void FunctionTwo(void) {
 ```
 #### With FPU
 ===================================================
+-O1
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 34375
+Total time (secs): 34.375000
+Iterations/Sec   : 290.909091
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler fpu=fpv-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 290.909091 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
+===================================================
 -Ofast
 2K performance run parameters for coremark.
 CoreMark Size    : 666
@@ -167,4 +185,21 @@ seedcrc          : 0xe9f5
 Correct operation validated. See readme.txt for run and reporting rules.
 CoreMark 1.0 : 420.327014 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
 ===================================================
-
+-Omax
+2K performance run parameters for coremark.
+CoreMark Size    : 666
+Total ticks      : 19748
+Total time (secs): 19.748000
+Iterations/Sec   : 506.380393
+Iterations       : 10000
+Compiler version : GCCClang 20.0.0git
+Compiler flags   : -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar
+Memory location  : STACK
+seedcrc          : 0xe9f5
+[0]crclist       : 0xe714
+[0]crcmatrix     : 0x1fd7
+[0]crcstate      : 0x8e3a
+[0]crcfinal      : 0x988c
+Correct operation validated. See readme.txt for run and reporting rules.
+CoreMark 1.0 : 506.380393 / GCCClang 20.0.0git -xc -std=c11 --target=arm-arm-none-eabi -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard -c -fno-rtti -funsigned-char -fshort-enums -fshort-wchar / STACK
+===================================================
