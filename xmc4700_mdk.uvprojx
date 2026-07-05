@@ -341,7 +341,7 @@
               <MiscControls></MiscControls>
               <Define>XMC4700_F144x2048, XMC_ETH_PHY_KSZ8081RNB</Define>
               <Undefine></Undefine>
-              <IncludePath>.;.\lwip\src\include;.\lwip\src\port\freertos\include;.\lwip\src\port\freertos\netif</IncludePath>
+              <IncludePath>.;.\lwip-STABLE-2_2_1_RELEASE\src\include;.\lwip-STABLE-2_2_1_RELEASE\src\port\freertos\include;.\lwip-STABLE-2_2_1_RELEASE\src\port\freertos\netif</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -448,17 +448,17 @@
             <File>
               <FileName>fs.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\fs.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\apps\http\fs.c</FilePath>
             </File>
             <File>
               <FileName>http_client.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\http_client.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\apps\http\http_client.c</FilePath>
             </File>
             <File>
               <FileName>httpd.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\apps\http\httpd.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\apps\http\httpd.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -468,7 +468,7 @@
             <File>
               <FileName>ethernet.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\netif\ethernet.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\netif\ethernet.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -478,22 +478,22 @@
             <File>
               <FileName>api_lib.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\api\api_lib.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\api\api_lib.c</FilePath>
             </File>
             <File>
               <FileName>api_msg.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\api\api_msg.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\api\api_msg.c</FilePath>
             </File>
             <File>
               <FileName>tcpip.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\api\tcpip.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\api\tcpip.c</FilePath>
             </File>
             <File>
               <FileName>netbuf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\api\netbuf.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\api\netbuf.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -503,67 +503,67 @@
             <File>
               <FileName>def.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\def.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\def.c</FilePath>
             </File>
             <File>
               <FileName>init.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\init.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\init.c</FilePath>
             </File>
             <File>
               <FileName>ip.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ip.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\ip.c</FilePath>
             </File>
             <File>
               <FileName>mem.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\mem.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\mem.c</FilePath>
             </File>
             <File>
               <FileName>memp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\memp.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\memp.c</FilePath>
             </File>
             <File>
               <FileName>netif.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\netif.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\netif.c</FilePath>
             </File>
             <File>
               <FileName>pbuf.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\pbuf.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\pbuf.c</FilePath>
             </File>
             <File>
               <FileName>stats.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\stats.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\stats.c</FilePath>
             </File>
             <File>
               <FileName>tcp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\tcp.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\tcp.c</FilePath>
             </File>
             <File>
               <FileName>tcp_in.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\tcp_in.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\tcp_in.c</FilePath>
             </File>
             <File>
               <FileName>tcp_out.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\tcp_out.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\tcp_out.c</FilePath>
             </File>
             <File>
               <FileName>timeouts.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\timeouts.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\timeouts.c</FilePath>
             </File>
             <File>
               <FileName>udp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\udp.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\udp.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -573,27 +573,27 @@
             <File>
               <FileName>etharp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\etharp.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\ipv4\etharp.c</FilePath>
             </File>
             <File>
               <FileName>icmp.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\icmp.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\ipv4\icmp.c</FilePath>
             </File>
             <File>
               <FileName>ip4.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\ip4.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\ipv4\ip4.c</FilePath>
             </File>
             <File>
               <FileName>ip4_addr.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\ip4_addr.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\ipv4\ip4_addr.c</FilePath>
             </File>
             <File>
               <FileName>ip4_frag.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\core\ipv4\ip4_frag.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\core\ipv4\ip4_frag.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -603,7 +603,7 @@
             <File>
               <FileName>sys_arch.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\port\freertos\sys_arch.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\port\freertos\sys_arch.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -613,7 +613,7 @@
             <File>
               <FileName>ethernetif.c</FileName>
               <FileType>1</FileType>
-              <FilePath>.\lwip\src\port\freertos\netif\ethernetif.c</FilePath>
+              <FilePath>.\lwip-STABLE-2_2_1_RELEASE\src\port\freertos\netif\ethernetif.c</FilePath>
             </File>
           </Files>
         </Group>

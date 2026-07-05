@@ -257,11 +257,11 @@ void user_loop(void) {
 						
 	XMC_SCU_StartTemperatureMeasurement();	
 			
-	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
+	printf("%s %u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
+			tskKERNEL_VERSION_NUMBER,
 			SystemCoreClock, SCB->CPUID,
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
-	printf("Boot Mode:%u, FPU type:%u\n", XMC_SCU_GetBootMode(), SCB_GetFPUType());
 	printf("buf: %08X %08X %08X %08X\n", (uint32_t)(rx_desc), (uint32_t)(tx_desc), (uint32_t)(rx_buf), (uint32_t)(tx_buf));
 }
 
@@ -276,9 +276,10 @@ int main(void) {
 	LED_Initialize();
 	Buttons_Initialize();
 
-	printf("XMC4700 relax kit @ %u Hz\n", SystemCoreClock);
+	printf("XMC4700 relax kit lwip 2.2.1 stable @ %s\n", __TIMESTAMP__);
 	printf("CC: %s %s\n", COMPILER_NAME, __VERSION__);		
-	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
+	printf("%s %u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
+			tskKERNEL_VERSION_NUMBER,
 			SystemCoreClock, SCB->CPUID,
 			__CORTEX_M, __FPU_USED,
 			SCU_GENERAL->IDCHIP);
