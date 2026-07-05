@@ -23,8 +23,6 @@
     #define COMPILER_NAME "Unknown Compiler"
 #endif
 
-#define SERIAL_BAUDRATE 921600
-
 #define SERIAL_UART XMC_UART0_CH0
 #define SERIAL_TX_PIN P1_5
 #define SERIAL_TX_AF P1_5_AF_U0C0_DOUT0

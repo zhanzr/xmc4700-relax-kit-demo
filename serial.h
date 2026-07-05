@@ -19,7 +19,6 @@
 
 #include "xmc_uart.h"
 #include "xmc_gpio.h"
-#include "ring_buffer.h"
 
 #define SERIAL_BAUDRATE 921600
 
@@ -31,7 +30,6 @@
 #define SERIAL_RX_IRQN USIC0_0_IRQn
 
 #define SERIAL_BUFFER_SIZE 128
-extern ring_buffer_t serial_buffer;
 
 #ifdef __cplusplus
 extern "C" {

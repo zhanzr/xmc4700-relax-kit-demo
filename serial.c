@@ -19,8 +19,6 @@
 #include "xmc_uart.h"
 #include "xmc_gpio.h"
 
-RING_BUFFER_DEF(serial_buffer, SERIAL_BUFFER_SIZE);
-
 #define UART_RX P1_4
 #define UART_TX P1_5
 
@@ -29,7 +27,7 @@ XMC_GPIO_CONFIG_t uart_rx;
 
 const XMC_UART_CH_CONFIG_t uart_config =
 {
-	.baudrate = 921600,
+	.baudrate = SERIAL_BAUDRATE,
 	.data_bits = 8U,
 	.frame_length = 8U,
 	.stop_bits = 1U,

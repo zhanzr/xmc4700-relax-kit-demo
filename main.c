@@ -276,7 +276,7 @@ int main(void) {
 	LED_Initialize();
 	Buttons_Initialize();
 
-	printf("XMC4700 Test @ %u Hz\n", SystemCoreClock);
+	printf("XMC4700 relax kit @ %u Hz\n", SystemCoreClock);
 	printf("CC: %s %s\n", COMPILER_NAME, __VERSION__);		
 	printf("%u Hz, %08X, CM:%d, FPU_USED:%d, SCU_IDCHIP:%08X\n",
 			SystemCoreClock, SCB->CPUID,
@@ -290,11 +290,10 @@ int main(void) {
 	//T_DTS = (RESULT - 605) / 2.05 [°C]
 	tmpDts = XMC_SCU_GetTemperatureMeasurement();
 	tmpCel = (tmpDts-605)/2.05;
-	printf("%.1f\n", tmpCel);
 
 	tmpV13 = XMC_SCU_POWER_GetEVR13Voltage();
 	tmpV33 = XMC_SCU_POWER_GetEVR33Voltage();
-	printf("%.1f %.1f\n", tmpV13, tmpV33);	
+	printf("%.1f %.1f %.1f\n", tmpCel, tmpV13, tmpV33);	
 							
 	XMC_SCU_StartTemperatureMeasurement();		
 	
